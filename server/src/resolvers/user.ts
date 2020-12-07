@@ -5,6 +5,7 @@ import { MyContext } from '../types'
 import { getConnection } from "typeorm";
 import { v4 } from 'uuid';
 import argon2 from 'argon2';
+import { validateRegister } from "../utils/validateRegister";
 
 @ObjectType()
 class FieldError {
@@ -40,13 +41,17 @@ export class UserResolver {
             return null
         }
         return User.findOne(req.session.userId);
-    }
+    };
 
     @Mutation(() => UserResponse)
     async register(
         @Arg('options') options: UsernamePasswordInput,
         @Ctx() { req }: MyContext
-    ) {
+    ): Promise<UserResponse> {
+        const errors = validateRegister(options);
+        if (errors) {
+            return { errors };
+        }
         const hashedPassword = await argon2.hash(options.password)
         let user;
         try {
@@ -81,5 +86,44 @@ export class UserResolver {
         //set cookie on user
         req.session.userId = user.id;
         return { user };
+    };
+    @Mutation(() => UserResponse)
+    async login(
+        @Arg('userNameOrEmail') userNameOrEmail: string,
+        @Arg('password') password: string,
+        @Ctx() { req }: MyContext
+    ): Promise<UserResponse> {
+        const user = await User.findOne(
+            userNameOrEmail.includes("@")
+                ? { where: { email: userNameOrEmail } }
+                : { where: { username: userNameOrEmail } }
+        );
+        if (!user) {
+            return {
+                errors: [{
+                    field: "userNameOrEmail",
+                    message: "Username does not exist",
+                }],
+            };
+        }
+        const valid = await argon2.verify(user.password, password);
+        if (!valid) {
+            return {
+                errors: [
+                    {
+                        field: "password",
+                        message: "Invalid Login",
+                    },
+                ],
+            };
+        }
+
+        req.session.userId = user.id;
+
+        return {
+            user
+        };
     }
+
+
 }
