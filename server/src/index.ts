@@ -1,3 +1,4 @@
+import "reflect-metadata";
 import path from 'path';
 import { createConnection } from 'typeorm'
 import { User } from './entities/User';
@@ -31,7 +32,7 @@ const main = async () => {
     app.use(cors(
         {
             credentials: true,
-            // origin: __prod__ ? "https://ncong.app" : "http://localhost:3000"
+            origin: process.env.NODE_ENV === "production" ? "https://ncong.app" : "http://localhost:3000"
         }
     ));
 

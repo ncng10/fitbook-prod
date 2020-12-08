@@ -87,6 +87,7 @@ export class UserResolver {
         req.session.userId = user.id;
         return { user };
     };
+
     @Mutation(() => UserResponse)
     async login(
         @Arg('userNameOrEmail') userNameOrEmail: string,
