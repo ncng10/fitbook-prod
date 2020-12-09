@@ -42,18 +42,25 @@ export class GroupResolver {
 
     @FieldResolver(() => User)
     creator(@Root() group: Group, @Ctx() { userLoader }: MyContext) {
-        console.log("creatorId", group.creatorId)
-        console.log("group", group)
-        console.log("userLoader", userLoader)
+        // console.log("creatorId", group.creatorId)
+        // console.log("group", group)
+        // console.log("userLoader", userLoader)
         return userLoader.load(group.creatorId)
     };
 
     @Query(() => [Group])
     @UseMiddleware(isAuth)
-    groups() {
-        return Group.find()
+    async groups(
+        @Ctx() { req }: MyContext,
+        @Root() group: Group
+    ) {
+        const groups = await getConnection().query(
+            `
+            SELECT * FROM public.group WHERE "creatorId" = ${req.session.userId}
+            `
+        );
+
+        return groups
     }
-
-
 
 }
