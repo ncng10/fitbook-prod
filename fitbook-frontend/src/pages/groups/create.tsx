@@ -1,5 +1,6 @@
 import { Box, Button, FormControl, FormLabel } from '@chakra-ui/react';
 import { Field, Form, Formik } from 'formik'
+import { useRouter } from 'next/router';
 import React from 'react'
 import { InputField } from '../../components/InputField';
 import { useCreateGroupMutation } from '../../generated/graphql'
@@ -10,16 +11,23 @@ interface createProps {
 
 const create: React.FC<createProps> = ({ }) => {
     const [createGroup] = useCreateGroupMutation();
+    const router = useRouter();
     return (
         <React.Fragment>
             <Box w={300} h={500}>
                 <Formik
                     initialValues={{ groupName: "", groupCategory: "" }}
                     onSubmit={async (values) => {
-                        await createGroup({
-                            variables: { input: values }
+                        const { errors } = await createGroup({
+                            variables: { input: values },
+                            update: (cache) => {
+                                cache.evict({ fieldName: "groups" });
+                            }
                         })
                         console.log(values)
+                        if (!errors) {
+                            router.push("/groups/all")
+                        }
                     }}
                 >
                     <Form>

@@ -1,0 +1,11 @@
+query Groups {
+    groups {
+        groupName
+        groupCategory
+        creator {
+            username
+            id
+            email
+        }
+    }
+}

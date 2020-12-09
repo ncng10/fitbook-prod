@@ -12,10 +12,10 @@ export const NavBar: React.FC<NavBarProps> = ({ }) => {
     if (!data) {
         body =
             <Box>
-                <NextLink href="login">
+                <NextLink href="/login">
                     Login
                 </NextLink>
-                <NextLink href="register">
+                <NextLink href="/register">
                     Register
                 </NextLink>
             </Box >
@@ -23,7 +23,7 @@ export const NavBar: React.FC<NavBarProps> = ({ }) => {
         body =
             <Box>
                 <Box>Hello, {data.me.username}</Box>
-                <NextLink href="groups/all">
+                <NextLink href="/groups/all">
                     Groups
                 </NextLink>
             </Box>

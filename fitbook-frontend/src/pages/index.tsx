@@ -1,5 +1,4 @@
 import { NavBar } from "../components/NavBar";
-import { useMeQuery } from "../generated/graphql"
 import { withApollo } from "../utils/withApollo";
 
 

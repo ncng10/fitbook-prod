@@ -3,6 +3,7 @@ import { Arg, Ctx, Field, FieldResolver, InputType, Int, Mutation, Query, Resolv
 import { MyContext } from "../types";
 import { User } from '../entities/User'
 import { isAuth } from "../utils/middleware/isAuth";
+import { getConnection } from "typeorm";
 
 
 
@@ -45,6 +46,14 @@ export class GroupResolver {
         console.log("group", group)
         console.log("userLoader", userLoader)
         return userLoader.load(group.creatorId)
+    };
+
+    @Query(() => [Group])
+    @UseMiddleware(isAuth)
+    groups() {
+        return Group.find()
     }
+
+
 
 }
