@@ -1,0 +1,8 @@
+mutation CreateGroup($input:GroupInput!){
+  createGroup(
+    input: $input
+  ){
+    groupName
+    groupCategory
+  }
+}

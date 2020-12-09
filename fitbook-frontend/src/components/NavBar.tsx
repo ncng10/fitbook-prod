@@ -14,13 +14,20 @@ export const NavBar: React.FC<NavBarProps> = ({ }) => {
             <Box>
                 <NextLink href="login">
                     Login
-            </NextLink>
+                </NextLink>
                 <NextLink href="register">
                     Register
-            </NextLink>
+                </NextLink>
             </Box >
     } else {
-        body = <Box>Hello, {data.me.username}</Box>
+        body =
+            <Box>
+                <Box>Hello, {data.me.username}</Box>
+                <NextLink href="groups/all">
+                    Groups
+                </NextLink>
+            </Box>
+
     }
     return (
         <React.Fragment>
