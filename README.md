@@ -6,7 +6,7 @@ Features that I'm working on:
  -Users can be designated as a coach and create workouts for users in the group. They can also view that inputs the users put in
  -Workout tracking
  -Nutrition tracking
- -Nutrition calculators
+ -Nutrition calculator
  
  
  Features in the future:
