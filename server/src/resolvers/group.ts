@@ -1,7 +1,8 @@
 import { Group } from "../entities/Group";
-import { Arg, Ctx, Field, FieldResolver, InputType, Int, Mutation, Query, Resolver, Root } from "type-graphql";
+import { Arg, Ctx, Field, FieldResolver, InputType, Int, Mutation, Query, Resolver, Root, UseMiddleware } from "type-graphql";
 import { MyContext } from "../types";
 import { User } from '../entities/User'
+import { isAuth } from "../utils/middleware/isAuth";
 
 
 
@@ -27,6 +28,7 @@ export class GroupResolver {
     }
 
     @Mutation(() => Group)
+    @UseMiddleware(isAuth)
     async createGroup(
         @Arg("input") input: GroupInput,
         @Ctx() { req }: MyContext

@@ -125,6 +125,21 @@ export class UserResolver {
             user
         };
     }
-
+    @Mutation(() => Boolean)
+    logout(
+        @Ctx() { req, res }: MyContext
+    ) {
+        //removes session from redis
+        //removes cookie
+        return new Promise((resolve) => req.session.destroy(err => {
+            res.clearCookie("jid");
+            if (err) {
+                console.log(err);
+                resolve(false);
+                return
+            }
+            resolve(true);
+        }));
+    }
 
 }
