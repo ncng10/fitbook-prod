@@ -1,28 +1,54 @@
-import { Box, Button } from '@chakra-ui/react';
+import { Box, Button, Flex, Text } from '@chakra-ui/react';
 import React from 'react'
 import NextLink from "next/link"
-import { useGroupsQuery } from '../../generated/graphql';
+import { useGroupsQuery, useMeQuery } from '../../generated/graphql';
 import { withApollo } from '../../utils/withApollo';
+import { NavBar } from '../../components/NavBar';
 interface groupsProps {
 
 }
 
 const Groups: React.FC<groupsProps> = ({ }) => {
     const { data } = useGroupsQuery();
-    console.log("data", data)
+    const { data: meData } = useMeQuery();
+
+    let body = null;
+    if (!data) {
+        body = <Box>No groups so show...</Box>
+    } else {
+        body =
+            <div
+                style={{ display: "flex", flexDirection: "row", flexWrap: "wrap", width: 1000, justifyContent: "center", alignItems: "center" }}
+            >
+                {data?.groups.map((group) => (
+                    <Box w={250} h={250} borderWidth="1px" mr={5} mt={5} key={group.groupName} borderRadius={10}>
+                        <Flex align="center" justify="center" direction="column">
+                            <Flex align="baseline">
+                                <Text fontSize={24}>{group.groupName}</Text>
+                            </Flex>
+                            <Flex mt={75} align="center" justify="center" direction="column">
+                                <Text>Creator: {group.creator.username}</Text>
+                                <Text>Category: {group.groupCategory}</Text>
+                            </Flex>
+                        </Flex>
+                    </Box>
+                ))}
+            </div>
+    }
+
     return (
         <React.Fragment>
+            <NavBar />
+            <div
+                style={{ display: "flex", alignItems: "center", justifyContent: "center", marginTop: 25 }}
+            >
+                {body}
+            </div>
             <Box>
                 <NextLink href="/groups/create">
                     <Button>Create a Group</Button>
                 </NextLink>
             </Box>
-            <Box>
-                {data?.groups.map((group) => (
-                    <Box key={group.groupName}>{group.groupName}</Box>
-                ))}
-
-            </Box>
         </React.Fragment>);
 }
-export default withApollo({ ssr: false })(Groups)
+export default withApollo({ ssr: true })(Groups)

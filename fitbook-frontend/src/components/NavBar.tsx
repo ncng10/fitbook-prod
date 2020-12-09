@@ -23,6 +23,9 @@ export const NavBar: React.FC<NavBarProps> = ({ }) => {
         body =
             <Box>
                 <Box>Hello, {data.me.username}</Box>
+                <NextLink href="/">
+                    Home
+                </NextLink>
                 <NextLink href="/groups/all">
                     Groups
                 </NextLink>
