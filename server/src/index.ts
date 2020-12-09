@@ -12,6 +12,7 @@ import Redis from 'ioredis';
 import cors from 'cors';
 import { Group } from "./entities/Group";
 import { GroupResolver } from "./resolvers/group";
+import { createUserLoader } from "./utils/createUserLoader";
 require("dotenv").config();
 const main = async () => {
     const connection = await createConnection({
@@ -68,7 +69,7 @@ const main = async () => {
             resolvers: [UserResolver, GroupResolver],
             validate: false,
         }),
-        context: ({ req, res }) => ({ req, res })
+        context: ({ req, res }) => ({ req, res, redis, userLoader: createUserLoader() })
     });
     apolloServer.applyMiddleware({ app, cors: { origin: false } });
 

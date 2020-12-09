@@ -22,7 +22,8 @@ export class Group extends BaseEntity {
     creatorId: number;
 
     //creator can have 0-n groups
-    @ManyToOne(() => User, (user) => user.groups, { nullable: true })
+    @Field(() => User)
+    @ManyToOne(() => User, (user) => user.groups)
     creator: User;
 
     @ManyToMany(() => User)
