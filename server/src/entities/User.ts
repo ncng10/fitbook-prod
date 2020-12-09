@@ -1,6 +1,7 @@
+import { group } from "console";
 import { Field, ObjectType } from "type-graphql";
-import { BaseEntity, Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
-
+import { BaseEntity, Column, CreateDateColumn, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Group } from './Group'
 @ObjectType()
 @Entity()
 export class User extends BaseEntity {
@@ -19,6 +20,10 @@ export class User extends BaseEntity {
     @Field()
     @Column()
     password!: string;
+
+    //group can only have 1 creator
+    @OneToMany(() => Group, (group) => group.creator)
+    groups: Group[];
 
     @Field(() => String)
     @CreateDateColumn()

@@ -10,6 +10,8 @@ import session from 'express-session';
 import connectRedis from 'connect-redis';
 import Redis from 'ioredis';
 import cors from 'cors';
+import { Group } from "./entities/Group";
+import { GroupResolver } from "./resolvers/group";
 require("dotenv").config();
 const main = async () => {
     const connection = await createConnection({
@@ -19,7 +21,7 @@ const main = async () => {
         logging: true,
         synchronize: true,
         migrations: [path.join(__dirname, "./migrations/*")],
-        entities: [User]
+        entities: [User, Group]
     });
 
 
@@ -63,7 +65,7 @@ const main = async () => {
 
     const apolloServer = new ApolloServer({
         schema: await buildSchema({
-            resolvers: [UserResolver],
+            resolvers: [UserResolver, GroupResolver],
             validate: false,
         }),
         context: ({ req, res }) => ({ req, res })
