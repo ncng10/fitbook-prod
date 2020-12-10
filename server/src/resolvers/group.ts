@@ -13,34 +13,36 @@ class GroupInput {
     groupName: string;
     @Field()
     groupCategory: string;
-}
+};
 
 @InputType()
 class JoinGroupInput {
     @Field()
     groupId: number;
-}
+};
 
 
 
 @Resolver(Group)
 export class GroupResolver {
 
+
+    @Mutation(() => Group)
+    async createGroup(
+        @Arg("input") input: GroupInput,
+        @Ctx() { req }: MyContext
+    ): Promise<Group> {
+        return Group.create({
+            ...input,
+            creatorId: req.session.userId,
+        }).save();
+    }
+
     @Query(() => Group)
     async group(
         @Arg("id", () => Int) id: number
     ): Promise<Group | undefined> {
         return Group.findOne(id)
-    }
-
-
-
-    @FieldResolver(() => User)
-    creator(@Root() group: Group, @Ctx() { userLoader }: MyContext) {
-        // console.log("creatorId", group.creatorId)
-        // console.log("group", group)
-        // console.log("userLoader", userLoader)
-        return userLoader.load(group.creatorId)
     };
 
     @Mutation(() => [GroupMembers])
@@ -56,7 +58,7 @@ export class GroupResolver {
             `
         );
         return joinGroup
-    }
+    };
 
     @Query(() => [Group])
     async groups(
@@ -69,16 +71,29 @@ export class GroupResolver {
             `
         );
         return groups
-    }
+    };
 
     @FieldResolver(() => [User])
-    async members() {
-        const members = await getConnection().query(
+    members(
+        @Arg("input") input: number
+    ) {
+        const members = getConnection().query(
             `
-            SELECT DISTINCT username, email FROM public.user INNER JOIN public.group_members ON public.user.id = public.group_members."memberId"
+            SELECT DISTINCT username, email,public.user.id FROM public.user INNER JOIN public.group_members ON public.user.id = public.group_members."memberId"
+            LEFT JOIN public.group ON public.group_members."groupId" = public.group.id WHERE public.group.id =${input}
             `
         )
         return members
-    }
+    };
+
+
+    @FieldResolver(() => User)
+    creator(@Root() group: Group, @Ctx() { userLoader }: MyContext) {
+        // console.log("creatorId", group.creatorId)
+        // console.log("group", group)
+        // console.log("userLoader", userLoader)
+        return userLoader.load(group.creatorId)
+    };
+
 
 }
