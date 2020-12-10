@@ -9,7 +9,7 @@ interface groupsProps {
 }
 
 const Groups: React.FC<groupsProps> = ({ }) => {
-    const { data } = useGroupsQuery();
+    const { data } = useGroupsQuery({});
     const { data: meData } = useMeQuery();
 
     let body = null;
@@ -29,6 +29,11 @@ const Groups: React.FC<groupsProps> = ({ }) => {
                             <Flex mt={75} align="center" justify="center" direction="column">
                                 <Text>Creator: {group.creator.username}</Text>
                                 <Text>Category: {group.groupCategory}</Text>
+                                <Box mt={5}>
+                                    <NextLink href="/groups/join/[id]" as={`/groups/join/${group.id}`}>
+                                        <Button>Join Group</Button>
+                                    </NextLink>
+                                </Box>
                             </Flex>
                         </Flex>
                     </Box>

@@ -17,7 +17,7 @@ class GroupInput {
 
 @InputType()
 class JoinGroupInput {
-    @Field()
+    @Field(() => Int)
     groupId: number;
 };
 
@@ -65,9 +65,7 @@ export class GroupResolver {
     ) {
         const groups = await getConnection().query(
             `
-            SELECT *
-            FROM public.group LEFT JOIN public.group_members ON public.group.id = public.group_members."groupId"
-            LEFT JOIN public.user ON public.group_members."memberId" = public.user.id
+            SELECT * FROM public.group
             `
         );
         return groups

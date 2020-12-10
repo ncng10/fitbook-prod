@@ -1,0 +1,6 @@
+mutation JoinGroup($input:JoinGroupInput!) {
+    joinGroup(input: $input) {
+        memberId
+        groupId
+    }
+}

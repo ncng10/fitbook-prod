@@ -2,6 +2,7 @@ query Groups {
     groups {
         groupName
         groupCategory
+        id
         creator {
             username
             id
