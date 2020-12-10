@@ -1,5 +1,6 @@
 import { Field, ObjectType } from "type-graphql";
-import { BaseEntity, Column, CreateDateColumn, Entity, JoinTable, ManyToMany, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { BaseEntity, Column, CreateDateColumn, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { GroupMembers } from "./GroupMembers";
 import { User } from './User';
 
 @ObjectType()
@@ -26,10 +27,6 @@ export class Group extends BaseEntity {
     @ManyToOne(() => User, (user) => user.groups)
     creator: User;
 
-    @ManyToMany(() => User)
-    @JoinTable()
-    members: User[];
-
     @Field(() => String)
     @CreateDateColumn()
     createdAt: Date;
@@ -37,4 +34,8 @@ export class Group extends BaseEntity {
     @Field(() => String)
     @UpdateDateColumn()
     updatedAt: Date;
+
+    @OneToMany(() => GroupMembers, (gb) => gb.group)
+    memberConnection: Promise<GroupMembers[]>;
+
 }

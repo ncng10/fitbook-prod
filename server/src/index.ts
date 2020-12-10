@@ -13,6 +13,8 @@ import cors from 'cors';
 import { Group } from "./entities/Group";
 import { GroupResolver } from "./resolvers/group";
 import { createUserLoader } from "./utils/createUserLoader";
+import { GroupMembers } from "./entities/GroupMembers";
+
 require("dotenv").config();
 const main = async () => {
     const connection = await createConnection({
@@ -22,7 +24,7 @@ const main = async () => {
         logging: true,
         synchronize: true,
         migrations: [path.join(__dirname, "./migrations/*")],
-        entities: [User, Group]
+        entities: [User, Group, GroupMembers]
     });
 
 

@@ -2,9 +2,8 @@ import { Group } from "../entities/Group";
 import { Arg, Ctx, Field, FieldResolver, InputType, Int, Mutation, Query, Resolver, Root, UseMiddleware } from "type-graphql";
 import { MyContext } from "../types";
 import { User } from '../entities/User'
-import { isAuth } from "../utils/middleware/isAuth";
+import { GroupMembers } from "../entities/GroupMembers";
 import { getConnection } from "typeorm";
-
 
 
 
@@ -14,6 +13,12 @@ class GroupInput {
     groupName: string;
     @Field()
     groupCategory: string;
+}
+
+@InputType()
+class JoinGroupInput {
+    @Field()
+    groupId: number;
 }
 
 
@@ -26,18 +31,7 @@ export class GroupResolver {
         @Arg("id", () => Int) id: number
     ): Promise<Group | undefined> {
         return Group.findOne(id)
-    }
 
-    @Mutation(() => Group)
-    @UseMiddleware(isAuth)
-    async createGroup(
-        @Arg("input") input: GroupInput,
-        @Ctx() { req }: MyContext
-    ): Promise<Group> {
-        return Group.create({
-            ...input,
-            creatorId: req.session.userId,
-        }).save();
     }
 
     @FieldResolver(() => User)
@@ -48,19 +42,37 @@ export class GroupResolver {
         return userLoader.load(group.creatorId)
     };
 
-    @Query(() => [Group])
-    @UseMiddleware(isAuth)
-    async groups(
-        @Ctx() { req }: MyContext,
-        @Root() group: Group
+    @Mutation(() => [GroupMembers])
+    async joinGroup(
+        @Arg("input") input: JoinGroupInput,
+        @Ctx() { req }: MyContext
     ) {
-        const groups = await getConnection().query(
+        const joinGroup = await getConnection().query(
             `
-            SELECT * FROM public.group WHERE "creatorId" = ${req.session.userId}
+            INSERT INTO public.group_members
+            ("memberId", "groupId")
+            VALUES(${req.session.userId}, ${input.groupId})
             `
         );
+        return joinGroup
+    }
 
-        return groups
+    @Query(() => [Group])
+    async groupMembers(
+    ) {
+        const members = await getConnection().query(
+            `
+            SELECT *
+            FROM public.group LEFT JOIN public.group_members ON public.group.id = public.group_members."groupId"
+            LEFT JOIN public.user ON public.group_members."memberId" = public.user.id
+            `
+        );
+        return members
+    }
+
+    @FieldResolver(() => Group)
+    members() {
+
     }
 
 }

@@ -3,7 +3,6 @@ import { User } from '../entities/User'
 import { UsernamePasswordInput } from "./UsernamePasswordInput";
 import { MyContext } from '../types'
 import { getConnection } from "typeorm";
-import { v4 } from 'uuid';
 import argon2 from 'argon2';
 import { validateRegister } from "../utils/validateRegister";
 

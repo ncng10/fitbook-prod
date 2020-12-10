@@ -1,6 +1,7 @@
 import { Field, ObjectType } from "type-graphql";
 import { BaseEntity, Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
-import { Group } from './Group'
+import { Group } from './Group';
+import { GroupMembers } from "./GroupMembers";
 @ObjectType()
 @Entity()
 export class User extends BaseEntity {
@@ -31,4 +32,9 @@ export class User extends BaseEntity {
     @Field(() => String)
     @UpdateDateColumn()
     updatedAt: Date;
+
+    @OneToMany(() => GroupMembers, (gb) => gb.member)
+    groupConnection: Promise<GroupMembers[]>;
+
+
 }
