@@ -31,8 +31,9 @@ export class GroupResolver {
         @Arg("id", () => Int) id: number
     ): Promise<Group | undefined> {
         return Group.findOne(id)
-
     }
+
+
 
     @FieldResolver(() => User)
     creator(@Root() group: Group, @Ctx() { userLoader }: MyContext) {
@@ -58,21 +59,26 @@ export class GroupResolver {
     }
 
     @Query(() => [Group])
-    async groupMembers(
+    async groups(
     ) {
-        const members = await getConnection().query(
+        const groups = await getConnection().query(
             `
             SELECT *
             FROM public.group LEFT JOIN public.group_members ON public.group.id = public.group_members."groupId"
             LEFT JOIN public.user ON public.group_members."memberId" = public.user.id
             `
         );
-        return members
+        return groups
     }
 
-    @FieldResolver(() => Group)
-    members() {
-
+    @FieldResolver(() => [User])
+    async members() {
+        const members = await getConnection().query(
+            `
+            SELECT DISTINCT username, email FROM public.user INNER JOIN public.group_members ON public.user.id = public.group_members."memberId"
+            `
+        )
+        return members
     }
 
 }
