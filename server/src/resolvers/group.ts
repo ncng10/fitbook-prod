@@ -73,7 +73,7 @@ export class GroupResolver {
 
     @FieldResolver(() => [User])
     members(
-        @Arg("input") input: number
+        @Arg("input", () => Int) input: number
     ) {
         const members = getConnection().query(
             `
@@ -92,6 +92,5 @@ export class GroupResolver {
         // console.log("userLoader", userLoader)
         return userLoader.load(group.creatorId)
     };
-
 
 }

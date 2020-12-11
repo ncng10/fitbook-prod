@@ -1,0 +1,8 @@
+query MemberCheck($groupId: Int!) {
+  memberCheck {
+    username
+    email
+    password
+		isMember(groupId:$groupId)
+  }
+}
