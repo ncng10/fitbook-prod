@@ -1,9 +1,9 @@
-import { Group } from "../entities/Group";
-import { Arg, Ctx, Field, FieldResolver, InputType, Int, Mutation, Query, Resolver, Root, UseMiddleware } from "type-graphql";
-import { MyContext } from "../types";
-import { User } from '../entities/User'
-import { GroupMembers } from "../entities/GroupMembers";
+import { Arg, Ctx, Field, FieldResolver, InputType, Int, Mutation, Query, Resolver, Root } from "type-graphql";
 import { getConnection } from "typeorm";
+import { Group } from "../entities/Group";
+import { GroupMembers } from "../entities/GroupMembers";
+import { User } from '../entities/User';
+import { MyContext } from "../types";
 
 
 

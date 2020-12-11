@@ -1,6 +1,6 @@
 import "reflect-metadata";
 import path from 'path';
-import { createConnection } from 'typeorm'
+import { createConnection, getConnection } from 'typeorm'
 import { User } from './entities/User';
 import express from 'express'
 import { ApolloServer } from 'apollo-server-express';
@@ -14,6 +14,8 @@ import { Group } from "./entities/Group";
 import { GroupResolver } from "./resolvers/group";
 import { createUserLoader } from "./utils/createUserLoader";
 import { GroupMembers } from "./entities/GroupMembers";
+import { PersonalMessage } from "./entities/PersonalMessage";
+import { PersonalMessageResolver } from "./resolvers/personalmessage";
 
 require("dotenv").config();
 const main = async () => {
@@ -24,12 +26,11 @@ const main = async () => {
         logging: true,
         synchronize: true,
         migrations: [path.join(__dirname, "./migrations/*")],
-        entities: [User, Group, GroupMembers]
+        entities: [User, Group, GroupMembers, PersonalMessage]
     });
 
 
     const app = express();
-
 
     const RedisStore = connectRedis(session)
     const redis = new Redis(process.env.REDIS_URL);
@@ -68,7 +69,7 @@ const main = async () => {
 
     const apolloServer = new ApolloServer({
         schema: await buildSchema({
-            resolvers: [UserResolver, GroupResolver],
+            resolvers: [UserResolver, GroupResolver, PersonalMessageResolver],
             validate: false,
         }),
         context: ({ req, res }) => ({ req, res, redis, userLoader: createUserLoader() })
