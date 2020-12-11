@@ -1,22 +1,16 @@
 import { Box, Button, Flex, Text } from '@chakra-ui/react';
 import React from 'react'
 import NextLink from "next/link"
-import { useGroupsQuery, useMemberCheckQuery, useMeQuery } from '../../generated/graphql';
+import { useGroupsQuery, useMeQuery } from '../../generated/graphql';
 import { withApollo } from '../../utils/withApollo';
 import { NavBar } from '../../components/NavBar';
-import { useGetIntId } from '../../utils/useGetIntId';
 interface groupsProps {
 
 }
 
 const Groups: React.FC<groupsProps> = ({ }) => {
     const { data } = useGroupsQuery({});
-    const intId = useGetIntId();
-    const { data: memberCheckData } = useMemberCheckQuery({
-        variables: {
-            groupId: intId
-        }
-    })
+    const { data: meData } = useMeQuery();
     let body = null;
     if (!data) {
         body = <Box>No groups so show...</Box>
@@ -34,19 +28,11 @@ const Groups: React.FC<groupsProps> = ({ }) => {
                             <Flex mt={75} align="center" justify="center" direction="column">
                                 <Text>Creator: {group.creator.username}</Text>
                                 <Text>Category: {group.groupCategory}</Text>
-                                {memberCheckData?.memberCheck.isMember === true ?
-                                    <Box mt={5}>
-                                        <NextLink href="/groups/join/[id]" as={`/groups/join/${group.id}`}>
-                                            <Button>Join Group</Button>
-                                        </NextLink>
-                                    </Box>
-                                    :
-                                    <Box mt={5}>
-                                        <NextLink href="/groups/join/[id]" as={`/groups/join/${group.id}`}>
-                                            <Button>View Group</Button>
-                                        </NextLink>
-                                    </Box>
-                                }
+                                <Box mt={5}>
+                                    <NextLink href="/groups/join/[id]" as={`/groups/join/${group.id}`}>
+                                        <Button>Join Group</Button>
+                                    </NextLink>
+                                </Box>
                             </Flex>
                         </Flex>
                     </Box>
