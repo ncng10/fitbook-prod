@@ -20,6 +20,7 @@ export type Query = {
   memberCheck: User;
   group: Group;
   groups: Array<Group>;
+  isMember: Array<Group>;
 };
 
 
@@ -35,12 +36,6 @@ export type User = {
   password: Scalars['String'];
   createdAt: Scalars['String'];
   updatedAt: Scalars['String'];
-  isMember: Scalars['Boolean'];
-};
-
-
-export type UserIsMemberArgs = {
-  groupId: Scalars['Int'];
 };
 
 export type Group = {
@@ -233,17 +228,19 @@ export type MeQuery = (
   ) }
 );
 
-export type MemberCheckQueryVariables = Exact<{
-  groupId: Scalars['Int'];
-}>;
+export type IsMemberQueryVariables = Exact<{ [key: string]: never; }>;
 
 
-export type MemberCheckQuery = (
+export type IsMemberQuery = (
   { __typename?: 'Query' }
-  & { memberCheck: (
-    { __typename?: 'User' }
-    & Pick<User, 'username' | 'email' | 'password' | 'isMember'>
-  ) }
+  & { isMember: Array<(
+    { __typename?: 'Group' }
+    & Pick<Group, 'groupName' | 'id' | 'groupCategory'>
+    & { creator: (
+      { __typename?: 'User' }
+      & Pick<User, 'username' | 'id'>
+    ) }
+  )> }
 );
 
 export const RegularErrorFragmentDoc = gql`
@@ -506,39 +503,41 @@ export function useMeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<MeQuery
 export type MeQueryHookResult = ReturnType<typeof useMeQuery>;
 export type MeLazyQueryHookResult = ReturnType<typeof useMeLazyQuery>;
 export type MeQueryResult = Apollo.QueryResult<MeQuery, MeQueryVariables>;
-export const MemberCheckDocument = gql`
-    query MemberCheck($groupId: Int!) {
-  memberCheck {
-    username
-    email
-    password
-    isMember(groupId: $groupId)
+export const IsMemberDocument = gql`
+    query IsMember {
+  isMember {
+    groupName
+    id
+    groupCategory
+    creator {
+      username
+      id
+    }
   }
 }
     `;
 
 /**
- * __useMemberCheckQuery__
+ * __useIsMemberQuery__
  *
- * To run a query within a React component, call `useMemberCheckQuery` and pass it any options that fit your needs.
- * When your component renders, `useMemberCheckQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * To run a query within a React component, call `useIsMemberQuery` and pass it any options that fit your needs.
+ * When your component renders, `useIsMemberQuery` returns an object from Apollo Client that contains loading, error, and data properties
  * you can use to render your UI.
  *
  * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
  *
  * @example
- * const { data, loading, error } = useMemberCheckQuery({
+ * const { data, loading, error } = useIsMemberQuery({
  *   variables: {
- *      groupId: // value for 'groupId'
  *   },
  * });
  */
-export function useMemberCheckQuery(baseOptions: Apollo.QueryHookOptions<MemberCheckQuery, MemberCheckQueryVariables>) {
-        return Apollo.useQuery<MemberCheckQuery, MemberCheckQueryVariables>(MemberCheckDocument, baseOptions);
+export function useIsMemberQuery(baseOptions?: Apollo.QueryHookOptions<IsMemberQuery, IsMemberQueryVariables>) {
+        return Apollo.useQuery<IsMemberQuery, IsMemberQueryVariables>(IsMemberDocument, baseOptions);
       }
-export function useMemberCheckLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<MemberCheckQuery, MemberCheckQueryVariables>) {
-          return Apollo.useLazyQuery<MemberCheckQuery, MemberCheckQueryVariables>(MemberCheckDocument, baseOptions);
+export function useIsMemberLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<IsMemberQuery, IsMemberQueryVariables>) {
+          return Apollo.useLazyQuery<IsMemberQuery, IsMemberQueryVariables>(IsMemberDocument, baseOptions);
         }
-export type MemberCheckQueryHookResult = ReturnType<typeof useMemberCheckQuery>;
-export type MemberCheckLazyQueryHookResult = ReturnType<typeof useMemberCheckLazyQuery>;
-export type MemberCheckQueryResult = Apollo.QueryResult<MemberCheckQuery, MemberCheckQueryVariables>;
+export type IsMemberQueryHookResult = ReturnType<typeof useIsMemberQuery>;
+export type IsMemberLazyQueryHookResult = ReturnType<typeof useIsMemberLazyQuery>;
+export type IsMemberQueryResult = Apollo.QueryResult<IsMemberQuery, IsMemberQueryVariables>;

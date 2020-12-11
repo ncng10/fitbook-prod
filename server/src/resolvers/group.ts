@@ -84,6 +84,16 @@ export class GroupResolver {
         return members
     };
 
+    @Query(() => [Group])
+    async isMember(
+        @Ctx() { req }: MyContext,
+    ) {
+        const isMember = await getConnection().query(`
+        SELECT * FROM public.group INNER JOIN public.group_members ON public.group.id = public.group_members."groupId" INNER JOIN
+        public.user ON public.user.id = public.group_members."memberId" WHERE public.user.id = ${req.session.userId}
+        `);
+        return isMember
+    }
 
     @FieldResolver(() => User)
     creator(@Root() group: Group, @Ctx() { userLoader }: MyContext) {
@@ -92,5 +102,4 @@ export class GroupResolver {
         // console.log("userLoader", userLoader)
         return userLoader.load(group.creatorId)
     };
-
 }

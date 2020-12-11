@@ -1,8 +1,11 @@
-query MemberCheck($groupId: Int!) {
-  memberCheck {
-    username
-    email
-    password
-		isMember(groupId:$groupId)
-  }
+query IsMember {
+    isMember{
+        groupName
+        id
+        groupCategory
+        creator {
+            username
+            id
+        }
+    }
 }

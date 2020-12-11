@@ -141,21 +141,6 @@ export class UserResolver {
         }));
     };
 
-    @FieldResolver(() => Boolean)
-    async isMember(
-        @Ctx() { req }: MyContext,
-        @Arg("groupId", () => Int) groupId: number
-    ) {
-        const isMember = await getConnection().query(`
-        SELECT DISTINCT username, email,public.user.id FROM public.user INNER JOIN public.group_members ON public.user.id = public.group_members."memberId" 
-        WHERE public.user.id = ${req.session.userId} AND public.group_members."groupId" = ${groupId}
-        `);
-        console.log(isMember)
-        if (isMember.length === 0) {
-            return false
-        }
-        return true
-    }
 
     @Query(() => User)
     memberCheck(
