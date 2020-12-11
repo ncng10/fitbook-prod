@@ -1,0 +1,12 @@
+query Group($id:Int!) {
+   group(id:$id){
+    groupName
+    id
+    groupCategory
+    members(input: $id) {
+        username
+        email
+        id
+    }
+    }
+}

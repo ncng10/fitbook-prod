@@ -50,7 +50,7 @@ export type Group = {
 
 
 export type GroupMembersArgs = {
-  input: Scalars['Float'];
+  input: Scalars['Int'];
 };
 
 export type Mutation = {
@@ -128,10 +128,12 @@ export type CreateGroupMutationVariables = Exact<{
 
 export type CreateGroupMutation = (
   { __typename?: 'Mutation' }
-  & { createGroup: (
-    { __typename?: 'Group' }
-    & Pick<Group, 'groupName' | 'groupCategory'>
-  ) }
+  & {
+    createGroup: (
+      { __typename?: 'Group' }
+      & Pick<Group, 'groupName' | 'groupCategory'>
+    )
+  }
 );
 
 export type JoinGroupMutationVariables = Exact<{
@@ -141,10 +143,12 @@ export type JoinGroupMutationVariables = Exact<{
 
 export type JoinGroupMutation = (
   { __typename?: 'Mutation' }
-  & { joinGroup: Array<(
-    { __typename?: 'GroupMembers' }
-    & Pick<GroupMembers, 'memberId' | 'groupId'>
-  )> }
+  & {
+    joinGroup: Array<(
+      { __typename?: 'GroupMembers' }
+      & Pick<GroupMembers, 'memberId' | 'groupId'>
+    )>
+  }
 );
 
 export type LoginMutationVariables = Exact<{
@@ -155,16 +159,20 @@ export type LoginMutationVariables = Exact<{
 
 export type LoginMutation = (
   { __typename?: 'Mutation' }
-  & { login: (
-    { __typename?: 'UserResponse' }
-    & { errors?: Maybe<Array<(
-      { __typename?: 'FieldError' }
-      & RegularErrorFragment
-    )>>, user?: Maybe<(
-      { __typename?: 'User' }
-      & Pick<User, 'username' | 'id'>
-    )> }
-  ) }
+  & {
+    login: (
+      { __typename?: 'UserResponse' }
+      & {
+        errors?: Maybe<Array<(
+          { __typename?: 'FieldError' }
+          & RegularErrorFragment
+        )>>, user?: Maybe<(
+          { __typename?: 'User' }
+          & Pick<User, 'username' | 'id'>
+        )>
+      }
+    )
+  }
 );
 
 export type RegisterMutationVariables = Exact<{
@@ -174,13 +182,38 @@ export type RegisterMutationVariables = Exact<{
 
 export type RegisterMutation = (
   { __typename?: 'Mutation' }
-  & { register: (
-    { __typename?: 'UserResponse' }
-    & { user?: Maybe<(
-      { __typename?: 'User' }
-      & Pick<User, 'username' | 'email' | 'password'>
-    )> }
-  ) }
+  & {
+    register: (
+      { __typename?: 'UserResponse' }
+      & {
+        user?: Maybe<(
+          { __typename?: 'User' }
+          & Pick<User, 'username' | 'email' | 'password'>
+        )>
+      }
+    )
+  }
+);
+
+export type GroupQueryVariables = Exact<{
+  id: Scalars['Int'];
+}>;
+
+
+export type GroupQuery = (
+  { __typename?: 'Query' }
+  & {
+    group: (
+      { __typename?: 'Group' }
+      & Pick<Group, 'groupName' | 'id' | 'groupCategory'>
+      & {
+        members: Array<(
+          { __typename?: 'User' }
+          & Pick<User, 'username' | 'email' | 'id'>
+        )>
+      }
+    )
+  }
 );
 
 export type GroupsQueryVariables = Exact<{ [key: string]: never; }>;
@@ -188,14 +221,18 @@ export type GroupsQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type GroupsQuery = (
   { __typename?: 'Query' }
-  & { groups: Array<(
-    { __typename?: 'Group' }
-    & Pick<Group, 'groupName' | 'groupCategory' | 'id'>
-    & { creator: (
-      { __typename?: 'User' }
-      & Pick<User, 'username' | 'id' | 'email'>
-    ) }
-  )> }
+  & {
+    groups: Array<(
+      { __typename?: 'Group' }
+      & Pick<Group, 'groupName' | 'groupCategory' | 'id'>
+      & {
+        creator: (
+          { __typename?: 'User' }
+          & Pick<User, 'username' | 'id' | 'email'>
+        )
+      }
+    )>
+  }
 );
 
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
@@ -203,10 +240,12 @@ export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type MeQuery = (
   { __typename?: 'Query' }
-  & { me: (
-    { __typename?: 'User' }
-    & Pick<User, 'id' | 'username'>
-  ) }
+  & {
+    me: (
+      { __typename?: 'User' }
+      & Pick<User, 'id' | 'username'>
+    )
+  }
 );
 
 export const RegularErrorFragmentDoc = gql`
@@ -243,8 +282,8 @@ export type CreateGroupMutationFn = Apollo.MutationFunction<CreateGroupMutation,
  * });
  */
 export function useCreateGroupMutation(baseOptions?: Apollo.MutationHookOptions<CreateGroupMutation, CreateGroupMutationVariables>) {
-        return Apollo.useMutation<CreateGroupMutation, CreateGroupMutationVariables>(CreateGroupDocument, baseOptions);
-      }
+  return Apollo.useMutation<CreateGroupMutation, CreateGroupMutationVariables>(CreateGroupDocument, baseOptions);
+}
 export type CreateGroupMutationHookResult = ReturnType<typeof useCreateGroupMutation>;
 export type CreateGroupMutationResult = Apollo.MutationResult<CreateGroupMutation>;
 export type CreateGroupMutationOptions = Apollo.BaseMutationOptions<CreateGroupMutation, CreateGroupMutationVariables>;
@@ -276,8 +315,8 @@ export type JoinGroupMutationFn = Apollo.MutationFunction<JoinGroupMutation, Joi
  * });
  */
 export function useJoinGroupMutation(baseOptions?: Apollo.MutationHookOptions<JoinGroupMutation, JoinGroupMutationVariables>) {
-        return Apollo.useMutation<JoinGroupMutation, JoinGroupMutationVariables>(JoinGroupDocument, baseOptions);
-      }
+  return Apollo.useMutation<JoinGroupMutation, JoinGroupMutationVariables>(JoinGroupDocument, baseOptions);
+}
 export type JoinGroupMutationHookResult = ReturnType<typeof useJoinGroupMutation>;
 export type JoinGroupMutationResult = Apollo.MutationResult<JoinGroupMutation>;
 export type JoinGroupMutationOptions = Apollo.BaseMutationOptions<JoinGroupMutation, JoinGroupMutationVariables>;
@@ -315,8 +354,8 @@ export type LoginMutationFn = Apollo.MutationFunction<LoginMutation, LoginMutati
  * });
  */
 export function useLoginMutation(baseOptions?: Apollo.MutationHookOptions<LoginMutation, LoginMutationVariables>) {
-        return Apollo.useMutation<LoginMutation, LoginMutationVariables>(LoginDocument, baseOptions);
-      }
+  return Apollo.useMutation<LoginMutation, LoginMutationVariables>(LoginDocument, baseOptions);
+}
 export type LoginMutationHookResult = ReturnType<typeof useLoginMutation>;
 export type LoginMutationResult = Apollo.MutationResult<LoginMutation>;
 export type LoginMutationOptions = Apollo.BaseMutationOptions<LoginMutation, LoginMutationVariables>;
@@ -351,11 +390,51 @@ export type RegisterMutationFn = Apollo.MutationFunction<RegisterMutation, Regis
  * });
  */
 export function useRegisterMutation(baseOptions?: Apollo.MutationHookOptions<RegisterMutation, RegisterMutationVariables>) {
-        return Apollo.useMutation<RegisterMutation, RegisterMutationVariables>(RegisterDocument, baseOptions);
-      }
+  return Apollo.useMutation<RegisterMutation, RegisterMutationVariables>(RegisterDocument, baseOptions);
+}
 export type RegisterMutationHookResult = ReturnType<typeof useRegisterMutation>;
 export type RegisterMutationResult = Apollo.MutationResult<RegisterMutation>;
 export type RegisterMutationOptions = Apollo.BaseMutationOptions<RegisterMutation, RegisterMutationVariables>;
+export const GroupDocument = gql`
+    query Group($id: Int!) {
+  group(id: $id) {
+    groupName
+    id
+    groupCategory
+    members(input: $id) {
+      username
+      email
+      id
+    }
+  }
+}
+    `;
+
+/**
+ * __useGroupQuery__
+ *
+ * To run a query within a React component, call `useGroupQuery` and pass it any options that fit your needs.
+ * When your component renders, `useGroupQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useGroupQuery({
+ *   variables: {
+ *      id: // value for 'id'
+ *   },
+ * });
+ */
+export function useGroupQuery(baseOptions: Apollo.QueryHookOptions<GroupQuery, GroupQueryVariables>) {
+  return Apollo.useQuery<GroupQuery, GroupQueryVariables>(GroupDocument, baseOptions);
+}
+export function useGroupLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GroupQuery, GroupQueryVariables>) {
+  return Apollo.useLazyQuery<GroupQuery, GroupQueryVariables>(GroupDocument, baseOptions);
+}
+export type GroupQueryHookResult = ReturnType<typeof useGroupQuery>;
+export type GroupLazyQueryHookResult = ReturnType<typeof useGroupLazyQuery>;
+export type GroupQueryResult = Apollo.QueryResult<GroupQuery, GroupQueryVariables>;
 export const GroupsDocument = gql`
     query Groups {
   groups {
@@ -387,11 +466,11 @@ export const GroupsDocument = gql`
  * });
  */
 export function useGroupsQuery(baseOptions?: Apollo.QueryHookOptions<GroupsQuery, GroupsQueryVariables>) {
-        return Apollo.useQuery<GroupsQuery, GroupsQueryVariables>(GroupsDocument, baseOptions);
-      }
+  return Apollo.useQuery<GroupsQuery, GroupsQueryVariables>(GroupsDocument, baseOptions);
+}
 export function useGroupsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GroupsQuery, GroupsQueryVariables>) {
-          return Apollo.useLazyQuery<GroupsQuery, GroupsQueryVariables>(GroupsDocument, baseOptions);
-        }
+  return Apollo.useLazyQuery<GroupsQuery, GroupsQueryVariables>(GroupsDocument, baseOptions);
+}
 export type GroupsQueryHookResult = ReturnType<typeof useGroupsQuery>;
 export type GroupsLazyQueryHookResult = ReturnType<typeof useGroupsLazyQuery>;
 export type GroupsQueryResult = Apollo.QueryResult<GroupsQuery, GroupsQueryVariables>;
@@ -420,11 +499,11 @@ export const MeDocument = gql`
  * });
  */
 export function useMeQuery(baseOptions?: Apollo.QueryHookOptions<MeQuery, MeQueryVariables>) {
-        return Apollo.useQuery<MeQuery, MeQueryVariables>(MeDocument, baseOptions);
-      }
+  return Apollo.useQuery<MeQuery, MeQueryVariables>(MeDocument, baseOptions);
+}
 export function useMeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<MeQuery, MeQueryVariables>) {
-          return Apollo.useLazyQuery<MeQuery, MeQueryVariables>(MeDocument, baseOptions);
-        }
+  return Apollo.useLazyQuery<MeQuery, MeQueryVariables>(MeDocument, baseOptions);
+}
 export type MeQueryHookResult = ReturnType<typeof useMeQuery>;
 export type MeLazyQueryHookResult = ReturnType<typeof useMeLazyQuery>;
 export type MeQueryResult = Apollo.QueryResult<MeQuery, MeQueryVariables>;
