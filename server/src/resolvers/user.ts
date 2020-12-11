@@ -1,10 +1,11 @@
-import { Arg, Ctx, Field, FieldResolver, Int, Mutation, ObjectType, Query, Resolver } from "type-graphql";
+import { Arg, Ctx, Field, FieldResolver, Int, Mutation, ObjectType, Query, Resolver, Root } from "type-graphql";
 import { User } from '../entities/User'
 import { UsernamePasswordInput } from "./UsernamePasswordInput";
 import { MyContext } from '../types'
 import { getConnection } from "typeorm";
 import argon2 from 'argon2';
 import { validateRegister } from "../utils/validateRegister";
+import { Group } from "../entities/Group";
 
 @ObjectType()
 class FieldError {
@@ -141,15 +142,16 @@ export class UserResolver {
         }));
     };
 
-
-    @Query(() => User)
-    memberCheck(
-        @Ctx() { req }: MyContext
+    @FieldResolver(() => [User])
+    members(
+        @Arg("input", () => Int) input: number
     ) {
-        if (!req.session.userId) {
-            return null
-        }
-        return User.findOne(req.session.userId);
+        const members = getConnection().query(
+            `
+            SELECT DISTINCT username, email,public.user.id FROM public.user INNER JOIN public.group_members ON public.user.id = public.group_members."memberId"
+            LEFT JOIN public.group ON public.group_members."groupId" = public.group.id WHERE public.group.id =${input}
+            `
+        )
+        return members
     };
-
 }

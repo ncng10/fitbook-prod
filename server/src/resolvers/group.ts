@@ -25,8 +25,6 @@ class JoinGroupInput {
 
 @Resolver(Group)
 export class GroupResolver {
-
-
     @Mutation(() => Group)
     async createGroup(
         @Arg("input") input: GroupInput,
@@ -71,19 +69,6 @@ export class GroupResolver {
         return groups
     };
 
-    @FieldResolver(() => [User])
-    members(
-        @Arg("input", () => Int) input: number
-    ) {
-        const members = getConnection().query(
-            `
-            SELECT DISTINCT username, email,public.user.id FROM public.user INNER JOIN public.group_members ON public.user.id = public.group_members."memberId"
-            LEFT JOIN public.group ON public.group_members."groupId" = public.group.id WHERE public.group.id =${input}
-            `
-        )
-        return members
-    };
-
     @Query(() => [Group])
     async isMember(
         @Ctx() { req }: MyContext,
@@ -93,7 +78,8 @@ export class GroupResolver {
         public.user ON public.user.id = public.group_members."memberId" WHERE public.user.id = ${req.session.userId}
         `);
         return isMember
-    }
+    };
+
 
     @FieldResolver(() => User)
     creator(@Root() group: Group, @Ctx() { userLoader }: MyContext) {

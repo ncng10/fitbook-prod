@@ -1,18 +1,15 @@
 import { Box, Button, Flex, Text } from '@chakra-ui/react';
-import React from 'react'
-import NextLink from "next/link"
-import { useGroupsQuery, useIsMemberQuery, useMeQuery } from '../../generated/graphql';
-import { withApollo } from '../../utils/withApollo';
+import NextLink from "next/link";
+import React from 'react';
 import { NavBar } from '../../components/NavBar';
-import h4 from 'next/head';
+import { useIsMemberQuery } from '../../generated/graphql';
+import { withApollo } from '../../utils/withApollo';
 interface groupsProps {
 
 }
 
 const Groups: React.FC<groupsProps> = ({ }) => {
     const { data } = useIsMemberQuery();
-    const { data: meData } = useMeQuery();
-
     let body = null;
     if (!data) {
         body = <Box>No groups so show...</Box>
