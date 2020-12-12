@@ -28,6 +28,5 @@ export class PersonalMessage extends BaseEntity {
     @Field(() => String)
     @CreateDateColumn()
     createdAt: Date;
-
 }
 

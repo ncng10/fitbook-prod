@@ -1,9 +1,9 @@
 import "reflect-metadata";
 import path from 'path';
-import { createConnection, getConnection } from 'typeorm'
+import { createConnection } from 'typeorm'
 import { User } from './entities/User';
 import express from 'express'
-import { ApolloServer } from 'apollo-server-express';
+import { ApolloServer, PubSub } from 'apollo-server-express';
 import { buildSchema } from 'type-graphql';
 import { UserResolver } from './resolvers/user';
 import session from 'express-session';
@@ -16,7 +16,10 @@ import { createUserLoader } from "./utils/createUserLoader";
 import { GroupMembers } from "./entities/GroupMembers";
 import { PersonalMessage } from "./entities/PersonalMessage";
 import { PersonalMessageResolver } from "./resolvers/personalmessage";
+import { RedisPubSub } from "graphql-redis-subscriptions";
+import http from "http"
 
+const PORT = 5001
 require("dotenv").config();
 const main = async () => {
     const connection = await createConnection({
@@ -29,12 +32,18 @@ const main = async () => {
         entities: [User, Group, GroupMembers, PersonalMessage]
     });
 
-
+    const options: Redis.RedisOptions = {
+        host: '192.168.1.8',
+        port: 6379,
+        retryStrategy: times => Math.max(times * 100, 3000),
+    };
     const app = express();
 
     const RedisStore = connectRedis(session)
     const redis = new Redis(process.env.REDIS_URL);
+
     app.set("trust proxy", 1);
+
     app.use(cors(
         {
             credentials: true,
@@ -62,20 +71,29 @@ const main = async () => {
             resave: false,
         })
     );
-
-    app.listen(5001, () => {
-        console.log('server started on port 5001')
-    });
+    const pubsub = new PubSub();
 
     const apolloServer = new ApolloServer({
         schema: await buildSchema({
             resolvers: [UserResolver, GroupResolver, PersonalMessageResolver],
             validate: false,
+            pubSub: new RedisPubSub({
+                publisher: new Redis(),
+                subscriber: new Redis(),
+            })
         }),
-        context: ({ req, res }) => ({ req, res, redis, userLoader: createUserLoader() })
+        context: ({ req, res }) => ({ req, res, redis, userLoader: createUserLoader(), pubsub }),
+        subscriptions: {
+        }
     });
     apolloServer.applyMiddleware({ app, cors: { origin: false } });
+    const httpServer = http.createServer(app)
+    apolloServer.installSubscriptionHandlers(httpServer)
 
+    httpServer.listen(PORT, () => {
+        console.log(`server started on port ${PORT}${apolloServer.graphqlPath}`)
+        console.log(`Subs started at ${PORT}${apolloServer.subscriptionsPath}`)
+    });
 
 };
 
