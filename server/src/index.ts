@@ -1,6 +1,6 @@
 import "reflect-metadata";
 import path from 'path';
-import { createConnection } from 'typeorm'
+import { createConnection, getConnection } from 'typeorm'
 import { User } from './entities/User';
 import express from 'express'
 import { ApolloServer, PubSub } from 'apollo-server-express';
@@ -31,6 +31,7 @@ const main = async () => {
         migrations: [path.join(__dirname, "./migrations/*")],
         entities: [User, Group, GroupMembers, PersonalMessage]
     });
+
 
     const options: Redis.RedisOptions = {
         host: '192.168.1.8',

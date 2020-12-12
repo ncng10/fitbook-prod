@@ -1,0 +1,10 @@
+query viewPersonalMessages($input:Int!){
+    viewPersonalMessages(senderId:$input){
+    sender
+    text
+    senderId
+    createdAt
+    recipientId
+    id
+    }
+}

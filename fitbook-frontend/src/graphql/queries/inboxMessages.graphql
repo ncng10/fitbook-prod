@@ -1,0 +1,6 @@
+query InboxMessages {
+    inboxMessages {
+        sender
+        senderId
+    }
+}

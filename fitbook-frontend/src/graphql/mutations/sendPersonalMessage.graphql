@@ -1,0 +1,7 @@
+mutation SendPersonalMessage($input:PersonalMessageInput!, $recipientId: Int!) {
+  sendPersonalMessage(input:$input, recipientId: $recipientId) {
+    text
+    recipientId
+    senderId
+  }
+}

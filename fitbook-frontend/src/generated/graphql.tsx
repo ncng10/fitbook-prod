@@ -21,11 +21,17 @@ export type Query = {
   groups: Array<Group>;
   isMember: Array<Group>;
   viewPersonalMessages: Array<PersonalMessage>;
+  inboxMessages: Array<PersonalMessage>;
 };
 
 
 export type QueryGroupArgs = {
   id: Scalars['Int'];
+};
+
+
+export type QueryViewPersonalMessagesArgs = {
+  senderId: Scalars['Int'];
 };
 
 export type User = {
@@ -36,12 +42,6 @@ export type User = {
   password: Scalars['String'];
   createdAt: Scalars['String'];
   updatedAt: Scalars['String'];
-  members: Array<User>;
-};
-
-
-export type UserMembersArgs = {
-  input: Scalars['Int'];
 };
 
 export type Group = {
@@ -211,6 +211,20 @@ export type RegisterMutation = (
   ) }
 );
 
+export type SendPersonalMessageMutationVariables = Exact<{
+  input: PersonalMessageInput;
+  recipientId: Scalars['Int'];
+}>;
+
+
+export type SendPersonalMessageMutation = (
+  { __typename?: 'Mutation' }
+  & { sendPersonalMessage: Array<(
+    { __typename?: 'PersonalMessage' }
+    & Pick<PersonalMessage, 'text' | 'recipientId' | 'senderId'>
+  )> }
+);
+
 export type GroupQueryVariables = Exact<{
   id: Scalars['Int'];
 }>;
@@ -239,6 +253,17 @@ export type GroupsQuery = (
   )> }
 );
 
+export type InboxMessagesQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type InboxMessagesQuery = (
+  { __typename?: 'Query' }
+  & { inboxMessages: Array<(
+    { __typename?: 'PersonalMessage' }
+    & Pick<PersonalMessage, 'sender' | 'senderId'>
+  )> }
+);
+
 export type IsMemberQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -263,6 +288,19 @@ export type MeQuery = (
     { __typename?: 'User' }
     & Pick<User, 'id' | 'username' | 'email'>
   ) }
+);
+
+export type ViewPersonalMessagesQueryVariables = Exact<{
+  input: Scalars['Int'];
+}>;
+
+
+export type ViewPersonalMessagesQuery = (
+  { __typename?: 'Query' }
+  & { viewPersonalMessages: Array<(
+    { __typename?: 'PersonalMessage' }
+    & Pick<PersonalMessage, 'sender' | 'text' | 'senderId' | 'createdAt' | 'recipientId' | 'id'>
+  )> }
 );
 
 export type NewMessageSubscriptionVariables = Exact<{ [key: string]: never; }>;
@@ -423,6 +461,41 @@ export function useRegisterMutation(baseOptions?: Apollo.MutationHookOptions<Reg
 export type RegisterMutationHookResult = ReturnType<typeof useRegisterMutation>;
 export type RegisterMutationResult = Apollo.MutationResult<RegisterMutation>;
 export type RegisterMutationOptions = Apollo.BaseMutationOptions<RegisterMutation, RegisterMutationVariables>;
+export const SendPersonalMessageDocument = gql`
+    mutation SendPersonalMessage($input: PersonalMessageInput!, $recipientId: Int!) {
+  sendPersonalMessage(input: $input, recipientId: $recipientId) {
+    text
+    recipientId
+    senderId
+  }
+}
+    `;
+export type SendPersonalMessageMutationFn = Apollo.MutationFunction<SendPersonalMessageMutation, SendPersonalMessageMutationVariables>;
+
+/**
+ * __useSendPersonalMessageMutation__
+ *
+ * To run a mutation, you first call `useSendPersonalMessageMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useSendPersonalMessageMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [sendPersonalMessageMutation, { data, loading, error }] = useSendPersonalMessageMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *      recipientId: // value for 'recipientId'
+ *   },
+ * });
+ */
+export function useSendPersonalMessageMutation(baseOptions?: Apollo.MutationHookOptions<SendPersonalMessageMutation, SendPersonalMessageMutationVariables>) {
+        return Apollo.useMutation<SendPersonalMessageMutation, SendPersonalMessageMutationVariables>(SendPersonalMessageDocument, baseOptions);
+      }
+export type SendPersonalMessageMutationHookResult = ReturnType<typeof useSendPersonalMessageMutation>;
+export type SendPersonalMessageMutationResult = Apollo.MutationResult<SendPersonalMessageMutation>;
+export type SendPersonalMessageMutationOptions = Apollo.BaseMutationOptions<SendPersonalMessageMutation, SendPersonalMessageMutationVariables>;
 export const GroupDocument = gql`
     query Group($id: Int!) {
   group(id: $id) {
@@ -497,6 +570,39 @@ export function useGroupsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<Gro
 export type GroupsQueryHookResult = ReturnType<typeof useGroupsQuery>;
 export type GroupsLazyQueryHookResult = ReturnType<typeof useGroupsLazyQuery>;
 export type GroupsQueryResult = Apollo.QueryResult<GroupsQuery, GroupsQueryVariables>;
+export const InboxMessagesDocument = gql`
+    query InboxMessages {
+  inboxMessages {
+    sender
+    senderId
+  }
+}
+    `;
+
+/**
+ * __useInboxMessagesQuery__
+ *
+ * To run a query within a React component, call `useInboxMessagesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useInboxMessagesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useInboxMessagesQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useInboxMessagesQuery(baseOptions?: Apollo.QueryHookOptions<InboxMessagesQuery, InboxMessagesQueryVariables>) {
+        return Apollo.useQuery<InboxMessagesQuery, InboxMessagesQueryVariables>(InboxMessagesDocument, baseOptions);
+      }
+export function useInboxMessagesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<InboxMessagesQuery, InboxMessagesQueryVariables>) {
+          return Apollo.useLazyQuery<InboxMessagesQuery, InboxMessagesQueryVariables>(InboxMessagesDocument, baseOptions);
+        }
+export type InboxMessagesQueryHookResult = ReturnType<typeof useInboxMessagesQuery>;
+export type InboxMessagesLazyQueryHookResult = ReturnType<typeof useInboxMessagesLazyQuery>;
+export type InboxMessagesQueryResult = Apollo.QueryResult<InboxMessagesQuery, InboxMessagesQueryVariables>;
 export const IsMemberDocument = gql`
     query IsMember {
   isMember {
@@ -569,6 +675,44 @@ export function useMeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<MeQuery
 export type MeQueryHookResult = ReturnType<typeof useMeQuery>;
 export type MeLazyQueryHookResult = ReturnType<typeof useMeLazyQuery>;
 export type MeQueryResult = Apollo.QueryResult<MeQuery, MeQueryVariables>;
+export const ViewPersonalMessagesDocument = gql`
+    query viewPersonalMessages($input: Int!) {
+  viewPersonalMessages(senderId: $input) {
+    sender
+    text
+    senderId
+    createdAt
+    recipientId
+    id
+  }
+}
+    `;
+
+/**
+ * __useViewPersonalMessagesQuery__
+ *
+ * To run a query within a React component, call `useViewPersonalMessagesQuery` and pass it any options that fit your needs.
+ * When your component renders, `useViewPersonalMessagesQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useViewPersonalMessagesQuery({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useViewPersonalMessagesQuery(baseOptions: Apollo.QueryHookOptions<ViewPersonalMessagesQuery, ViewPersonalMessagesQueryVariables>) {
+        return Apollo.useQuery<ViewPersonalMessagesQuery, ViewPersonalMessagesQueryVariables>(ViewPersonalMessagesDocument, baseOptions);
+      }
+export function useViewPersonalMessagesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ViewPersonalMessagesQuery, ViewPersonalMessagesQueryVariables>) {
+          return Apollo.useLazyQuery<ViewPersonalMessagesQuery, ViewPersonalMessagesQueryVariables>(ViewPersonalMessagesDocument, baseOptions);
+        }
+export type ViewPersonalMessagesQueryHookResult = ReturnType<typeof useViewPersonalMessagesQuery>;
+export type ViewPersonalMessagesLazyQueryHookResult = ReturnType<typeof useViewPersonalMessagesLazyQuery>;
+export type ViewPersonalMessagesQueryResult = Apollo.QueryResult<ViewPersonalMessagesQuery, ViewPersonalMessagesQueryVariables>;
 export const NewMessageDocument = gql`
     subscription NewMessage {
   newMessage {

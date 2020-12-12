@@ -10,8 +10,7 @@ interface groupsProps {
 
 const Groups: React.FC<groupsProps> = ({ }) => {
     const { data } = useIsMemberQuery();
-    const { data: newMessage } = useNewMessageSubscription();
-    console.log("message", newMessage)
+
     let body = null;
     if (!data) {
         body = <Box>No groups so show...</Box>
@@ -49,9 +48,6 @@ const Groups: React.FC<groupsProps> = ({ }) => {
                 <NextLink href="/groups/create">
                     <Button>Create a Group</Button>
                 </NextLink>
-            </Box>
-            <Box>
-
             </Box>
         </React.Fragment>);
 }

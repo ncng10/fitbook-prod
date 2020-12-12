@@ -9,18 +9,30 @@ class PersonalMessageInput {
     text: string
 };
 
-
-
-
 @Resolver(PersonalMessage)
 export class PersonalMessageResolver {
 
+    @Query(() => [PersonalMessage])
+    async viewPersonalMessages(
+        @Ctx() { req }: MyContext,
+        @Arg("senderId", () => Int) senderId: number
+    ) {
+        const messages = await getConnection().query(
+            `
+            SELECT * FROM public.personal_message WHERE public.personal_message."senderId" = ${req.session.userId} AND public.personal_message."recipientId" = ${senderId}
+            UNION
+            SELECT * FROM public.personal_message WHERE public.personal_message."recipientId" = ${req.session.userId} AND public.personal_message."senderId" = ${senderId}
+            ORDER BY "createdAt" ASC
+            `
+        );
+        return messages
+    };
 
     @Mutation(() => [PersonalMessage])
     async sendPersonalMessage(
-        @PubSub() pubSub: PubSubEngine,
         @Arg("input") input: PersonalMessageInput,
         @Arg("recipientId", () => Int) recipientId: number,
+        @PubSub() pubSub: PubSubEngine,
         @Ctx() { req }: MyContext
     ) {
         const user = await User.findOne(req.session.userId)
@@ -33,31 +45,28 @@ export class PersonalMessageResolver {
            `
         );
         await pubSub.publish("MESSAGES", personalMessage)
-        console.log(personalMessage)
         return personalMessage
-    }
-
-    @Query(() => [PersonalMessage])
-    async viewPersonalMessages(
-        @Ctx() { req }: MyContext
-    ) {
-        const messages = await getConnection().query(
-            `
-            SELECT * FROM public.personal_message WHERE public.personal_message."recipientId" = ${req.session.userId}
-            `
-        );
-        console.log(messages)
-        return messages
     };
 
+    @Query(() => [PersonalMessage])
+    async inboxMessages(
+        @Ctx() { req }: MyContext
+    ) {
+        const inbox = await getConnection().query(
+            `
+            SELECT DISTINCT sender, "senderId" FROM public.personal_message WHERE public.personal_message."recipientId" = ${req.session.userId}
+            `
+        );
+        return inbox
+    };
 
     @Subscription(() => [PersonalMessage], {
         topics: "MESSAGES"
     })
     newMessage(
-        @Root() newMessage: any
+        @Root() personalMessage: string[]
     ) {
-        return newMessage
+        return personalMessage
     }
 
 }
