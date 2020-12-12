@@ -3,10 +3,5 @@ query Group($id:Int!) {
     groupName
     id
     groupCategory
-    members(input: $id) {
-        username
-        email
-        id
-    }
     }
 }

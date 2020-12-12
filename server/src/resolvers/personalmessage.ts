@@ -47,6 +47,7 @@ export class PersonalMessageResolver {
             `
         );
         console.log(messages)
+        return messages
     };
 
 

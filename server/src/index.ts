@@ -71,16 +71,13 @@ const main = async () => {
             resave: false,
         })
     );
-    const pubsub = new PubSub();
+    const pubsub = new RedisPubSub();
 
     const apolloServer = new ApolloServer({
         schema: await buildSchema({
             resolvers: [UserResolver, GroupResolver, PersonalMessageResolver],
             validate: false,
-            pubSub: new RedisPubSub({
-                publisher: new Redis(),
-                subscriber: new Redis(),
-            })
+            pubSub: pubsub,
         }),
         context: ({ req, res }) => ({ req, res, redis, userLoader: createUserLoader(), pubsub }),
         subscriptions: {

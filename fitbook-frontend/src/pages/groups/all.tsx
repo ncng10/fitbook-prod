@@ -2,7 +2,7 @@ import { Box, Button, Flex, Text } from '@chakra-ui/react';
 import NextLink from "next/link";
 import React from 'react';
 import { NavBar } from '../../components/NavBar';
-import { useIsMemberQuery } from '../../generated/graphql';
+import { useIsMemberQuery, useNewMessageSubscription } from '../../generated/graphql';
 import { withApollo } from '../../utils/withApollo';
 interface groupsProps {
 
@@ -10,6 +10,8 @@ interface groupsProps {
 
 const Groups: React.FC<groupsProps> = ({ }) => {
     const { data } = useIsMemberQuery();
+    const { data: newMessage } = useNewMessageSubscription();
+    console.log("message", newMessage)
     let body = null;
     if (!data) {
         body = <Box>No groups so show...</Box>
@@ -47,6 +49,9 @@ const Groups: React.FC<groupsProps> = ({ }) => {
                 <NextLink href="/groups/create">
                     <Button>Create a Group</Button>
                 </NextLink>
+            </Box>
+            <Box>
+
             </Box>
         </React.Fragment>);
 }

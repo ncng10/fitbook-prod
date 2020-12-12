@@ -17,10 +17,10 @@ export type Query = {
   __typename?: 'Query';
   hello: Scalars['String'];
   me: User;
-  memberCheck: User;
   group: Group;
   groups: Array<Group>;
   isMember: Array<Group>;
+  viewPersonalMessages: Array<PersonalMessage>;
 };
 
 
@@ -36,6 +36,12 @@ export type User = {
   password: Scalars['String'];
   createdAt: Scalars['String'];
   updatedAt: Scalars['String'];
+  members: Array<User>;
+};
+
+
+export type UserMembersArgs = {
+  input: Scalars['Int'];
 };
 
 export type Group = {
@@ -47,12 +53,16 @@ export type Group = {
   creator: User;
   createdAt: Scalars['String'];
   updatedAt: Scalars['String'];
-  members: Array<User>;
 };
 
-
-export type GroupMembersArgs = {
-  input: Scalars['Int'];
+export type PersonalMessage = {
+  __typename?: 'PersonalMessage';
+  id: Scalars['Float'];
+  recipientId: Scalars['Float'];
+  senderId: Scalars['Float'];
+  sender: Scalars['String'];
+  text: Scalars['String'];
+  createdAt: Scalars['String'];
 };
 
 export type Mutation = {
@@ -62,6 +72,7 @@ export type Mutation = {
   logout: Scalars['Boolean'];
   createGroup: Group;
   joinGroup: Array<GroupMembers>;
+  sendPersonalMessage: Array<PersonalMessage>;
 };
 
 
@@ -83,6 +94,12 @@ export type MutationCreateGroupArgs = {
 
 export type MutationJoinGroupArgs = {
   input: JoinGroupInput;
+};
+
+
+export type MutationSendPersonalMessageArgs = {
+  recipientId: Scalars['Int'];
+  input: PersonalMessageInput;
 };
 
 export type UserResponse = {
@@ -116,6 +133,15 @@ export type GroupMembers = {
 
 export type JoinGroupInput = {
   groupId: Scalars['Int'];
+};
+
+export type PersonalMessageInput = {
+  text: Scalars['String'];
+};
+
+export type Subscription = {
+  __typename?: 'Subscription';
+  newMessage: Array<PersonalMessage>;
 };
 
 export type RegularErrorFragment = (
@@ -195,10 +221,6 @@ export type GroupQuery = (
   & { group: (
     { __typename?: 'Group' }
     & Pick<Group, 'groupName' | 'id' | 'groupCategory'>
-    & { members: Array<(
-      { __typename?: 'User' }
-      & Pick<User, 'username' | 'email' | 'id'>
-    )> }
   ) }
 );
 
@@ -217,17 +239,6 @@ export type GroupsQuery = (
   )> }
 );
 
-export type MeQueryVariables = Exact<{ [key: string]: never; }>;
-
-
-export type MeQuery = (
-  { __typename?: 'Query' }
-  & { me: (
-    { __typename?: 'User' }
-    & Pick<User, 'id' | 'username' | 'email'>
-  ) }
-);
-
 export type IsMemberQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -240,6 +251,28 @@ export type IsMemberQuery = (
       { __typename?: 'User' }
       & Pick<User, 'username' | 'id'>
     ) }
+  )> }
+);
+
+export type MeQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type MeQuery = (
+  { __typename?: 'Query' }
+  & { me: (
+    { __typename?: 'User' }
+    & Pick<User, 'id' | 'username' | 'email'>
+  ) }
+);
+
+export type NewMessageSubscriptionVariables = Exact<{ [key: string]: never; }>;
+
+
+export type NewMessageSubscription = (
+  { __typename?: 'Subscription' }
+  & { newMessage: Array<(
+    { __typename?: 'PersonalMessage' }
+    & Pick<PersonalMessage, 'recipientId' | 'sender' | 'text' | 'createdAt' | 'senderId'>
   )> }
 );
 
@@ -396,11 +429,6 @@ export const GroupDocument = gql`
     groupName
     id
     groupCategory
-    members(input: $id) {
-      username
-      email
-      id
-    }
   }
 }
     `;
@@ -469,40 +497,6 @@ export function useGroupsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<Gro
 export type GroupsQueryHookResult = ReturnType<typeof useGroupsQuery>;
 export type GroupsLazyQueryHookResult = ReturnType<typeof useGroupsLazyQuery>;
 export type GroupsQueryResult = Apollo.QueryResult<GroupsQuery, GroupsQueryVariables>;
-export const MeDocument = gql`
-    query Me {
-  me {
-    id
-    username
-    email
-  }
-}
-    `;
-
-/**
- * __useMeQuery__
- *
- * To run a query within a React component, call `useMeQuery` and pass it any options that fit your needs.
- * When your component renders, `useMeQuery` returns an object from Apollo Client that contains loading, error, and data properties
- * you can use to render your UI.
- *
- * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
- *
- * @example
- * const { data, loading, error } = useMeQuery({
- *   variables: {
- *   },
- * });
- */
-export function useMeQuery(baseOptions?: Apollo.QueryHookOptions<MeQuery, MeQueryVariables>) {
-        return Apollo.useQuery<MeQuery, MeQueryVariables>(MeDocument, baseOptions);
-      }
-export function useMeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<MeQuery, MeQueryVariables>) {
-          return Apollo.useLazyQuery<MeQuery, MeQueryVariables>(MeDocument, baseOptions);
-        }
-export type MeQueryHookResult = ReturnType<typeof useMeQuery>;
-export type MeLazyQueryHookResult = ReturnType<typeof useMeLazyQuery>;
-export type MeQueryResult = Apollo.QueryResult<MeQuery, MeQueryVariables>;
 export const IsMemberDocument = gql`
     query IsMember {
   isMember {
@@ -541,3 +535,69 @@ export function useIsMemberLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<I
 export type IsMemberQueryHookResult = ReturnType<typeof useIsMemberQuery>;
 export type IsMemberLazyQueryHookResult = ReturnType<typeof useIsMemberLazyQuery>;
 export type IsMemberQueryResult = Apollo.QueryResult<IsMemberQuery, IsMemberQueryVariables>;
+export const MeDocument = gql`
+    query Me {
+  me {
+    id
+    username
+    email
+  }
+}
+    `;
+
+/**
+ * __useMeQuery__
+ *
+ * To run a query within a React component, call `useMeQuery` and pass it any options that fit your needs.
+ * When your component renders, `useMeQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useMeQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useMeQuery(baseOptions?: Apollo.QueryHookOptions<MeQuery, MeQueryVariables>) {
+        return Apollo.useQuery<MeQuery, MeQueryVariables>(MeDocument, baseOptions);
+      }
+export function useMeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<MeQuery, MeQueryVariables>) {
+          return Apollo.useLazyQuery<MeQuery, MeQueryVariables>(MeDocument, baseOptions);
+        }
+export type MeQueryHookResult = ReturnType<typeof useMeQuery>;
+export type MeLazyQueryHookResult = ReturnType<typeof useMeLazyQuery>;
+export type MeQueryResult = Apollo.QueryResult<MeQuery, MeQueryVariables>;
+export const NewMessageDocument = gql`
+    subscription NewMessage {
+  newMessage {
+    recipientId
+    sender
+    text
+    createdAt
+    senderId
+  }
+}
+    `;
+
+/**
+ * __useNewMessageSubscription__
+ *
+ * To run a query within a React component, call `useNewMessageSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useNewMessageSubscription` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useNewMessageSubscription({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useNewMessageSubscription(baseOptions?: Apollo.SubscriptionHookOptions<NewMessageSubscription, NewMessageSubscriptionVariables>) {
+        return Apollo.useSubscription<NewMessageSubscription, NewMessageSubscriptionVariables>(NewMessageDocument, baseOptions);
+      }
+export type NewMessageSubscriptionHookResult = ReturnType<typeof useNewMessageSubscription>;
+export type NewMessageSubscriptionResult = Apollo.SubscriptionResult<NewMessageSubscription>;

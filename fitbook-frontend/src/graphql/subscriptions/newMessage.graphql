@@ -1,0 +1,9 @@
+subscription NewMessage {
+    newMessage{
+        recipientId
+        sender
+        text
+        createdAt
+        senderId
+    }
+}
