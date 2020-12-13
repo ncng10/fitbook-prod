@@ -42,7 +42,6 @@ const ProgramMenu: React.FC<ProgramMenuProps> = ({ }) => {
                             <Button variant="outline" mr={3} onClick={onClose}>
                                 Cancel
               </Button>
-                            <Button colorScheme="blue">Submit</Button>
                         </DrawerFooter>
                     </DrawerContent>
                 </DrawerOverlay>

@@ -15,13 +15,14 @@ export type Scalars = {
 
 export type Query = {
   __typename?: 'Query';
-  hello: Scalars['String'];
-  me: User;
   group: Group;
   groups: Array<Group>;
   isMember: Array<Group>;
   viewPersonalMessages: Array<PersonalMessage>;
   inboxMessages: Array<PersonalMessage>;
+  myPrograms: Array<Program>;
+  hello: Scalars['String'];
+  me: User;
 };
 
 
@@ -34,16 +35,6 @@ export type QueryViewPersonalMessagesArgs = {
   senderId: Scalars['Int'];
 };
 
-export type User = {
-  __typename?: 'User';
-  id: Scalars['Float'];
-  username: Scalars['String'];
-  email: Scalars['String'];
-  password: Scalars['String'];
-  createdAt: Scalars['String'];
-  updatedAt: Scalars['String'];
-};
-
 export type Group = {
   __typename?: 'Group';
   id: Scalars['Float'];
@@ -51,6 +42,16 @@ export type Group = {
   groupCategory: Scalars['String'];
   creatorId: Scalars['Float'];
   creator: User;
+  createdAt: Scalars['String'];
+  updatedAt: Scalars['String'];
+};
+
+export type User = {
+  __typename?: 'User';
+  id: Scalars['Float'];
+  username: Scalars['String'];
+  email: Scalars['String'];
+  password: Scalars['String'];
   createdAt: Scalars['String'];
   updatedAt: Scalars['String'];
 };
@@ -65,25 +66,26 @@ export type PersonalMessage = {
   createdAt: Scalars['String'];
 };
 
+export type Program = {
+  __typename?: 'Program';
+  id: Scalars['Float'];
+  creatorId: Scalars['Float'];
+  creator: User;
+  programName: Scalars['String'];
+  programCategory: Scalars['String'];
+  createdAt: Scalars['String'];
+  updatedAt: Scalars['String'];
+};
+
 export type Mutation = {
   __typename?: 'Mutation';
-  register: UserResponse;
-  login: UserResponse;
-  logout: Scalars['Boolean'];
   createGroup: Group;
   joinGroup: Array<GroupMembers>;
   sendPersonalMessage: Array<PersonalMessage>;
-};
-
-
-export type MutationRegisterArgs = {
-  options: UsernamePasswordInput;
-};
-
-
-export type MutationLoginArgs = {
-  password: Scalars['String'];
-  userNameOrEmail: Scalars['String'];
+  createProgram: Array<Program>;
+  register: UserResponse;
+  login: UserResponse;
+  logout: Scalars['Boolean'];
 };
 
 
@@ -102,22 +104,20 @@ export type MutationSendPersonalMessageArgs = {
   input: PersonalMessageInput;
 };
 
-export type UserResponse = {
-  __typename?: 'UserResponse';
-  errors?: Maybe<Array<FieldError>>;
-  user?: Maybe<User>;
+
+export type MutationCreateProgramArgs = {
+  input: ProgramInput;
 };
 
-export type FieldError = {
-  __typename?: 'FieldError';
-  field: Scalars['String'];
-  message: Scalars['String'];
+
+export type MutationRegisterArgs = {
+  options: UsernamePasswordInput;
 };
 
-export type UsernamePasswordInput = {
-  email: Scalars['String'];
-  username: Scalars['String'];
+
+export type MutationLoginArgs = {
   password: Scalars['String'];
+  userNameOrEmail: Scalars['String'];
 };
 
 export type GroupInput = {
@@ -137,6 +137,29 @@ export type JoinGroupInput = {
 
 export type PersonalMessageInput = {
   text: Scalars['String'];
+};
+
+export type ProgramInput = {
+  programName: Scalars['String'];
+  programCategory: Scalars['String'];
+};
+
+export type UserResponse = {
+  __typename?: 'UserResponse';
+  errors?: Maybe<Array<FieldError>>;
+  user?: Maybe<User>;
+};
+
+export type FieldError = {
+  __typename?: 'FieldError';
+  field: Scalars['String'];
+  message: Scalars['String'];
+};
+
+export type UsernamePasswordInput = {
+  email: Scalars['String'];
+  username: Scalars['String'];
+  password: Scalars['String'];
 };
 
 export type Subscription = {
@@ -160,6 +183,23 @@ export type CreateGroupMutation = (
     { __typename?: 'Group' }
     & Pick<Group, 'groupName' | 'groupCategory'>
   ) }
+);
+
+export type CreateProgramMutationVariables = Exact<{
+  input: ProgramInput;
+}>;
+
+
+export type CreateProgramMutation = (
+  { __typename?: 'Mutation' }
+  & { createProgram: Array<(
+    { __typename?: 'Program' }
+    & Pick<Program, 'programName' | 'programCategory' | 'id' | 'creatorId'>
+    & { creator: (
+      { __typename?: 'User' }
+      & Pick<User, 'username'>
+    ) }
+  )> }
 );
 
 export type JoinGroupMutationVariables = Exact<{
@@ -190,7 +230,7 @@ export type LoginMutation = (
       & RegularErrorFragment
     )>>, user?: Maybe<(
       { __typename?: 'User' }
-      & Pick<User, 'username' | 'id'>
+      & Pick<User, 'username' | 'id' | 'email'>
     )> }
   ) }
 );
@@ -290,6 +330,21 @@ export type MeQuery = (
   ) }
 );
 
+export type MyProgramsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type MyProgramsQuery = (
+  { __typename?: 'Query' }
+  & { myPrograms: Array<(
+    { __typename?: 'Program' }
+    & Pick<Program, 'programName' | 'programCategory' | 'id' | 'creatorId'>
+    & { creator: (
+      { __typename?: 'User' }
+      & Pick<User, 'username' | 'email'>
+    ) }
+  )> }
+);
+
 export type ViewPersonalMessagesQueryVariables = Exact<{
   input: Scalars['Int'];
 }>;
@@ -353,6 +408,44 @@ export function useCreateGroupMutation(baseOptions?: Apollo.MutationHookOptions<
 export type CreateGroupMutationHookResult = ReturnType<typeof useCreateGroupMutation>;
 export type CreateGroupMutationResult = Apollo.MutationResult<CreateGroupMutation>;
 export type CreateGroupMutationOptions = Apollo.BaseMutationOptions<CreateGroupMutation, CreateGroupMutationVariables>;
+export const CreateProgramDocument = gql`
+    mutation CreateProgram($input: ProgramInput!) {
+  createProgram(input: $input) {
+    programName
+    programCategory
+    id
+    creatorId
+    creator {
+      username
+    }
+  }
+}
+    `;
+export type CreateProgramMutationFn = Apollo.MutationFunction<CreateProgramMutation, CreateProgramMutationVariables>;
+
+/**
+ * __useCreateProgramMutation__
+ *
+ * To run a mutation, you first call `useCreateProgramMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateProgramMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [createProgramMutation, { data, loading, error }] = useCreateProgramMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useCreateProgramMutation(baseOptions?: Apollo.MutationHookOptions<CreateProgramMutation, CreateProgramMutationVariables>) {
+        return Apollo.useMutation<CreateProgramMutation, CreateProgramMutationVariables>(CreateProgramDocument, baseOptions);
+      }
+export type CreateProgramMutationHookResult = ReturnType<typeof useCreateProgramMutation>;
+export type CreateProgramMutationResult = Apollo.MutationResult<CreateProgramMutation>;
+export type CreateProgramMutationOptions = Apollo.BaseMutationOptions<CreateProgramMutation, CreateProgramMutationVariables>;
 export const JoinGroupDocument = gql`
     mutation JoinGroup($input: JoinGroupInput!) {
   joinGroup(input: $input) {
@@ -395,6 +488,7 @@ export const LoginDocument = gql`
     user {
       username
       id
+      email
     }
   }
 }
@@ -675,6 +769,45 @@ export function useMeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<MeQuery
 export type MeQueryHookResult = ReturnType<typeof useMeQuery>;
 export type MeLazyQueryHookResult = ReturnType<typeof useMeLazyQuery>;
 export type MeQueryResult = Apollo.QueryResult<MeQuery, MeQueryVariables>;
+export const MyProgramsDocument = gql`
+    query MyPrograms {
+  myPrograms {
+    programName
+    programCategory
+    id
+    creatorId
+    creator {
+      username
+      email
+    }
+  }
+}
+    `;
+
+/**
+ * __useMyProgramsQuery__
+ *
+ * To run a query within a React component, call `useMyProgramsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useMyProgramsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useMyProgramsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useMyProgramsQuery(baseOptions?: Apollo.QueryHookOptions<MyProgramsQuery, MyProgramsQueryVariables>) {
+        return Apollo.useQuery<MyProgramsQuery, MyProgramsQueryVariables>(MyProgramsDocument, baseOptions);
+      }
+export function useMyProgramsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<MyProgramsQuery, MyProgramsQueryVariables>) {
+          return Apollo.useLazyQuery<MyProgramsQuery, MyProgramsQueryVariables>(MyProgramsDocument, baseOptions);
+        }
+export type MyProgramsQueryHookResult = ReturnType<typeof useMyProgramsQuery>;
+export type MyProgramsLazyQueryHookResult = ReturnType<typeof useMyProgramsLazyQuery>;
+export type MyProgramsQueryResult = Apollo.QueryResult<MyProgramsQuery, MyProgramsQueryVariables>;
 export const ViewPersonalMessagesDocument = gql`
     query viewPersonalMessages($input: Int!) {
   viewPersonalMessages(senderId: $input) {

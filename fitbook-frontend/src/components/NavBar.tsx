@@ -28,16 +28,14 @@ export const NavBar: React.FC<NavBarProps> = ({ }) => {
         body =
             !isLargerThan600 ?
                 <Box mt={5} display="flex" justifyContent="flex-start" ml={5} >
-                    <Tooltip label="Home" aria-label="Home">
-                        <NextLink href="/">
-                            <IconButton
-                                mr={5}
-                                aria-label="home-button"
-                                icon={<AiOutlineHome fontSize={25} />}
-                                bgColor="teal.500"
-                            />
-                        </NextLink>
-                    </Tooltip>
+                    <NextLink href="/">
+                        <IconButton
+                            mr={5}
+                            aria-label="home-button"
+                            icon={<AiOutlineHome fontSize={25} />}
+                            bgColor="teal.500"
+                        />
+                    </NextLink>
                     <IconButton
                         aria-label="create-program-button"
                         icon={<AiOutlinePlusCircle fontSize={25} />}

@@ -1,5 +1,5 @@
 import { Program } from "../entities/Program";
-import { Arg, Ctx, Field, FieldResolver, InputType, Mutation, Resolver, Root } from "type-graphql";
+import { Arg, Ctx, Field, FieldResolver, InputType, Mutation, Query, Resolver, Root } from "type-graphql";
 import { MyContext } from "src/types";
 import { User } from "../entities/User"
 import { getConnection } from "typeorm";
@@ -34,6 +34,18 @@ export class ProgramResolver {
     @FieldResolver(() => Program)
     creator(@Root() program: Program, @Ctx() { userLoader }: MyContext) {
         return userLoader.load(program.creatorId)
-    }
+    };
 
+    @Query(() => [Program])
+    async myPrograms(
+        @Ctx() { req }: MyContext
+    ): Promise<Program[]> {
+        const programs = await getConnection().query(
+            `
+            SELECT * FROM public.program
+            WHERE public.program."creatorId" = ${req.session.userId}
+            `
+        );
+        return programs
+    }
 }

@@ -1,4 +1,4 @@
-import { Box, Button, FormControl, FormLabel } from '@chakra-ui/react';
+import { Box, Button, FormControl, FormLabel, Stack, VStack } from '@chakra-ui/react';
 import { Field, Form, Formik } from 'formik'
 import { useRouter } from 'next/router';
 import React from 'react'
@@ -24,7 +24,6 @@ const create: React.FC<createProps> = ({ }) => {
                                 cache.evict({ fieldName: "groups" });
                             }
                         })
-                        console.log(values)
                         if (!errors) {
                             router.push("/groups/all")
                         }

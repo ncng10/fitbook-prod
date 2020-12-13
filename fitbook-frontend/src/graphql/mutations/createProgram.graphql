@@ -1,0 +1,12 @@
+mutation CreateProgram($input: ProgramInput!) {
+  createProgram(input: $input) {
+    programName
+    programCategory
+    id
+    creatorId
+    creator {
+      username
+    }
+  }
+  
+}

@@ -25,7 +25,7 @@ const Login: React.FC<loginProps> = ({ }) => {
                                 query: MeDocument,
                                 data: {
                                     __typename: "Query",
-                                    me: data?.login.user,
+                                    me: data?.login.user
                                 },
                             });
                             cache.evict({ fieldName: "posts:{}" })

@@ -1,0 +1,12 @@
+query MyPrograms{
+    myPrograms {
+    programName
+    programCategory
+    id
+    creatorId
+    creator {
+      username
+      email
+    }
+  }
+}
