@@ -1,8 +1,8 @@
 import { Field, ObjectType } from "type-graphql";
-import { BaseEntity, Column, CreateDateColumn, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { BaseEntity, Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { Group } from './Group';
 import { GroupMembers } from "./GroupMembers";
-import { PersonalMessage } from "./PersonalMessage";
+import { Program } from "./Program";
 @ObjectType()
 @Entity()
 export class User extends BaseEntity {
@@ -25,6 +25,10 @@ export class User extends BaseEntity {
     //group can only have 1 creator
     @OneToMany(() => Group, (group) => group.creator)
     groups: Group[];
+
+    @OneToMany(() => Group, (program) => program.creator, { nullable: true })
+    programs: Program[];
+
 
     @Field(() => String)
     @CreateDateColumn()

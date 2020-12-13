@@ -1,23 +1,25 @@
-import "reflect-metadata";
-import path from 'path';
-import { createConnection, getConnection } from 'typeorm'
-import { User } from './entities/User';
-import express from 'express'
-import { ApolloServer, PubSub } from 'apollo-server-express';
-import { buildSchema } from 'type-graphql';
-import { UserResolver } from './resolvers/user';
-import session from 'express-session';
+import { ApolloServer } from 'apollo-server-express';
 import connectRedis from 'connect-redis';
-import Redis from 'ioredis';
 import cors from 'cors';
+import express from 'express';
+import session from 'express-session';
+import { RedisPubSub } from "graphql-redis-subscriptions";
+import http from "http";
+import Redis from 'ioredis';
+import path from 'path';
+import "reflect-metadata";
+import { buildSchema } from 'type-graphql';
+import { createConnection, getConnection } from 'typeorm';
 import { Group } from "./entities/Group";
-import { GroupResolver } from "./resolvers/group";
-import { createUserLoader } from "./utils/createUserLoader";
 import { GroupMembers } from "./entities/GroupMembers";
 import { PersonalMessage } from "./entities/PersonalMessage";
+import { Program } from "./entities/Program";
+import { User } from './entities/User';
+import { GroupResolver } from "./resolvers/group";
 import { PersonalMessageResolver } from "./resolvers/personalmessage";
-import { RedisPubSub } from "graphql-redis-subscriptions";
-import http from "http"
+import { ProgramResolver } from "./resolvers/program";
+import { UserResolver } from './resolvers/user';
+import { createUserLoader } from "./utils/createUserLoader";
 
 const PORT = 5001
 require("dotenv").config();
@@ -29,9 +31,8 @@ const main = async () => {
         logging: true,
         synchronize: true,
         migrations: [path.join(__dirname, "./migrations/*")],
-        entities: [User, Group, GroupMembers, PersonalMessage]
+        entities: [User, Group, GroupMembers, PersonalMessage, Program]
     });
-
 
     const options: Redis.RedisOptions = {
         host: '192.168.1.8',
@@ -76,7 +77,7 @@ const main = async () => {
 
     const apolloServer = new ApolloServer({
         schema: await buildSchema({
-            resolvers: [UserResolver, GroupResolver, PersonalMessageResolver],
+            resolvers: [UserResolver, GroupResolver, PersonalMessageResolver, ProgramResolver],
             validate: false,
             pubSub: pubsub,
         }),
