@@ -1,18 +1,28 @@
-import { Box, Button } from '@chakra-ui/react';
+import { Box, Button, Flex } from '@chakra-ui/react';
 import { Field, Form, Formik } from 'formik'
-import React from 'react'
+import React, { useState } from 'react'
 import { InputField } from '../components/InputField';
 import { MeDocument, MeQuery, useLoginMutation } from '../generated/graphql';
 import { toErrorMap } from '../utils/toErrorMap';
 import { useRouter } from 'next/router'
 import { withApollo } from '../utils/withApollo';
+import { AiOutlineEye } from 'react-icons/ai';
 interface loginProps {
 
 }
 
 const Login: React.FC<loginProps> = ({ }) => {
     const router = useRouter();
-    const [login] = useLoginMutation()
+    const [login] = useLoginMutation();
+    const [hidePassword, setHidePassword] = useState(true);
+
+    const showPassword = () => {
+        if (hidePassword === true) {
+            setHidePassword(false)
+        } else {
+            setHidePassword(true)
+        }
+    }
     return (
         <React.Fragment>
             <Formik
@@ -59,22 +69,28 @@ const Login: React.FC<loginProps> = ({ }) => {
                                     placeholder="Username or Email"
                                     label="Username or Email"
                                 />
+
                                 <InputField
                                     name="password"
                                     placeholder="Password"
                                     label="Password"
-                                    type="password2"
+                                    type={hidePassword ? "password" : "text"}
                                 />
-                                <Box >
-                                    <label>Forgot Passoword?</label>
-                                </Box>
-                                <Button
-                                    mt={10}
-                                    w={250}
-                                    ml={115}
-                                    isLoading={isSubmitting}
-                                    type="submit">Login
+                                <Flex justifyContent="flex-end">
+                                    <AiOutlineEye onClick={showPassword} style={{ fontSize: 25, marginTop: ".5rem" }} />
+                                </Flex>
+                                <Flex justifyContent="center" alignItems="center" flexDirection="column" >
+                                    <Button
+                                        mt={5}
+                                        w={250}
+                                        ml={0}
+                                        isLoading={isSubmitting}
+                                        type="submit">Login
                                     </Button>
+                                    <Box mt={2}>
+                                        <label>Forgot Passoword?</label>
+                                    </Box>
+                                </Flex>
                             </Box>
                         </Form>
                     </div>)}

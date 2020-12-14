@@ -97,17 +97,22 @@ export const NavBar: React.FC<NavBarProps> = ({ }) => {
                 />
                 <MenuList>
                     <MenuGroup title="Profile">
-                        <MenuItem>My Account</MenuItem>
                         <MenuItem>
-                            <NextLink href="/groups/all">
+                            My Account
+                        </MenuItem>
+
+                        <NextLink href="/groups/all">
+                            <MenuItem>
                                 Groups
-                            </NextLink>
                         </MenuItem>
-                        <MenuItem>
-                            <NextLink href="/inbox/messages">
+                        </NextLink>
+
+                        <NextLink href="/inbox/messages">
+                            <MenuItem>
                                 Inbox
-                            </NextLink>
-                        </MenuItem>
+                            </MenuItem>
+                        </NextLink>
+
                         <MenuDivider />
                         <MenuItem onClick={async () => {
                             await logout();
