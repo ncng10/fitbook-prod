@@ -21,12 +21,16 @@ export const NavBar: React.FC<NavBarProps> = ({ }) => {
     let body = null;
     if (!data) {
         body =
-            <Box>
+            <Box mt={5}>
                 <NextLink href="/login">
-                    Login
+                    <Button bgColor="teal.500">
+                        Login
+                   </Button>
                 </NextLink>
                 <NextLink href="/register">
-                    Register
+                    <Button bgColor="teal.500">
+                        Register
+                   </Button>
                 </NextLink>
             </Box >
     } else {
@@ -72,58 +76,59 @@ export const NavBar: React.FC<NavBarProps> = ({ }) => {
                         />
                     </NextLink>
                     <ProgramMenu />
+                    <Switch
+                        position="fixed"
+                        top="1.5rem"
+                        right="4.5em"
+                        color="green"
+                        size="lg"
+                        isChecked={isDark}
+                        onChange={toggleColorMode}
+                    />
+                    <Menu>
+                        <MenuButton
+                            size="md"
+                            as={Avatar}
+                            position="fixed"
+                            bg="teal.500"
+                            top="1rem"
+                            right=".75rem"
+                            color="green"
+                        />
+                        <MenuList>
+                            <MenuGroup title="Profile">
+                                <MenuItem>
+                                    My Account
+                        </MenuItem>
+
+                                <NextLink href="/groups/all">
+                                    <MenuItem>
+                                        Groups
+                        </MenuItem>
+                                </NextLink>
+
+                                <NextLink href="/inbox/messages">
+                                    <MenuItem>
+                                        Inbox
+                            </MenuItem>
+                                </NextLink>
+
+                                <MenuDivider />
+                                <MenuItem onClick={async () => {
+                                    await logout();
+                                    apolloClient.resetStore();
+                                    router.push("/")
+                                }}>
+                                    Logout
+                        </MenuItem>
+                            </MenuGroup>
+                        </MenuList>
+                    </Menu>
                 </Box >
     };
     return (
         <React.Fragment>
-            <Switch
-                position="fixed"
-                top="1.5rem"
-                right="4.5em"
-                color="green"
-                size="lg"
-                isChecked={isDark}
-                onChange={toggleColorMode}
-            />
-            <Menu>
-                <MenuButton
-                    size="md"
-                    as={Avatar}
-                    position="fixed"
-                    bg="teal.500"
-                    top="1rem"
-                    right=".75rem"
-                    color="green"
-                />
-                <MenuList>
-                    <MenuGroup title="Profile">
-                        <MenuItem>
-                            My Account
-                        </MenuItem>
 
-                        <NextLink href="/groups/all">
-                            <MenuItem>
-                                Groups
-                        </MenuItem>
-                        </NextLink>
-
-                        <NextLink href="/inbox/messages">
-                            <MenuItem>
-                                Inbox
-                            </MenuItem>
-                        </NextLink>
-
-                        <MenuDivider />
-                        <MenuItem onClick={async () => {
-                            await logout();
-                            apolloClient.resetStore();
-                            router.push("/")
-                        }}>
-                            Logout
-                        </MenuItem>
-                    </MenuGroup>
-                </MenuList>
-            </Menu>
             {body}
         </React.Fragment>
     )

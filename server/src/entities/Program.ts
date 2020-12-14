@@ -25,6 +25,10 @@ export class Program extends BaseEntity {
     @Column({ nullable: true })
     programCategory: string;
 
+    @Field()
+    @Column({ nullable: true })
+    isShared: boolean;
+
     @Field(() => String)
     @CreateDateColumn()
     createdAt: Date;

@@ -1,4 +1,4 @@
-import { Button, Input, VStack } from '@chakra-ui/react'
+import { Button, Input, useToast, VStack } from '@chakra-ui/react'
 import { Form, Formik } from 'formik'
 import React from 'react'
 import { useCreateProgramMutation } from '../generated/graphql';
@@ -11,7 +11,7 @@ interface CreateProgramFormProps {
 const CreateProgramForm: React.FC<CreateProgramFormProps> = ({ }) => {
 
     const [createProgram] = useCreateProgramMutation();
-
+    const toast = useToast()
     return (
         <React.Fragment>
             <Formik
@@ -26,7 +26,14 @@ const CreateProgramForm: React.FC<CreateProgramFormProps> = ({ }) => {
                         }
                     })
                     if (!errors) {
-                        console.log("success")
+                        toast({
+                            position: "bottom-left",
+                            title: "Program created.",
+                            description: `Successfully added a program, titled: '${values.programName}'d.`,
+                            status: "success",
+                            duration: 6000,
+                            isClosable: true,
+                        })
                     }
                 }}
             >
