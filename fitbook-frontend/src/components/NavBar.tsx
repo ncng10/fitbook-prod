@@ -1,18 +1,23 @@
 import React from 'react'
-import { useMeQuery } from '../generated/graphql';
+import { useMeQuery, useLogoutMutation } from '../generated/graphql';
 import NextLink from "next/link"
 import { Avatar, Box, Button, IconButton, Menu, MenuButton, MenuDivider, MenuGroup, MenuItem, MenuList, Switch, Tooltip, useColorMode, useMediaQuery } from '@chakra-ui/react';
 import { AiOutlineHome, AiOutlinePlusCircle, AiOutlineUnorderedList } from "react-icons/ai"
 import ProgramMenu from './ProgramMenu';
+import { useApolloClient } from '@apollo/client';
+import { useRouter } from 'next/router';
 interface NavBarProps {
 
 }
 
 export const NavBar: React.FC<NavBarProps> = ({ }) => {
     const [isLargerThan600] = useMediaQuery("(min-width:600px)");
+    const [logout] = useLogoutMutation();
     const { colorMode, toggleColorMode } = useColorMode();
     const isDark = colorMode === 'dark';
     const { data } = useMeQuery();
+    const apolloClient = useApolloClient();
+    const router = useRouter();
     let body = null;
     if (!data) {
         body =
@@ -103,8 +108,15 @@ export const NavBar: React.FC<NavBarProps> = ({ }) => {
                                 Inbox
                             </NextLink>
                         </MenuItem>
+                        <MenuDivider />
+                        <MenuItem onClick={async () => {
+                            await logout();
+                            apolloClient.resetStore();
+                            router.push("/")
+                        }}>
+                            Logout
+                        </MenuItem>
                     </MenuGroup>
-                    <MenuDivider />
                 </MenuList>
             </Menu>
             {body}
