@@ -2,7 +2,7 @@ import React from 'react'
 import { useMeQuery } from '../generated/graphql';
 import NextLink from "next/link"
 import { Avatar, Box, Button, IconButton, Menu, MenuButton, MenuDivider, MenuGroup, MenuItem, MenuList, Switch, Tooltip, useColorMode, useMediaQuery } from '@chakra-ui/react';
-import { AiOutlineHome, AiOutlinePlusCircle } from "react-icons/ai"
+import { AiOutlineHome, AiOutlinePlusCircle, AiOutlineUnorderedList } from "react-icons/ai"
 import ProgramMenu from './ProgramMenu';
 interface NavBarProps {
 
@@ -36,11 +36,15 @@ export const NavBar: React.FC<NavBarProps> = ({ }) => {
                             bgColor="teal.500"
                         />
                     </NextLink>
-                    <IconButton
-                        aria-label="create-program-button"
-                        icon={<AiOutlinePlusCircle fontSize={25} />}
-                        bgColor="teal.500"
-                    />
+                    <NextLink href="/workout/programs/all">
+                        <IconButton
+                            mr={5}
+                            aria-label="view-programs-button"
+                            icon={<AiOutlineUnorderedList fontSize={25} />}
+                            bgColor="teal.500"
+                        />
+                    </NextLink>
+                    <ProgramMenu />
                 </Box>
                 :
                 <Box mt={5} display="flex" justifyContent="flex-start" ml={5}>
@@ -54,6 +58,14 @@ export const NavBar: React.FC<NavBarProps> = ({ }) => {
                             />
                         </NextLink>
                     </Tooltip>
+                    <NextLink href="/workout/programs/all">
+                        <IconButton
+                            mr={5}
+                            aria-label="view-programs-button"
+                            icon={<AiOutlineUnorderedList fontSize={25} />}
+                            bgColor="teal.500"
+                        />
+                    </NextLink>
                     <ProgramMenu />
                 </Box >
     };

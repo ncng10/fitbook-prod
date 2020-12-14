@@ -1,6 +1,6 @@
 import { Box, Button, Flex, Text } from '@chakra-ui/react';
 import { Form, Formik } from 'formik';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { InputField } from '../../../components/InputField';
 import { useMeQuery, useNewMessageSubscription, useSendPersonalMessageMutation, useViewPersonalMessagesQuery } from '../../../generated/graphql';
 import { useGetIntId } from '../../../utils/useGetIntId';
@@ -16,7 +16,7 @@ const Message: React.FC<MessageProps> = ({ }) => {
     console.log(intId);
     const [sendMessage] = useSendPersonalMessageMutation();
 
-    const { data } = useViewPersonalMessagesQuery({
+    const { data, refetch } = useViewPersonalMessagesQuery({
         skip: intId === -1,
         variables: {
             input: intId,
@@ -26,6 +26,10 @@ const Message: React.FC<MessageProps> = ({ }) => {
 
     });
 
+    if (newMessage?.newMessage) {
+        refetch
+    }
+    console.log(newMessage)
     return (
         <React.Fragment>
             <Box >
@@ -49,22 +53,18 @@ const Message: React.FC<MessageProps> = ({ }) => {
                     ))}
                 </Box>
                 <Box>
-                    {/* {newMessage?.newMessage.map((message) => (
-                    <Box>{message.text}{message.senderId}</Box>
-                ))} */}
-                </Box>
-                <Box>
                     <Formik
                         initialValues={{ text: "" }}
                         onSubmit={async (values) => {
                             const { errors } = await sendMessage({
+
                                 variables: { input: values, recipientId: intId },
                                 update: (cache) => {
                                     cache.evict({ fieldName: "viewPersonalMessages" })
                                 },
                             });
                             if (!errors) {
-                                return
+                                return null
                             }
                         }}
                     >

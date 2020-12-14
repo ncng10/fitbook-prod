@@ -22,7 +22,7 @@ const CreateProgramForm: React.FC<CreateProgramFormProps> = ({ }) => {
                             input: values
                         },
                         update: (cache) => {
-                            cache.evict({ fieldName: "programs" });
+                            cache.evict({ fieldName: "myPrograms" });
                         }
                     })
                     if (!errors) {
