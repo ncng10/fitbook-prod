@@ -1,5 +1,6 @@
 import { Field, ObjectType } from "type-graphql";
-import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { BaseEntity, Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Workout } from "./Workout";
 
 @ObjectType()
 @Entity()
@@ -35,4 +36,9 @@ export class Exercise extends BaseEntity {
     @Field()
     @Column({ nullable: true })
     notes: string;
+
+    @Field(() => Workout)
+    @ManyToOne(() => Workout, (workout) => workout.exercises)
+    workout: Workout
+
 }

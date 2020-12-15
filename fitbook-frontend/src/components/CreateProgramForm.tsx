@@ -29,7 +29,7 @@ const CreateProgramForm: React.FC<CreateProgramFormProps> = ({ }) => {
                         toast({
                             position: "bottom-left",
                             title: "Program created.",
-                            description: `Successfully added a program, titled: '${values.programName}'d.`,
+                            description: `Successfully added a program, titled: '${values.programName}'.`,
                             status: "success",
                             duration: 6000,
                             isClosable: true,

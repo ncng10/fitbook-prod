@@ -29,7 +29,6 @@ export class User extends BaseEntity {
     @OneToMany(() => Group, (program) => program.creator, { nullable: true })
     programs: Program[];
 
-
     @Field(() => String)
     @CreateDateColumn()
     createdAt: Date;

@@ -10,15 +10,19 @@ import path from 'path';
 import "reflect-metadata";
 import { buildSchema } from 'type-graphql';
 import { createConnection, getConnection } from 'typeorm';
+import { Exercise } from './entities/Exercise';
 import { Group } from "./entities/Group";
 import { GroupMembers } from "./entities/GroupMembers";
 import { PersonalMessage } from "./entities/PersonalMessage";
 import { Program } from "./entities/Program";
+import { ProgramWorkouts } from './entities/ProgramWorkouts';
 import { User } from './entities/User';
+import { Workout } from './entities/Workout';
 import { GroupResolver } from "./resolvers/group";
 import { PersonalMessageResolver } from "./resolvers/personalmessage";
 import { ProgramResolver } from "./resolvers/program";
 import { UserResolver } from './resolvers/user';
+import { WorkoutResolver } from './resolvers/workout';
 import { createUserLoader } from "./utils/createUserLoader";
 
 const PORT = 5001
@@ -31,9 +35,8 @@ const main = async () => {
         logging: true,
         synchronize: true,
         migrations: [path.join(__dirname, "./migrations/*")],
-        entities: [User, Group, GroupMembers, PersonalMessage, Program]
+        entities: [User, Group, GroupMembers, PersonalMessage, Program, Workout, Exercise, ProgramWorkouts]
     });
-
     const options: Redis.RedisOptions = {
         host: '192.168.1.8',
         port: 6379,
@@ -77,7 +80,7 @@ const main = async () => {
 
     const apolloServer = new ApolloServer({
         schema: await buildSchema({
-            resolvers: [UserResolver, GroupResolver, PersonalMessageResolver, ProgramResolver],
+            resolvers: [UserResolver, GroupResolver, PersonalMessageResolver, ProgramResolver, WorkoutResolver],
             validate: false,
             pubSub: pubsub,
         }),

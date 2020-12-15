@@ -13,7 +13,7 @@ interface AllProps {
 const All: React.FC<AllProps> = ({ }) => {
     const { data, loading } = useMyProgramsQuery();
     let body;
-    if (!data) {
+    if (!data?.myPrograms) {
         body = <Box>No programs, try adding one...</Box>
     } else if (loading) {
         body = <Box> <Spinner color="teal.500" /></Box>

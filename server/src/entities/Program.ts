@@ -1,6 +1,8 @@
 import { Field, ObjectType } from "type-graphql";
-import { BaseEntity, Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { BaseEntity, Column, CreateDateColumn, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { ProgramWorkouts } from "./ProgramWorkouts";
 import { User } from "./User";
+import { Workout } from "./Workout";
 
 @ObjectType()
 @Entity()
@@ -10,7 +12,7 @@ export class Program extends BaseEntity {
     id: number;
 
     @Field()
-    @PrimaryGeneratedColumn()
+    @Column()
     creatorId: number;
 
     @Field(() => User)
@@ -37,5 +39,7 @@ export class Program extends BaseEntity {
     @UpdateDateColumn()
     updatedAt: Date;
 
+    @OneToMany(() => ProgramWorkouts, (gb) => gb.member)
+    workoutConnection: Promise<ProgramWorkouts[]>;
 }
 

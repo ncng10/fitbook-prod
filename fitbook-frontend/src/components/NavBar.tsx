@@ -19,7 +19,7 @@ export const NavBar: React.FC<NavBarProps> = ({ }) => {
     const apolloClient = useApolloClient();
     const router = useRouter();
     let body = null;
-    if (!data) {
+    if (!data?.me) {
         body =
             <Box mt={5}>
                 <NextLink href="/login">
@@ -36,24 +36,82 @@ export const NavBar: React.FC<NavBarProps> = ({ }) => {
     } else {
         body =
             !isLargerThan600 ?
-                <Box mt={5} display="flex" justifyContent="flex-start" ml={5} >
-                    <NextLink href="/">
-                        <IconButton
-                            mr={5}
-                            aria-label="home-button"
-                            icon={<AiOutlineHome fontSize={25} />}
-                            bgColor="teal.500"
+                <Box mt={5} display="flex" w="100%" justifyContent="flex-start" ml={5} >
+                    <Switch
+                        position="fixed"
+                        top="1.5rem"
+                        right="4.5em"
+                        color="green"
+                        size="lg"
+                        isChecked={isDark}
+                        onChange={toggleColorMode}
+                    />
+                    <Menu>
+                        <MenuButton
+                            size="md"
+                            as={Avatar}
+                            position="fixed"
+                            bg="teal.500"
+                            top="1rem"
+                            right=".75rem"
+                            color="green"
                         />
-                    </NextLink>
-                    <NextLink href="/workout/programs/all">
-                        <IconButton
-                            mr={5}
-                            aria-label="view-programs-button"
-                            icon={<AiOutlineUnorderedList fontSize={25} />}
-                            bgColor="teal.500"
-                        />
-                    </NextLink>
-                    <ProgramMenu />
+                        <MenuList>
+                            <MenuGroup title={`${data?.me.username}`}>
+                                <MenuDivider />
+                                <MenuItem>
+                                    My Account
+                        </MenuItem>
+
+                                <NextLink href="/groups/all">
+                                    <MenuItem>
+                                        Groups
+                        </MenuItem>
+                                </NextLink>
+
+                                <NextLink href="/inbox/messages">
+                                    <MenuItem>
+                                        Inbox
+                            </MenuItem>
+                                </NextLink>
+
+                                <MenuDivider />
+                                <MenuItem onClick={async () => {
+                                    await logout();
+                                    apolloClient.resetStore();
+                                    router.push("/")
+                                }}>
+                                    Logout
+                        </MenuItem>
+                            </MenuGroup>
+                        </MenuList>
+                    </Menu>
+                    <Box display="flex"
+                        justifyContent="space-around"
+                        alignItems="center"
+                        width="100%"
+                        position="fixed"
+                        bottom={5}
+                        ml={-5}
+                    >
+                        <NextLink href="/">
+                            <IconButton
+                                mr={5}
+                                aria-label="home-button"
+                                icon={<AiOutlineHome fontSize={25} />}
+                                bgColor="teal.500"
+                            />
+                        </NextLink>
+                        <NextLink href="/workout/programs/all">
+                            <IconButton
+                                mr={5}
+                                aria-label="view-programs-button"
+                                icon={<AiOutlineUnorderedList fontSize={25} />}
+                                bgColor="teal.500"
+                            />
+                        </NextLink>
+                        <ProgramMenu />
+                    </Box>
                 </Box>
                 :
                 <Box mt={5} display="flex" justifyContent="flex-start" ml={5}>
@@ -96,7 +154,8 @@ export const NavBar: React.FC<NavBarProps> = ({ }) => {
                             color="green"
                         />
                         <MenuList>
-                            <MenuGroup title="Profile">
+                            <MenuGroup title={`${data?.me.username}`}>
+                                <MenuDivider />
                                 <MenuItem>
                                     My Account
                         </MenuItem>

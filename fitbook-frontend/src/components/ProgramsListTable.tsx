@@ -8,7 +8,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
 import { useMyProgramsQuery } from '../generated/graphql';
-import { Box, IconButton } from '@chakra-ui/react';
+import { Box, Heading, IconButton, Text, useMediaQuery, VStack } from '@chakra-ui/react';
 import { AiOutlineArrowRight } from 'react-icons/ai';
 import NextLink from "next/link"
 
@@ -22,40 +22,29 @@ const useStyles = makeStyles({
 export default function ProgramsListTable() {
     const classes = useStyles();
     const { data, loading } = useMyProgramsQuery();
+    const [isLargerThan600] = useMediaQuery("(min-width:600px)")
     return (
-        <Box>
-            <TableContainer style={{ width: 1000, maxHeight: 600, marginTop: 25 }} component={Paper}>
-                <Table className={classes.table} aria-label="simple table">
-                    <TableHead>
-                        <TableRow >
-                            <TableCell style={{ fontWeight: 750 }}>Program Name</TableCell>
-                            <TableCell style={{ fontWeight: 750 }} align="right">Program Category</TableCell>
-                            <TableCell style={{ fontWeight: 750 }} align="right">Created</TableCell>
-                            <TableCell style={{ fontWeight: 750 }} align="right">Created By</TableCell>
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
-                        {data?.myPrograms.map((row) => (
-                            <TableRow key={row.programName}>
-                                <TableCell component="th" scope="row">
-                                    {row.programName}
-                                </TableCell>
-                                <TableCell align="right">{row.programCategory}</TableCell>
-                                <TableCell align="right">{row.creatorId}</TableCell>
-                                <TableCell align="right">{row.creator.username}</TableCell>
-                                <TableCell align="right">
-                                    <NextLink href="/workout/programs/[id]" as={`/workout/programs/${row.id}`}>
-                                        <IconButton
-                                            aria-label="link-to-program-button"
-                                            icon={<AiOutlineArrowRight />}
-                                        />
-                                    </NextLink>
-                                </TableCell>
-                            </TableRow>
-                        ))}
-                    </TableBody>
-                </Table>
-            </TableContainer >
+        <Box w="100%" mt="3.5rem" display="flex" flexDirection="column">
+            <VStack w="100%">
+                {data?.myPrograms.map((program) => (
+                    <NextLink href="/workout/programs/[id]" as={`/workout/programs/${program.id}`}>
+                        <Box
+                            w="15rem"
+                            borderRadius={8}
+                            h="8rem"
+                            display="flex"
+                            flexDirection="column"
+                            alignItems="center"
+                            justifyContent="center"
+                            bgColor="#f2f2f2"
+                            color="#121212">
+                            <Heading>{program.programName}</Heading>
+                            <Text>{program.programCategory}</Text>
+                            <Text>Created By: {program.creator.username}</Text>
+                        </Box>
+                    </NextLink>
+                ))}
+            </VStack>
         </Box>
 
 

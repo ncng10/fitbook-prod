@@ -12,7 +12,7 @@ const Groups: React.FC<groupsProps> = ({ }) => {
     const { data } = useIsMemberQuery();
 
     let body = null;
-    if (!data) {
+    if (!data?.isMember) {
         body = <Box>No groups so show...</Box>
     } else {
         body =

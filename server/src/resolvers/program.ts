@@ -1,8 +1,8 @@
-import { Program } from "../entities/Program";
-import { Arg, Ctx, Field, FieldResolver, InputType, Mutation, Query, Resolver, Root } from "type-graphql";
+import { Workout } from "../entities/Workout";
 import { MyContext } from "src/types";
-import { User } from "../entities/User"
+import { Arg, Ctx, Field, FieldResolver, InputType, Mutation, Query, Resolver, Root } from "type-graphql";
 import { getConnection } from "typeorm";
+import { Program } from "../entities/Program";
 
 @InputType()
 class ProgramInput {
@@ -36,16 +36,17 @@ export class ProgramResolver {
         return userLoader.load(program.creatorId)
     };
 
+
     @Query(() => [Program])
     async myPrograms(
         @Ctx() { req }: MyContext
     ): Promise<Program[]> {
         const programs = await getConnection().query(
             `
-            SELECT * FROM public.program
-            WHERE public.program."creatorId" = ${req.session.userId}
+           SELECT * FROM public.program
             `
         );
+        console.log(programs)
         return programs
-    }
+    };
 }
