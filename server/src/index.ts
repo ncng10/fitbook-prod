@@ -9,7 +9,7 @@ import Redis from 'ioredis';
 import path from 'path';
 import "reflect-metadata";
 import { buildSchema } from 'type-graphql';
-import { createConnection, getConnection } from 'typeorm';
+import { createConnection } from 'typeorm';
 import { Exercise } from './entities/Exercise';
 import { Group } from "./entities/Group";
 import { GroupMembers } from "./entities/GroupMembers";
@@ -24,7 +24,8 @@ import { ProgramResolver } from "./resolvers/program";
 import { UserResolver } from './resolvers/user';
 import { WorkoutResolver } from './resolvers/workout';
 import { createUserLoader } from "./utils/createUserLoader";
-
+import { v4 } from "uuid"
+import { GraphQLError } from 'graphql';
 const PORT = 5001
 require("dotenv").config();
 const main = async () => {
@@ -76,7 +77,11 @@ const main = async () => {
             resave: false,
         })
     );
-    const pubsub = new RedisPubSub();
+    const pubsub = new RedisPubSub(process.env.NODE_ENV === "production"
+        ? {
+            connection: process.env.REDIS_URL as any
+        }
+        : {});
 
     const apolloServer = new ApolloServer({
         schema: await buildSchema({
@@ -85,6 +90,13 @@ const main = async () => {
             pubSub: pubsub,
         }),
         context: ({ req, res }) => ({ req, res, redis, userLoader: createUserLoader(), pubsub }),
+        formatError: (error: GraphQLError) => {
+            const errorId = v4();
+            console.log("Error ID:", errorId)
+            console.log(error)
+
+            return new GraphQLError(`Internal Error: ${errorId}`)
+        },
         subscriptions: {
         }
     });

@@ -4,6 +4,7 @@ import React from 'react'
 import { AiOutlineEye } from 'react-icons/ai';
 import { NavBar } from '../../../components/NavBar';
 import WorkoutModal from '../../../components/WorkoutModal';
+import WorkoutsList from '../../../components/WorkoutsList';
 import { useGetIntId } from '../../../utils/useGetIntId';
 import { withApollo } from '../../../utils/withApollo';
 
@@ -19,9 +20,7 @@ const Program: React.FC<ProgramProps> = ({ }) => {
             <NavBar />
             Program number {intId}
             <Box>
-                Workout Date :12/13/2020yarn add @chakra-ui/table
-
-                <WorkoutModal />
+                <WorkoutsList />
             </Box>
         </React.Fragment>
     );

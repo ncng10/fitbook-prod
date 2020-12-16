@@ -1,6 +1,6 @@
 import { ProgramWorkouts } from "../entities/ProgramWorkouts";
 import { MyContext } from "src/types";
-import { Arg, Ctx, Field, InputType, Mutation, Query, Resolver } from "type-graphql";
+import { Arg, Ctx, Field, InputType, Int, Mutation, Query, Resolver } from "type-graphql";
 import { getConnection } from "typeorm";
 import { Workout } from "../entities/Workout";
 
@@ -57,11 +57,14 @@ export class WorkoutResolver {
     }
 
     @Query(() => [Workout])
-    async workouts() {
+    async workouts(
+        @Arg("programId", () => Int) programId: number,
+        @Ctx() { req }: MyContext
+    ) {
         const workoutsList = await getConnection().query(
             `
-            SELECT * FROM public.workout INNER JOIN public.program_workouts ON public.workout.id = public.program_workouts."workoutId"
-            AND public.program_workouts."programId" = 69
+            SELECT * FROM public.workout INNER JOIN public.program_workousts ON public.workout.id = public.program_workouts."workoutId"
+            AND public.program_workouts."programId" = ${programId} AND public.workout."creatorId" = ${req.session.userId}
             `
         )
         return workoutsList

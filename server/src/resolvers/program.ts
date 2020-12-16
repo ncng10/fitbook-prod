@@ -43,7 +43,7 @@ export class ProgramResolver {
     ): Promise<Program[]> {
         const programs = await getConnection().query(
             `
-           SELECT * FROM public.program
+           SELECT * FROM public.program WHERE public.program."creatorId" = ${req.session.userId}
             `
         );
         console.log(programs)

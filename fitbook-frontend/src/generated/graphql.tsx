@@ -23,6 +23,7 @@ export type Query = {
   myPrograms: Array<Program>;
   hello: Scalars['String'];
   me: User;
+  workouts: Array<Workout>;
 };
 
 
@@ -33,6 +34,11 @@ export type QueryGroupArgs = {
 
 export type QueryViewPersonalMessagesArgs = {
   senderId: Scalars['Int'];
+};
+
+
+export type QueryWorkoutsArgs = {
+  programId: Scalars['Int'];
 };
 
 export type Group = {
@@ -73,8 +79,34 @@ export type Program = {
   creator: User;
   programName: Scalars['String'];
   programCategory: Scalars['String'];
+  isShared: Scalars['Boolean'];
   createdAt: Scalars['String'];
   updatedAt: Scalars['String'];
+};
+
+export type Workout = {
+  __typename?: 'Workout';
+  id: Scalars['Float'];
+  workoutDate: Scalars['String'];
+  creatorId: Scalars['Float'];
+  workoutName: Scalars['String'];
+  workoutCompleted: Scalars['Boolean'];
+  isShared: Scalars['Boolean'];
+  workoutCategory: Scalars['String'];
+  exercises: Array<Exercise>;
+};
+
+export type Exercise = {
+  __typename?: 'Exercise';
+  id: Scalars['Float'];
+  exerciseName: Scalars['String'];
+  weight: Scalars['Float'];
+  sets: Scalars['Float'];
+  reps: Scalars['Float'];
+  time: Scalars['Float'];
+  rpe: Scalars['Float'];
+  notes: Scalars['String'];
+  workout: Workout;
 };
 
 export type Mutation = {
@@ -86,6 +118,8 @@ export type Mutation = {
   register: UserResponse;
   login: UserResponse;
   logout: Scalars['Boolean'];
+  createWorkout: Array<Workout>;
+  addWorkoutToProgram: Array<ProgramWorkouts>;
 };
 
 
@@ -118,6 +152,16 @@ export type MutationRegisterArgs = {
 export type MutationLoginArgs = {
   password: Scalars['String'];
   userNameOrEmail: Scalars['String'];
+};
+
+
+export type MutationCreateWorkoutArgs = {
+  input: CreateWorkoutInput;
+};
+
+
+export type MutationAddWorkoutToProgramArgs = {
+  input: AddWorkoutToProgramInput;
 };
 
 export type GroupInput = {
@@ -160,6 +204,23 @@ export type UsernamePasswordInput = {
   email: Scalars['String'];
   username: Scalars['String'];
   password: Scalars['String'];
+};
+
+export type CreateWorkoutInput = {
+  workoutName: Scalars['String'];
+  workoutCategory: Scalars['String'];
+  workoutDate: Scalars['String'];
+};
+
+export type ProgramWorkouts = {
+  __typename?: 'ProgramWorkouts';
+  programId: Scalars['Float'];
+  workoutId: Scalars['Float'];
+};
+
+export type AddWorkoutToProgramInput = {
+  workoutId: Scalars['Float'];
+  programId: Scalars['Float'];
 };
 
 export type Subscription = {
@@ -252,9 +313,12 @@ export type RegisterMutation = (
   { __typename?: 'Mutation' }
   & { register: (
     { __typename?: 'UserResponse' }
-    & { user?: Maybe<(
+    & { errors?: Maybe<Array<(
+      { __typename?: 'FieldError' }
+      & RegularErrorFragment
+    )>>, user?: Maybe<(
       { __typename?: 'User' }
-      & Pick<User, 'username' | 'email' | 'password'>
+      & Pick<User, 'username' | 'email' | 'id' | 'password'>
     )> }
   ) }
 );
@@ -363,6 +427,19 @@ export type ViewPersonalMessagesQuery = (
   & { viewPersonalMessages: Array<(
     { __typename?: 'PersonalMessage' }
     & Pick<PersonalMessage, 'sender' | 'text' | 'senderId' | 'createdAt' | 'recipientId' | 'id'>
+  )> }
+);
+
+export type WorkoutsQueryVariables = Exact<{
+  programId: Scalars['Int'];
+}>;
+
+
+export type WorkoutsQuery = (
+  { __typename?: 'Query' }
+  & { workouts: Array<(
+    { __typename?: 'Workout' }
+    & Pick<Workout, 'workoutName' | 'id' | 'workoutDate' | 'workoutCompleted' | 'workoutCategory' | 'creatorId' | 'isShared'>
   )> }
 );
 
@@ -559,14 +636,18 @@ export type LogoutMutationOptions = Apollo.BaseMutationOptions<LogoutMutation, L
 export const RegisterDocument = gql`
     mutation Register($options: UsernamePasswordInput!) {
   register(options: $options) {
+    errors {
+      ...RegularError
+    }
     user {
       username
       email
+      id
       password
     }
   }
 }
-    `;
+    ${RegularErrorFragmentDoc}`;
 export type RegisterMutationFn = Apollo.MutationFunction<RegisterMutation, RegisterMutationVariables>;
 
 /**
@@ -883,6 +964,45 @@ export function useViewPersonalMessagesLazyQuery(baseOptions?: Apollo.LazyQueryH
 export type ViewPersonalMessagesQueryHookResult = ReturnType<typeof useViewPersonalMessagesQuery>;
 export type ViewPersonalMessagesLazyQueryHookResult = ReturnType<typeof useViewPersonalMessagesLazyQuery>;
 export type ViewPersonalMessagesQueryResult = Apollo.QueryResult<ViewPersonalMessagesQuery, ViewPersonalMessagesQueryVariables>;
+export const WorkoutsDocument = gql`
+    query Workouts($programId: Int!) {
+  workouts(programId: $programId) {
+    workoutName
+    id
+    workoutDate
+    workoutCompleted
+    workoutCategory
+    creatorId
+    isShared
+  }
+}
+    `;
+
+/**
+ * __useWorkoutsQuery__
+ *
+ * To run a query within a React component, call `useWorkoutsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useWorkoutsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useWorkoutsQuery({
+ *   variables: {
+ *      programId: // value for 'programId'
+ *   },
+ * });
+ */
+export function useWorkoutsQuery(baseOptions: Apollo.QueryHookOptions<WorkoutsQuery, WorkoutsQueryVariables>) {
+        return Apollo.useQuery<WorkoutsQuery, WorkoutsQueryVariables>(WorkoutsDocument, baseOptions);
+      }
+export function useWorkoutsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<WorkoutsQuery, WorkoutsQueryVariables>) {
+          return Apollo.useLazyQuery<WorkoutsQuery, WorkoutsQueryVariables>(WorkoutsDocument, baseOptions);
+        }
+export type WorkoutsQueryHookResult = ReturnType<typeof useWorkoutsQuery>;
+export type WorkoutsLazyQueryHookResult = ReturnType<typeof useWorkoutsLazyQuery>;
+export type WorkoutsQueryResult = Apollo.QueryResult<WorkoutsQuery, WorkoutsQueryVariables>;
 export const NewMessageDocument = gql`
     subscription NewMessage {
   newMessage {

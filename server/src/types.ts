@@ -1,4 +1,3 @@
-import { PubSub } from 'apollo-server-express';
 import { Request, Response } from 'express';
 import { SessionData } from "express-session";
 import { Session } from "inspector";
