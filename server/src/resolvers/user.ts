@@ -12,7 +12,7 @@ class FieldError {
     field: string;
     @Field()
     message: string;
-}
+};
 
 //user returned if it works properly, or an error to be return if it fails
 @ObjectType()
@@ -22,7 +22,7 @@ class UserResponse {
 
     @Field(() => User, { nullable: true })
     user?: User
-}
+};
 
 
 @Resolver(User)
@@ -123,7 +123,8 @@ export class UserResolver {
         return {
             user
         };
-    }
+    };
+
     @Mutation(() => Boolean)
     logout(
         @Ctx() { req, res }: MyContext
@@ -139,6 +140,6 @@ export class UserResolver {
             }
             resolve(true);
         }));
-    }
+    };
 
 }

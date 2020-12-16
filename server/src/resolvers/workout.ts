@@ -13,7 +13,7 @@ class CreateWorkoutInput {
     workoutCategory: string;
     @Field()
     workoutDate: string;
-}
+};
 
 @InputType()
 class AddWorkoutToProgramInput {
@@ -21,7 +21,7 @@ class AddWorkoutToProgramInput {
     workoutId: number;
     @Field()
     programId: number;
-}
+};
 
 @Resolver(Workout)
 export class WorkoutResolver {
@@ -40,7 +40,7 @@ export class WorkoutResolver {
             `
         )
         return workoutCreation
-    }
+    };
 
     @Mutation(() => [ProgramWorkouts])
     async addWorkoutToProgram(
@@ -73,8 +73,7 @@ export class WorkoutResolver {
     @Query(() => Workout)
     workout(
         @Arg("workoutId", () => Int) workoutId: number,
-        @Ctx() { req }: MyContext
     ): Promise<Workout | undefined> {
         return Workout.findOne(workoutId)
-    }
+    };
 }

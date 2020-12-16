@@ -67,6 +67,6 @@ export class PersonalMessageResolver {
         @Root() personalMessage: string[]
     ) {
         return personalMessage
-    }
+    };
 
 }

@@ -1,4 +1,3 @@
-import { Workout } from "../entities/Workout";
 import { MyContext } from "src/types";
 import { Arg, Ctx, Field, FieldResolver, InputType, Mutation, Query, Resolver, Root } from "type-graphql";
 import { getConnection } from "typeorm";
@@ -10,7 +9,7 @@ class ProgramInput {
     programName: string;
     @Field()
     programCategory: string;
-}
+};
 
 @Resolver(Program)
 export class ProgramResolver {

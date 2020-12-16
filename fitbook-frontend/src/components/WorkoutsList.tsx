@@ -2,13 +2,15 @@ import { Box } from '@chakra-ui/react';
 import React from 'react'
 import { useWorkoutsQuery } from '../generated/graphql';
 import { useGetIntId } from '../utils/useGetIntId';
-
+import NextLink from "next/link"
 interface WorkoutsListProps {
 
 }
 
 const WorkoutsList: React.FC<WorkoutsListProps> = ({ }) => {
-    const intId = useGetIntId()
+
+    const intId = useGetIntId();
+
     const { data, loading, error } = useWorkoutsQuery({
         skip: intId === -1,
         variables: {
@@ -31,10 +33,12 @@ const WorkoutsList: React.FC<WorkoutsListProps> = ({ }) => {
         body =
             <Box>
                 {data?.workouts.map((workout) => (
-                    <Box>{workout.workoutName}</Box>
+                    <NextLink href="/workout/programs/workouts/[id]" as={`/workout/programs/workouts/${workout.id}`}>
+                        <Box>{workout.workoutName}</Box>
+                    </NextLink>
                 ))}
             </Box>
-    }
+    };
 
     return (
         <React.Fragment>
@@ -42,4 +46,5 @@ const WorkoutsList: React.FC<WorkoutsListProps> = ({ }) => {
         </React.Fragment>
     );
 }
+
 export default WorkoutsList

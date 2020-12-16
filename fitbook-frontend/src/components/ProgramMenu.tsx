@@ -10,8 +10,6 @@ interface ProgramMenuProps {
 const ProgramMenu: React.FC<ProgramMenuProps> = ({ }) => {
     const { isOpen, onOpen, onClose } = useDisclosure()
     const firstField = React.useRef()
-
-
     return (
         <React.Fragment>
             <IconButton

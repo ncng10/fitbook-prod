@@ -34,7 +34,7 @@ export class GroupResolver {
             ...input,
             creatorId: req.session.userId,
         }).save();
-    }
+    };
 
     @Query(() => Group)
     async group(

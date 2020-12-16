@@ -1,0 +1,11 @@
+query Workout($workoutId: Int!) {
+    workout(workoutId: $workoutId) {
+        id
+        workoutDate
+        creatorId
+        workoutName
+        workoutCompleted
+        workoutCategory
+        isShared
+    }
+}
