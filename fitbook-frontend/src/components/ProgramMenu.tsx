@@ -1,6 +1,6 @@
 import { Button, Drawer, DrawerOverlay, DrawerContent, DrawerCloseButton, DrawerHeader, DrawerBody, Stack, Box, FormLabel, Input, InputGroup, InputLeftAddon, InputRightAddon, Select, Textarea, DrawerFooter, useDisclosure, IconButton } from '@chakra-ui/react';
 import React from 'react'
-import { AiOutlinePlusCircle } from 'react-icons/ai';
+import { AiOutlinePlus, AiOutlinePlusCircle } from 'react-icons/ai';
 import CreateProgramForm from './CreateProgramForm';
 
 interface ProgramMenuProps {
@@ -10,13 +10,16 @@ interface ProgramMenuProps {
 const ProgramMenu: React.FC<ProgramMenuProps> = ({ }) => {
     const { isOpen, onOpen, onClose } = useDisclosure()
     const firstField = React.useRef()
+
+
     return (
         <React.Fragment>
             <IconButton
-                colorScheme="teal" onClick={onOpen}
+                borderRadius={50}
+                onClick={onOpen}
                 aria-label="home-button"
-                icon={<AiOutlinePlusCircle fontSize={25} />}
-                bgColor="teal.500"
+                icon={<AiOutlinePlus fontSize={25} />}
+
             />
             <Drawer
                 isOpen={isOpen}

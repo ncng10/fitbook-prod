@@ -1,11 +1,11 @@
-import React from 'react'
-import { useMeQuery, useLogoutMutation } from '../generated/graphql';
-import NextLink from "next/link"
-import { Avatar, Box, Button, IconButton, Menu, MenuButton, MenuDivider, MenuGroup, MenuItem, MenuList, Switch, Tooltip, useColorMode, useMediaQuery } from '@chakra-ui/react';
-import { AiOutlineHome, AiOutlinePlusCircle, AiOutlineUnorderedList } from "react-icons/ai"
-import ProgramMenu from './ProgramMenu';
 import { useApolloClient } from '@apollo/client';
+import { Avatar, Box, Button, Menu, MenuButton, MenuDivider, MenuGroup, MenuItem, MenuList, Switch, Text, useColorMode, useMediaQuery, IconButton } from '@chakra-ui/react';
+import NextLink from "next/link";
 import { useRouter } from 'next/router';
+import React from 'react';
+import { AiOutlineUnorderedList } from 'react-icons/ai';
+import { useLogoutMutation, useMeQuery } from '../generated/graphql';
+import ProgramMenu from './ProgramMenu';
 interface NavBarProps {
 
 }
@@ -13,8 +13,6 @@ interface NavBarProps {
 export const NavBar: React.FC<NavBarProps> = ({ }) => {
     const [isLargerThan600] = useMediaQuery("(min-width:600px)");
     const [logout] = useLogoutMutation();
-    const { colorMode, toggleColorMode } = useColorMode();
-    const isDark = colorMode === 'dark';
     const { data } = useMeQuery();
     const apolloClient = useApolloClient();
     const router = useRouter();
@@ -37,15 +35,6 @@ export const NavBar: React.FC<NavBarProps> = ({ }) => {
         body =
             !isLargerThan600 ?
                 <Box mt={5} display="flex" w="100%" justifyContent="flex-start" ml={5} >
-                    <Switch
-                        position="fixed"
-                        top="1.5rem"
-                        right="4.5em"
-                        color="green"
-                        size="lg"
-                        isChecked={isDark}
-                        onChange={toggleColorMode}
-                    />
                     <Menu>
                         <MenuButton
                             size="md"
@@ -86,7 +75,9 @@ export const NavBar: React.FC<NavBarProps> = ({ }) => {
                             </MenuGroup>
                         </MenuList>
                     </Menu>
-                    <Box display="flex"
+                    <Box
+                        className="navBar"
+                        display="flex"
                         justifyContent="space-around"
                         alignItems="center"
                         width="100%"
@@ -95,63 +86,52 @@ export const NavBar: React.FC<NavBarProps> = ({ }) => {
                         ml={-5}
                     >
                         <NextLink href="/">
-                            <IconButton
-                                mr={5}
-                                aria-label="home-button"
-                                icon={<AiOutlineHome fontSize={25} />}
-                                bgColor="teal.500"
-                            />
+                            <Text>Programs</Text>
                         </NextLink>
                         <NextLink href="/workout/programs/all">
-                            <IconButton
-                                mr={5}
-                                aria-label="view-programs-button"
-                                icon={<AiOutlineUnorderedList fontSize={25} />}
-                                bgColor="teal.500"
-                            />
+                            <Text>Programs</Text>
                         </NextLink>
                         <ProgramMenu />
                     </Box>
                 </Box>
                 :
-                <Box mt={5} display="flex" justifyContent="flex-start" ml={5}>
-                    <Tooltip label="Home" aria-label="Home">
+                <Box
+                    className="navBar"
+                    mt={5} display="flex" justifyContent="flex-start" ml={5}>
+                    <Box cursor="pointer" display="flex" flexDirection="row">
                         <NextLink href="/">
-                            <IconButton
-                                mr={5}
-                                aria-label="home-button"
-                                icon={<AiOutlineHome fontSize={25} />}
-                                bgColor="teal.500"
-                            />
+                            <Box mr={5}>
+                                <Text>Home</Text>
+                            </Box>
                         </NextLink>
-                    </Tooltip>
-                    <NextLink href="/workout/programs/all">
-                        <IconButton
-                            mr={5}
-                            aria-label="view-programs-button"
-                            icon={<AiOutlineUnorderedList fontSize={25} />}
-                            bgColor="teal.500"
-                        />
-                    </NextLink>
-                    <ProgramMenu />
-                    <Switch
-                        position="fixed"
+                    </Box>
+                    <Box
                         top="1.5rem"
-                        right="4.5em"
-                        color="green"
-                        size="lg"
-                        isChecked={isDark}
-                        onChange={toggleColorMode}
-                    />
+                        position="fixed"
+                        display='flex'
+                        right="4.95rem"
+                    >
+                        <NextLink href="/workout/programs/all">
+                            <Box cursor="pointer" mr={5}>
+                                <IconButton mt={-1}
+                                    borderRadius={50}
+                                    aria-label="list-of-programs-button"
+                                    icon={<AiOutlineUnorderedList />}
+                                />
+                            </Box>
+                        </NextLink>
+                        <Box mt={-1}>
+                            <ProgramMenu />
+                        </Box>
+                    </Box>
                     <Menu>
                         <MenuButton
-                            size="md"
+                            size="sm"
                             as={Avatar}
                             position="fixed"
-                            bg="teal.500"
-                            top="1rem"
-                            right=".75rem"
-                            color="green"
+                            bg="lightgray"
+                            top="1.5rem"
+                            right="1.25rem"
                         />
                         <MenuList>
                             <MenuGroup title={`${data?.me.username}`}>
