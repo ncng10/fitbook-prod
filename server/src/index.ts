@@ -38,14 +38,16 @@ const main = async () => {
         migrations: [path.join(__dirname, "./migrations/*")],
         entities: [User, Group, GroupMembers, PersonalMessage, Program, Workout, Exercise, ProgramWorkouts]
     });
+
     const options: Redis.RedisOptions = {
         host: '192.168.1.8',
         port: 6379,
         retryStrategy: times => Math.max(times * 100, 3000),
     };
+
     const app = express();
 
-    const RedisStore = connectRedis(session)
+    const RedisStore = connectRedis(session);
     const redis = new Redis(process.env.REDIS_URL);
 
     app.set("trust proxy", 1);
@@ -56,7 +58,6 @@ const main = async () => {
             origin: process.env.NODE_ENV === "production" ? "https://ncong.app" : "http://localhost:3000"
         }
     ));
-
 
     app.use(
         session({
@@ -77,6 +78,7 @@ const main = async () => {
             resave: false,
         })
     );
+
     const pubsub = new RedisPubSub(process.env.NODE_ENV === "production"
         ? {
             connection: process.env.REDIS_URL as any
@@ -85,7 +87,14 @@ const main = async () => {
 
     const apolloServer = new ApolloServer({
         schema: await buildSchema({
-            resolvers: [UserResolver, GroupResolver, PersonalMessageResolver, ProgramResolver, WorkoutResolver],
+            resolvers:
+                [
+                    UserResolver,
+                    GroupResolver,
+                    PersonalMessageResolver,
+                    ProgramResolver,
+                    WorkoutResolver
+                ],
             validate: false,
             pubSub: pubsub,
         }),
@@ -100,6 +109,7 @@ const main = async () => {
         subscriptions: {
         }
     });
+
     apolloServer.applyMiddleware({ app, cors: { origin: false } });
     const httpServer = http.createServer(app)
     apolloServer.installSubscriptionHandlers(httpServer)
@@ -110,7 +120,6 @@ const main = async () => {
     });
 
 };
-
 
 main().catch((err) => {
     console.log(err)
