@@ -4,7 +4,7 @@ import NextLink from "next/link";
 import { useRouter } from 'next/router';
 import React from 'react';
 import { AiOutlineUnorderedList } from 'react-icons/ai';
-import { useLogoutMutation, useMeQuery } from '../generated/graphql';
+import { useLogoutMutation, useUserProfileQuery } from '../generated/graphql';
 import ProgramMenu from './ProgramMenu';
 interface NavBarProps {
 
@@ -13,12 +13,12 @@ interface NavBarProps {
 export const NavBar: React.FC<NavBarProps> = ({ }) => {
     const [isLargerThan600] = useMediaQuery("(min-width:600px)");
     const [logout] = useLogoutMutation();
-    const { data } = useMeQuery();
+    const { data } = useUserProfileQuery();
     const apolloClient = useApolloClient();
     const router = useRouter();
     let body = null;
 
-    if (!data?.me) {
+    if (!data?.userProfile) {
         body =
             <Box mt={5}>
                 <NextLink href="/login">
@@ -47,7 +47,7 @@ export const NavBar: React.FC<NavBarProps> = ({ }) => {
                             color="green"
                         />
                         <MenuList>
-                            <MenuGroup title={`${data?.me.username}`}>
+                            <MenuGroup title={`${data?.userProfile.username}`}>
                                 <MenuDivider />
                                 <MenuItem>
                                     My Account
@@ -130,14 +130,14 @@ export const NavBar: React.FC<NavBarProps> = ({ }) => {
                             cursor="pointer"
                             size="md"
                             as={Avatar}
-                            src={`http://localhost:5001/images/${data?.me.profilePicture}`}
+                            src={`http://localhost:5001/images/${data?.userProfile.profilePicture}`}
                             position="fixed"
                             bg="lightgray"
                             top="1rem"
                             right="1.25rem"
                         />
                         <MenuList>
-                            <MenuGroup title={`${data?.me.username}`}>
+                            <MenuGroup title={`${data?.userProfile.username}`}>
                                 <MenuDivider />
                                 <NextLink href="/settings/avatar">
                                     <MenuItem>

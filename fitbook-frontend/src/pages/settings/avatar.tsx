@@ -19,7 +19,7 @@ const Avatar: React.FC<AvatarProps> = ({ }) => {
                     file
                 },
                 update: (cache) => {
-                    cache.evict({ fieldName: "me" });
+                    cache.evict({ fieldName: "userProfile" });
                 }
             })
         },

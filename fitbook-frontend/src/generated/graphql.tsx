@@ -25,6 +25,7 @@ export type Query = {
   myPrograms: Array<Program>;
   hello: Scalars['String'];
   me: User;
+  userProfile: User;
   workouts: Array<Workout>;
   workout: Workout;
 };
@@ -266,10 +267,12 @@ export type CreateGroupMutationVariables = Exact<{
 
 export type CreateGroupMutation = (
   { __typename?: 'Mutation' }
-  & { createGroup: (
-    { __typename?: 'Group' }
-    & Pick<Group, 'groupName' | 'groupCategory'>
-  ) }
+  & {
+    createGroup: (
+      { __typename?: 'Group' }
+      & Pick<Group, 'groupName' | 'groupCategory'>
+    )
+  }
 );
 
 export type CreateProgramMutationVariables = Exact<{
@@ -279,14 +282,18 @@ export type CreateProgramMutationVariables = Exact<{
 
 export type CreateProgramMutation = (
   { __typename?: 'Mutation' }
-  & { createProgram: Array<(
-    { __typename?: 'Program' }
-    & Pick<Program, 'programName' | 'programCategory' | 'id' | 'creatorId'>
-    & { creator: (
-      { __typename?: 'User' }
-      & Pick<User, 'username'>
-    ) }
-  )> }
+  & {
+    createProgram: Array<(
+      { __typename?: 'Program' }
+      & Pick<Program, 'programName' | 'programCategory' | 'id' | 'creatorId'>
+      & {
+        creator: (
+          { __typename?: 'User' }
+          & Pick<User, 'username'>
+        )
+      }
+    )>
+  }
 );
 
 export type JoinGroupMutationVariables = Exact<{
@@ -296,10 +303,12 @@ export type JoinGroupMutationVariables = Exact<{
 
 export type JoinGroupMutation = (
   { __typename?: 'Mutation' }
-  & { joinGroup: Array<(
-    { __typename?: 'GroupMembers' }
-    & Pick<GroupMembers, 'memberId' | 'groupId'>
-  )> }
+  & {
+    joinGroup: Array<(
+      { __typename?: 'GroupMembers' }
+      & Pick<GroupMembers, 'memberId' | 'groupId'>
+    )>
+  }
 );
 
 export type LoginMutationVariables = Exact<{
@@ -310,16 +319,20 @@ export type LoginMutationVariables = Exact<{
 
 export type LoginMutation = (
   { __typename?: 'Mutation' }
-  & { login: (
-    { __typename?: 'UserResponse' }
-    & { errors?: Maybe<Array<(
-      { __typename?: 'FieldError' }
-      & RegularErrorFragment
-    )>>, user?: Maybe<(
-      { __typename?: 'User' }
-      & Pick<User, 'username' | 'id' | 'email' | 'profilePicture'>
-    )> }
-  ) }
+  & {
+    login: (
+      { __typename?: 'UserResponse' }
+      & {
+        errors?: Maybe<Array<(
+          { __typename?: 'FieldError' }
+          & RegularErrorFragment
+        )>>, user?: Maybe<(
+          { __typename?: 'User' }
+          & Pick<User, 'username' | 'id' | 'email'>
+        )>
+      }
+    )
+  }
 );
 
 export type LogoutMutationVariables = Exact<{ [key: string]: never; }>;
@@ -337,16 +350,20 @@ export type RegisterMutationVariables = Exact<{
 
 export type RegisterMutation = (
   { __typename?: 'Mutation' }
-  & { register: (
-    { __typename?: 'UserResponse' }
-    & { errors?: Maybe<Array<(
-      { __typename?: 'FieldError' }
-      & RegularErrorFragment
-    )>>, user?: Maybe<(
-      { __typename?: 'User' }
-      & Pick<User, 'username' | 'email' | 'id' | 'password'>
-    )> }
-  ) }
+  & {
+    register: (
+      { __typename?: 'UserResponse' }
+      & {
+        errors?: Maybe<Array<(
+          { __typename?: 'FieldError' }
+          & RegularErrorFragment
+        )>>, user?: Maybe<(
+          { __typename?: 'User' }
+          & Pick<User, 'username' | 'email' | 'id' | 'password'>
+        )>
+      }
+    )
+  }
 );
 
 export type SendPersonalMessageMutationVariables = Exact<{
@@ -357,10 +374,25 @@ export type SendPersonalMessageMutationVariables = Exact<{
 
 export type SendPersonalMessageMutation = (
   { __typename?: 'Mutation' }
-  & { sendPersonalMessage: Array<(
-    { __typename?: 'PersonalMessage' }
-    & Pick<PersonalMessage, 'text' | 'recipientId' | 'senderId'>
-  )> }
+  & {
+    sendPersonalMessage: Array<(
+      { __typename?: 'PersonalMessage' }
+      & Pick<PersonalMessage, 'text' | 'recipientId' | 'senderId'>
+    )>
+  }
+);
+
+export type UserProfileQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type UserProfileQuery = (
+  { __typename?: 'Query' }
+  & {
+    userProfile: (
+      { __typename?: 'User' }
+      & Pick<User, 'id' | 'username' | 'email' | 'profilePicture'>
+    )
+  }
 );
 
 export type GroupQueryVariables = Exact<{
@@ -370,10 +402,12 @@ export type GroupQueryVariables = Exact<{
 
 export type GroupQuery = (
   { __typename?: 'Query' }
-  & { group: (
-    { __typename?: 'Group' }
-    & Pick<Group, 'groupName' | 'id' | 'groupCategory'>
-  ) }
+  & {
+    group: (
+      { __typename?: 'Group' }
+      & Pick<Group, 'groupName' | 'id' | 'groupCategory'>
+    )
+  }
 );
 
 export type GroupsQueryVariables = Exact<{ [key: string]: never; }>;
@@ -381,14 +415,18 @@ export type GroupsQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type GroupsQuery = (
   { __typename?: 'Query' }
-  & { groups: Array<(
-    { __typename?: 'Group' }
-    & Pick<Group, 'groupName' | 'groupCategory' | 'id'>
-    & { creator: (
-      { __typename?: 'User' }
-      & Pick<User, 'username' | 'id' | 'email'>
-    ) }
-  )> }
+  & {
+    groups: Array<(
+      { __typename?: 'Group' }
+      & Pick<Group, 'groupName' | 'groupCategory' | 'id'>
+      & {
+        creator: (
+          { __typename?: 'User' }
+          & Pick<User, 'username' | 'id' | 'email'>
+        )
+      }
+    )>
+  }
 );
 
 export type InboxMessagesQueryVariables = Exact<{ [key: string]: never; }>;
@@ -396,10 +434,12 @@ export type InboxMessagesQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type InboxMessagesQuery = (
   { __typename?: 'Query' }
-  & { inboxMessages: Array<(
-    { __typename?: 'PersonalMessage' }
-    & Pick<PersonalMessage, 'sender' | 'senderId'>
-  )> }
+  & {
+    inboxMessages: Array<(
+      { __typename?: 'PersonalMessage' }
+      & Pick<PersonalMessage, 'sender' | 'senderId'>
+    )>
+  }
 );
 
 export type IsMemberQueryVariables = Exact<{ [key: string]: never; }>;
@@ -407,14 +447,18 @@ export type IsMemberQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type IsMemberQuery = (
   { __typename?: 'Query' }
-  & { isMember: Array<(
-    { __typename?: 'Group' }
-    & Pick<Group, 'groupName' | 'id' | 'groupCategory'>
-    & { creator: (
-      { __typename?: 'User' }
-      & Pick<User, 'username' | 'id'>
-    ) }
-  )> }
+  & {
+    isMember: Array<(
+      { __typename?: 'Group' }
+      & Pick<Group, 'groupName' | 'id' | 'groupCategory'>
+      & {
+        creator: (
+          { __typename?: 'User' }
+          & Pick<User, 'username' | 'id'>
+        )
+      }
+    )>
+  }
 );
 
 export type MeQueryVariables = Exact<{ [key: string]: never; }>;
@@ -422,10 +466,12 @@ export type MeQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type MeQuery = (
   { __typename?: 'Query' }
-  & { me: (
-    { __typename?: 'User' }
-    & Pick<User, 'id' | 'username' | 'email' | 'profilePicture'>
-  ) }
+  & {
+    me: (
+      { __typename?: 'User' }
+      & Pick<User, 'id' | 'username' | 'email'>
+    )
+  }
 );
 
 export type MyProgramsQueryVariables = Exact<{ [key: string]: never; }>;
@@ -433,14 +479,18 @@ export type MyProgramsQueryVariables = Exact<{ [key: string]: never; }>;
 
 export type MyProgramsQuery = (
   { __typename?: 'Query' }
-  & { myPrograms: Array<(
-    { __typename?: 'Program' }
-    & Pick<Program, 'programName' | 'programCategory' | 'id' | 'creatorId'>
-    & { creator: (
-      { __typename?: 'User' }
-      & Pick<User, 'username' | 'email'>
-    ) }
-  )> }
+  & {
+    myPrograms: Array<(
+      { __typename?: 'Program' }
+      & Pick<Program, 'programName' | 'programCategory' | 'id' | 'creatorId'>
+      & {
+        creator: (
+          { __typename?: 'User' }
+          & Pick<User, 'username' | 'email'>
+        )
+      }
+    )>
+  }
 );
 
 export type ViewPersonalMessagesQueryVariables = Exact<{
@@ -450,10 +500,12 @@ export type ViewPersonalMessagesQueryVariables = Exact<{
 
 export type ViewPersonalMessagesQuery = (
   { __typename?: 'Query' }
-  & { viewPersonalMessages: Array<(
-    { __typename?: 'PersonalMessage' }
-    & Pick<PersonalMessage, 'sender' | 'text' | 'senderId' | 'createdAt' | 'recipientId' | 'id'>
-  )> }
+  & {
+    viewPersonalMessages: Array<(
+      { __typename?: 'PersonalMessage' }
+      & Pick<PersonalMessage, 'sender' | 'text' | 'senderId' | 'createdAt' | 'recipientId' | 'id'>
+    )>
+  }
 );
 
 export type WorkoutQueryVariables = Exact<{
@@ -463,10 +515,12 @@ export type WorkoutQueryVariables = Exact<{
 
 export type WorkoutQuery = (
   { __typename?: 'Query' }
-  & { workout: (
-    { __typename?: 'Workout' }
-    & Pick<Workout, 'id' | 'workoutDate' | 'creatorId' | 'workoutName' | 'workoutCompleted' | 'workoutCategory' | 'isShared'>
-  ) }
+  & {
+    workout: (
+      { __typename?: 'Workout' }
+      & Pick<Workout, 'id' | 'workoutDate' | 'creatorId' | 'workoutName' | 'workoutCompleted' | 'workoutCategory' | 'isShared'>
+    )
+  }
 );
 
 export type WorkoutsQueryVariables = Exact<{
@@ -476,10 +530,12 @@ export type WorkoutsQueryVariables = Exact<{
 
 export type WorkoutsQuery = (
   { __typename?: 'Query' }
-  & { workouts: Array<(
-    { __typename?: 'Workout' }
-    & Pick<Workout, 'workoutName' | 'id' | 'workoutDate' | 'workoutCompleted' | 'workoutCategory' | 'creatorId' | 'isShared'>
-  )> }
+  & {
+    workouts: Array<(
+      { __typename?: 'Workout' }
+      & Pick<Workout, 'workoutName' | 'id' | 'workoutDate' | 'workoutCompleted' | 'workoutCategory' | 'creatorId' | 'isShared'>
+    )>
+  }
 );
 
 export type NewMessageSubscriptionVariables = Exact<{ [key: string]: never; }>;
@@ -487,10 +543,12 @@ export type NewMessageSubscriptionVariables = Exact<{ [key: string]: never; }>;
 
 export type NewMessageSubscription = (
   { __typename?: 'Subscription' }
-  & { newMessage: Array<(
-    { __typename?: 'PersonalMessage' }
-    & Pick<PersonalMessage, 'recipientId' | 'sender' | 'text' | 'createdAt' | 'senderId'>
-  )> }
+  & {
+    newMessage: Array<(
+      { __typename?: 'PersonalMessage' }
+      & Pick<PersonalMessage, 'recipientId' | 'sender' | 'text' | 'createdAt' | 'senderId'>
+    )>
+  }
 );
 
 export const RegularErrorFragmentDoc = gql`
@@ -524,8 +582,8 @@ export type AddProfilePictureMutationFn = Apollo.MutationFunction<AddProfilePict
  * });
  */
 export function useAddProfilePictureMutation(baseOptions?: Apollo.MutationHookOptions<AddProfilePictureMutation, AddProfilePictureMutationVariables>) {
-        return Apollo.useMutation<AddProfilePictureMutation, AddProfilePictureMutationVariables>(AddProfilePictureDocument, baseOptions);
-      }
+  return Apollo.useMutation<AddProfilePictureMutation, AddProfilePictureMutationVariables>(AddProfilePictureDocument, baseOptions);
+}
 export type AddProfilePictureMutationHookResult = ReturnType<typeof useAddProfilePictureMutation>;
 export type AddProfilePictureMutationResult = Apollo.MutationResult<AddProfilePictureMutation>;
 export type AddProfilePictureMutationOptions = Apollo.BaseMutationOptions<AddProfilePictureMutation, AddProfilePictureMutationVariables>;
@@ -557,8 +615,8 @@ export type CreateGroupMutationFn = Apollo.MutationFunction<CreateGroupMutation,
  * });
  */
 export function useCreateGroupMutation(baseOptions?: Apollo.MutationHookOptions<CreateGroupMutation, CreateGroupMutationVariables>) {
-        return Apollo.useMutation<CreateGroupMutation, CreateGroupMutationVariables>(CreateGroupDocument, baseOptions);
-      }
+  return Apollo.useMutation<CreateGroupMutation, CreateGroupMutationVariables>(CreateGroupDocument, baseOptions);
+}
 export type CreateGroupMutationHookResult = ReturnType<typeof useCreateGroupMutation>;
 export type CreateGroupMutationResult = Apollo.MutationResult<CreateGroupMutation>;
 export type CreateGroupMutationOptions = Apollo.BaseMutationOptions<CreateGroupMutation, CreateGroupMutationVariables>;
@@ -595,8 +653,8 @@ export type CreateProgramMutationFn = Apollo.MutationFunction<CreateProgramMutat
  * });
  */
 export function useCreateProgramMutation(baseOptions?: Apollo.MutationHookOptions<CreateProgramMutation, CreateProgramMutationVariables>) {
-        return Apollo.useMutation<CreateProgramMutation, CreateProgramMutationVariables>(CreateProgramDocument, baseOptions);
-      }
+  return Apollo.useMutation<CreateProgramMutation, CreateProgramMutationVariables>(CreateProgramDocument, baseOptions);
+}
 export type CreateProgramMutationHookResult = ReturnType<typeof useCreateProgramMutation>;
 export type CreateProgramMutationResult = Apollo.MutationResult<CreateProgramMutation>;
 export type CreateProgramMutationOptions = Apollo.BaseMutationOptions<CreateProgramMutation, CreateProgramMutationVariables>;
@@ -628,8 +686,8 @@ export type JoinGroupMutationFn = Apollo.MutationFunction<JoinGroupMutation, Joi
  * });
  */
 export function useJoinGroupMutation(baseOptions?: Apollo.MutationHookOptions<JoinGroupMutation, JoinGroupMutationVariables>) {
-        return Apollo.useMutation<JoinGroupMutation, JoinGroupMutationVariables>(JoinGroupDocument, baseOptions);
-      }
+  return Apollo.useMutation<JoinGroupMutation, JoinGroupMutationVariables>(JoinGroupDocument, baseOptions);
+}
 export type JoinGroupMutationHookResult = ReturnType<typeof useJoinGroupMutation>;
 export type JoinGroupMutationResult = Apollo.MutationResult<JoinGroupMutation>;
 export type JoinGroupMutationOptions = Apollo.BaseMutationOptions<JoinGroupMutation, JoinGroupMutationVariables>;
@@ -643,7 +701,6 @@ export const LoginDocument = gql`
       username
       id
       email
-      profilePicture
     }
   }
 }
@@ -669,8 +726,8 @@ export type LoginMutationFn = Apollo.MutationFunction<LoginMutation, LoginMutati
  * });
  */
 export function useLoginMutation(baseOptions?: Apollo.MutationHookOptions<LoginMutation, LoginMutationVariables>) {
-        return Apollo.useMutation<LoginMutation, LoginMutationVariables>(LoginDocument, baseOptions);
-      }
+  return Apollo.useMutation<LoginMutation, LoginMutationVariables>(LoginDocument, baseOptions);
+}
 export type LoginMutationHookResult = ReturnType<typeof useLoginMutation>;
 export type LoginMutationResult = Apollo.MutationResult<LoginMutation>;
 export type LoginMutationOptions = Apollo.BaseMutationOptions<LoginMutation, LoginMutationVariables>;
@@ -698,8 +755,8 @@ export type LogoutMutationFn = Apollo.MutationFunction<LogoutMutation, LogoutMut
  * });
  */
 export function useLogoutMutation(baseOptions?: Apollo.MutationHookOptions<LogoutMutation, LogoutMutationVariables>) {
-        return Apollo.useMutation<LogoutMutation, LogoutMutationVariables>(LogoutDocument, baseOptions);
-      }
+  return Apollo.useMutation<LogoutMutation, LogoutMutationVariables>(LogoutDocument, baseOptions);
+}
 export type LogoutMutationHookResult = ReturnType<typeof useLogoutMutation>;
 export type LogoutMutationResult = Apollo.MutationResult<LogoutMutation>;
 export type LogoutMutationOptions = Apollo.BaseMutationOptions<LogoutMutation, LogoutMutationVariables>;
@@ -738,8 +795,8 @@ export type RegisterMutationFn = Apollo.MutationFunction<RegisterMutation, Regis
  * });
  */
 export function useRegisterMutation(baseOptions?: Apollo.MutationHookOptions<RegisterMutation, RegisterMutationVariables>) {
-        return Apollo.useMutation<RegisterMutation, RegisterMutationVariables>(RegisterDocument, baseOptions);
-      }
+  return Apollo.useMutation<RegisterMutation, RegisterMutationVariables>(RegisterDocument, baseOptions);
+}
 export type RegisterMutationHookResult = ReturnType<typeof useRegisterMutation>;
 export type RegisterMutationResult = Apollo.MutationResult<RegisterMutation>;
 export type RegisterMutationOptions = Apollo.BaseMutationOptions<RegisterMutation, RegisterMutationVariables>;
@@ -773,11 +830,46 @@ export type SendPersonalMessageMutationFn = Apollo.MutationFunction<SendPersonal
  * });
  */
 export function useSendPersonalMessageMutation(baseOptions?: Apollo.MutationHookOptions<SendPersonalMessageMutation, SendPersonalMessageMutationVariables>) {
-        return Apollo.useMutation<SendPersonalMessageMutation, SendPersonalMessageMutationVariables>(SendPersonalMessageDocument, baseOptions);
-      }
+  return Apollo.useMutation<SendPersonalMessageMutation, SendPersonalMessageMutationVariables>(SendPersonalMessageDocument, baseOptions);
+}
 export type SendPersonalMessageMutationHookResult = ReturnType<typeof useSendPersonalMessageMutation>;
 export type SendPersonalMessageMutationResult = Apollo.MutationResult<SendPersonalMessageMutation>;
 export type SendPersonalMessageMutationOptions = Apollo.BaseMutationOptions<SendPersonalMessageMutation, SendPersonalMessageMutationVariables>;
+export const UserProfileDocument = gql`
+    query UserProfile {
+  userProfile {
+    id
+    username
+    email
+    profilePicture
+  }
+}
+    `;
+
+/**
+ * __useUserProfileQuery__
+ *
+ * To run a query within a React component, call `useUserProfileQuery` and pass it any options that fit your needs.
+ * When your component renders, `useUserProfileQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useUserProfileQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useUserProfileQuery(baseOptions?: Apollo.QueryHookOptions<UserProfileQuery, UserProfileQueryVariables>) {
+  return Apollo.useQuery<UserProfileQuery, UserProfileQueryVariables>(UserProfileDocument, baseOptions);
+}
+export function useUserProfileLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<UserProfileQuery, UserProfileQueryVariables>) {
+  return Apollo.useLazyQuery<UserProfileQuery, UserProfileQueryVariables>(UserProfileDocument, baseOptions);
+}
+export type UserProfileQueryHookResult = ReturnType<typeof useUserProfileQuery>;
+export type UserProfileLazyQueryHookResult = ReturnType<typeof useUserProfileLazyQuery>;
+export type UserProfileQueryResult = Apollo.QueryResult<UserProfileQuery, UserProfileQueryVariables>;
 export const GroupDocument = gql`
     query Group($id: Int!) {
   group(id: $id) {
@@ -805,11 +897,11 @@ export const GroupDocument = gql`
  * });
  */
 export function useGroupQuery(baseOptions: Apollo.QueryHookOptions<GroupQuery, GroupQueryVariables>) {
-        return Apollo.useQuery<GroupQuery, GroupQueryVariables>(GroupDocument, baseOptions);
-      }
+  return Apollo.useQuery<GroupQuery, GroupQueryVariables>(GroupDocument, baseOptions);
+}
 export function useGroupLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GroupQuery, GroupQueryVariables>) {
-          return Apollo.useLazyQuery<GroupQuery, GroupQueryVariables>(GroupDocument, baseOptions);
-        }
+  return Apollo.useLazyQuery<GroupQuery, GroupQueryVariables>(GroupDocument, baseOptions);
+}
 export type GroupQueryHookResult = ReturnType<typeof useGroupQuery>;
 export type GroupLazyQueryHookResult = ReturnType<typeof useGroupLazyQuery>;
 export type GroupQueryResult = Apollo.QueryResult<GroupQuery, GroupQueryVariables>;
@@ -844,11 +936,11 @@ export const GroupsDocument = gql`
  * });
  */
 export function useGroupsQuery(baseOptions?: Apollo.QueryHookOptions<GroupsQuery, GroupsQueryVariables>) {
-        return Apollo.useQuery<GroupsQuery, GroupsQueryVariables>(GroupsDocument, baseOptions);
-      }
+  return Apollo.useQuery<GroupsQuery, GroupsQueryVariables>(GroupsDocument, baseOptions);
+}
 export function useGroupsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<GroupsQuery, GroupsQueryVariables>) {
-          return Apollo.useLazyQuery<GroupsQuery, GroupsQueryVariables>(GroupsDocument, baseOptions);
-        }
+  return Apollo.useLazyQuery<GroupsQuery, GroupsQueryVariables>(GroupsDocument, baseOptions);
+}
 export type GroupsQueryHookResult = ReturnType<typeof useGroupsQuery>;
 export type GroupsLazyQueryHookResult = ReturnType<typeof useGroupsLazyQuery>;
 export type GroupsQueryResult = Apollo.QueryResult<GroupsQuery, GroupsQueryVariables>;
@@ -877,11 +969,11 @@ export const InboxMessagesDocument = gql`
  * });
  */
 export function useInboxMessagesQuery(baseOptions?: Apollo.QueryHookOptions<InboxMessagesQuery, InboxMessagesQueryVariables>) {
-        return Apollo.useQuery<InboxMessagesQuery, InboxMessagesQueryVariables>(InboxMessagesDocument, baseOptions);
-      }
+  return Apollo.useQuery<InboxMessagesQuery, InboxMessagesQueryVariables>(InboxMessagesDocument, baseOptions);
+}
 export function useInboxMessagesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<InboxMessagesQuery, InboxMessagesQueryVariables>) {
-          return Apollo.useLazyQuery<InboxMessagesQuery, InboxMessagesQueryVariables>(InboxMessagesDocument, baseOptions);
-        }
+  return Apollo.useLazyQuery<InboxMessagesQuery, InboxMessagesQueryVariables>(InboxMessagesDocument, baseOptions);
+}
 export type InboxMessagesQueryHookResult = ReturnType<typeof useInboxMessagesQuery>;
 export type InboxMessagesLazyQueryHookResult = ReturnType<typeof useInboxMessagesLazyQuery>;
 export type InboxMessagesQueryResult = Apollo.QueryResult<InboxMessagesQuery, InboxMessagesQueryVariables>;
@@ -915,11 +1007,11 @@ export const IsMemberDocument = gql`
  * });
  */
 export function useIsMemberQuery(baseOptions?: Apollo.QueryHookOptions<IsMemberQuery, IsMemberQueryVariables>) {
-        return Apollo.useQuery<IsMemberQuery, IsMemberQueryVariables>(IsMemberDocument, baseOptions);
-      }
+  return Apollo.useQuery<IsMemberQuery, IsMemberQueryVariables>(IsMemberDocument, baseOptions);
+}
 export function useIsMemberLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<IsMemberQuery, IsMemberQueryVariables>) {
-          return Apollo.useLazyQuery<IsMemberQuery, IsMemberQueryVariables>(IsMemberDocument, baseOptions);
-        }
+  return Apollo.useLazyQuery<IsMemberQuery, IsMemberQueryVariables>(IsMemberDocument, baseOptions);
+}
 export type IsMemberQueryHookResult = ReturnType<typeof useIsMemberQuery>;
 export type IsMemberLazyQueryHookResult = ReturnType<typeof useIsMemberLazyQuery>;
 export type IsMemberQueryResult = Apollo.QueryResult<IsMemberQuery, IsMemberQueryVariables>;
@@ -929,7 +1021,6 @@ export const MeDocument = gql`
     id
     username
     email
-    profilePicture
   }
 }
     `;
@@ -950,11 +1041,11 @@ export const MeDocument = gql`
  * });
  */
 export function useMeQuery(baseOptions?: Apollo.QueryHookOptions<MeQuery, MeQueryVariables>) {
-        return Apollo.useQuery<MeQuery, MeQueryVariables>(MeDocument, baseOptions);
-      }
+  return Apollo.useQuery<MeQuery, MeQueryVariables>(MeDocument, baseOptions);
+}
 export function useMeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<MeQuery, MeQueryVariables>) {
-          return Apollo.useLazyQuery<MeQuery, MeQueryVariables>(MeDocument, baseOptions);
-        }
+  return Apollo.useLazyQuery<MeQuery, MeQueryVariables>(MeDocument, baseOptions);
+}
 export type MeQueryHookResult = ReturnType<typeof useMeQuery>;
 export type MeLazyQueryHookResult = ReturnType<typeof useMeLazyQuery>;
 export type MeQueryResult = Apollo.QueryResult<MeQuery, MeQueryVariables>;
@@ -989,11 +1080,11 @@ export const MyProgramsDocument = gql`
  * });
  */
 export function useMyProgramsQuery(baseOptions?: Apollo.QueryHookOptions<MyProgramsQuery, MyProgramsQueryVariables>) {
-        return Apollo.useQuery<MyProgramsQuery, MyProgramsQueryVariables>(MyProgramsDocument, baseOptions);
-      }
+  return Apollo.useQuery<MyProgramsQuery, MyProgramsQueryVariables>(MyProgramsDocument, baseOptions);
+}
 export function useMyProgramsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<MyProgramsQuery, MyProgramsQueryVariables>) {
-          return Apollo.useLazyQuery<MyProgramsQuery, MyProgramsQueryVariables>(MyProgramsDocument, baseOptions);
-        }
+  return Apollo.useLazyQuery<MyProgramsQuery, MyProgramsQueryVariables>(MyProgramsDocument, baseOptions);
+}
 export type MyProgramsQueryHookResult = ReturnType<typeof useMyProgramsQuery>;
 export type MyProgramsLazyQueryHookResult = ReturnType<typeof useMyProgramsLazyQuery>;
 export type MyProgramsQueryResult = Apollo.QueryResult<MyProgramsQuery, MyProgramsQueryVariables>;
@@ -1027,11 +1118,11 @@ export const ViewPersonalMessagesDocument = gql`
  * });
  */
 export function useViewPersonalMessagesQuery(baseOptions: Apollo.QueryHookOptions<ViewPersonalMessagesQuery, ViewPersonalMessagesQueryVariables>) {
-        return Apollo.useQuery<ViewPersonalMessagesQuery, ViewPersonalMessagesQueryVariables>(ViewPersonalMessagesDocument, baseOptions);
-      }
+  return Apollo.useQuery<ViewPersonalMessagesQuery, ViewPersonalMessagesQueryVariables>(ViewPersonalMessagesDocument, baseOptions);
+}
 export function useViewPersonalMessagesLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ViewPersonalMessagesQuery, ViewPersonalMessagesQueryVariables>) {
-          return Apollo.useLazyQuery<ViewPersonalMessagesQuery, ViewPersonalMessagesQueryVariables>(ViewPersonalMessagesDocument, baseOptions);
-        }
+  return Apollo.useLazyQuery<ViewPersonalMessagesQuery, ViewPersonalMessagesQueryVariables>(ViewPersonalMessagesDocument, baseOptions);
+}
 export type ViewPersonalMessagesQueryHookResult = ReturnType<typeof useViewPersonalMessagesQuery>;
 export type ViewPersonalMessagesLazyQueryHookResult = ReturnType<typeof useViewPersonalMessagesLazyQuery>;
 export type ViewPersonalMessagesQueryResult = Apollo.QueryResult<ViewPersonalMessagesQuery, ViewPersonalMessagesQueryVariables>;
@@ -1066,11 +1157,11 @@ export const WorkoutDocument = gql`
  * });
  */
 export function useWorkoutQuery(baseOptions: Apollo.QueryHookOptions<WorkoutQuery, WorkoutQueryVariables>) {
-        return Apollo.useQuery<WorkoutQuery, WorkoutQueryVariables>(WorkoutDocument, baseOptions);
-      }
+  return Apollo.useQuery<WorkoutQuery, WorkoutQueryVariables>(WorkoutDocument, baseOptions);
+}
 export function useWorkoutLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<WorkoutQuery, WorkoutQueryVariables>) {
-          return Apollo.useLazyQuery<WorkoutQuery, WorkoutQueryVariables>(WorkoutDocument, baseOptions);
-        }
+  return Apollo.useLazyQuery<WorkoutQuery, WorkoutQueryVariables>(WorkoutDocument, baseOptions);
+}
 export type WorkoutQueryHookResult = ReturnType<typeof useWorkoutQuery>;
 export type WorkoutLazyQueryHookResult = ReturnType<typeof useWorkoutLazyQuery>;
 export type WorkoutQueryResult = Apollo.QueryResult<WorkoutQuery, WorkoutQueryVariables>;
@@ -1105,11 +1196,11 @@ export const WorkoutsDocument = gql`
  * });
  */
 export function useWorkoutsQuery(baseOptions: Apollo.QueryHookOptions<WorkoutsQuery, WorkoutsQueryVariables>) {
-        return Apollo.useQuery<WorkoutsQuery, WorkoutsQueryVariables>(WorkoutsDocument, baseOptions);
-      }
+  return Apollo.useQuery<WorkoutsQuery, WorkoutsQueryVariables>(WorkoutsDocument, baseOptions);
+}
 export function useWorkoutsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<WorkoutsQuery, WorkoutsQueryVariables>) {
-          return Apollo.useLazyQuery<WorkoutsQuery, WorkoutsQueryVariables>(WorkoutsDocument, baseOptions);
-        }
+  return Apollo.useLazyQuery<WorkoutsQuery, WorkoutsQueryVariables>(WorkoutsDocument, baseOptions);
+}
 export type WorkoutsQueryHookResult = ReturnType<typeof useWorkoutsQuery>;
 export type WorkoutsLazyQueryHookResult = ReturnType<typeof useWorkoutsLazyQuery>;
 export type WorkoutsQueryResult = Apollo.QueryResult<WorkoutsQuery, WorkoutsQueryVariables>;
@@ -1141,7 +1232,7 @@ export const NewMessageDocument = gql`
  * });
  */
 export function useNewMessageSubscription(baseOptions?: Apollo.SubscriptionHookOptions<NewMessageSubscription, NewMessageSubscriptionVariables>) {
-        return Apollo.useSubscription<NewMessageSubscription, NewMessageSubscriptionVariables>(NewMessageDocument, baseOptions);
-      }
+  return Apollo.useSubscription<NewMessageSubscription, NewMessageSubscriptionVariables>(NewMessageDocument, baseOptions);
+}
 export type NewMessageSubscriptionHookResult = ReturnType<typeof useNewMessageSubscription>;
 export type NewMessageSubscriptionResult = Apollo.SubscriptionResult<NewMessageSubscription>;

@@ -41,7 +41,7 @@ export class User extends BaseEntity {
     groupConnection: Promise<GroupMembers[]>;
 
     @Field(() => String)
-    @Column({ nullable: true })
+    @Column({ nullable: true, default: "none" })
     profilePicture: string;
 
 }

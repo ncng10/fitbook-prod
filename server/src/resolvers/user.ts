@@ -42,6 +42,16 @@ export class UserResolver {
         return User.findOne(req.session.userId);
     };
 
+    @Query(() => User)
+    userProfile(
+        @Ctx() { req }: MyContext
+    ) {
+        if (!req.session.userId) {
+            return null
+        }
+        return User.findOne(req.session.userId);
+    };
+
     @Mutation(() => UserResponse)
     async register(
         @Arg('options') options: UsernamePasswordInput,

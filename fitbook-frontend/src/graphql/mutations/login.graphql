@@ -7,7 +7,6 @@ mutation Login($userNameOrEmail:String!, $password: String!){
       username
       id
       email
-      profilePicture
     }
   }
 }

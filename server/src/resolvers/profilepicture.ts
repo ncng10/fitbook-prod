@@ -1,18 +1,21 @@
-import { Resolver, Mutation, Arg } from "type-graphql";
+import { Resolver, Mutation, Arg, Ctx } from "type-graphql";
 import { GraphQLUpload, FileUpload } from "graphql-upload";
 import { createWriteStream } from "fs";
 import { getConnection } from "typeorm";
 import { User } from "../entities/User";
+import { MyContext } from "src/types";
 
 
 @Resolver()
 export class ProfilePictureResolver {
     @Mutation(() => Boolean)
-    async addProfilePicture(@Arg("file", () => GraphQLUpload)
-    {
-        createReadStream,
-        filename,
-    }: FileUpload) {
+    async addProfilePicture(
+        @Ctx() { req }: MyContext,
+        @Arg("file", () => GraphQLUpload)
+        {
+            createReadStream,
+            filename,
+        }: FileUpload) {
         await new Promise(async (resolve, reject) =>
             createReadStream()
                 .pipe(createWriteStream(`${__dirname}/../../../images/${filename}`, { autoClose: true }))
@@ -22,7 +25,7 @@ export class ProfilePictureResolver {
         const upload = await getConnection().query(`
             UPDATE public.user
             SET "profilePicture" = '${filename}'
-            WHERE public.user.id = 25
+            WHERE public.user.id = ${req.session.userId}
             RETURNING *
         `)
         console.log("upload", createReadStream)
