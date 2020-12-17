@@ -17,6 +17,7 @@ export const NavBar: React.FC<NavBarProps> = ({ }) => {
     const apolloClient = useApolloClient();
     const router = useRouter();
     let body = null;
+
     if (!data?.me) {
         body =
             <Box mt={5}>
@@ -128,6 +129,7 @@ export const NavBar: React.FC<NavBarProps> = ({ }) => {
                         <MenuButton
                             size="sm"
                             as={Avatar}
+                            src={`http://localhost:5001/images/${data?.me.profilePicture}`}
                             position="fixed"
                             bg="lightgray"
                             top="1.5rem"

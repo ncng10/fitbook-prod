@@ -26,6 +26,8 @@ import { WorkoutResolver } from './resolvers/workout';
 import { createUserLoader } from "./utils/createUserLoader";
 import { v4 } from "uuid"
 import { GraphQLError } from 'graphql';
+import { ProfilePictureResolver } from './resolvers/profilepicture';
+import { graphqlUploadExpress } from 'graphql-upload';
 const PORT = 5001
 require("dotenv").config();
 const main = async () => {
@@ -85,6 +87,8 @@ const main = async () => {
         }
         : {});
 
+    app.use(graphqlUploadExpress({ maxFileSize: 10000000, maxFiles: 10 }));
+    app.use("/images", express.static(path.join(__dirname, "../../images")));
     const apolloServer = new ApolloServer({
         schema: await buildSchema({
             resolvers:
@@ -93,11 +97,13 @@ const main = async () => {
                     GroupResolver,
                     PersonalMessageResolver,
                     ProgramResolver,
-                    WorkoutResolver
+                    WorkoutResolver,
+                    ProfilePictureResolver
                 ],
             validate: false,
             pubSub: pubsub,
         }),
+        uploads: false,
         context: ({ req, res }) => ({ req, res, redis, userLoader: createUserLoader(), pubsub }),
         formatError: (error: GraphQLError) => {
             const errorId = v4();
@@ -109,7 +115,6 @@ const main = async () => {
         subscriptions: {
         }
     });
-
     apolloServer.applyMiddleware({ app, cors: { origin: false } });
     const httpServer = http.createServer(app)
     apolloServer.installSubscriptionHandlers(httpServer)

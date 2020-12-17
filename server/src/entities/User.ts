@@ -40,5 +40,8 @@ export class User extends BaseEntity {
     @OneToMany(() => GroupMembers, (gb) => gb.member)
     groupConnection: Promise<GroupMembers[]>;
 
+    @Field(() => String)
+    @Column({ nullable: true })
+    profilePicture: string;
 
 }
