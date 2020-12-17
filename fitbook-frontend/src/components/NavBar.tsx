@@ -139,9 +139,11 @@ export const NavBar: React.FC<NavBarProps> = ({ }) => {
                         <MenuList>
                             <MenuGroup title={`${data?.me.username}`}>
                                 <MenuDivider />
-                                <MenuItem>
-                                    My Account
+                                <NextLink href="/settings/avatar">
+                                    <MenuItem>
+                                        My Account
                         </MenuItem>
+                                </NextLink>
 
                                 <NextLink href="/groups/all">
                                     <MenuItem>

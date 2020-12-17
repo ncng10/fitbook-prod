@@ -1,5 +1,6 @@
 import React, { useCallback, useState } from 'react';
 import { useDropzone } from 'react-dropzone';
+import { NavBar } from '../../components/NavBar';
 import { useAddProfilePictureMutation } from '../../generated/graphql';
 import { withApollo } from '../../utils/withApollo';
 
@@ -16,6 +17,9 @@ const Avatar: React.FC<AvatarProps> = ({ }) => {
             upload({
                 variables: {
                     file
+                },
+                update: (cache) => {
+                    cache.evict({ fieldName: "me" });
                 }
             })
         },
@@ -24,12 +28,13 @@ const Avatar: React.FC<AvatarProps> = ({ }) => {
     const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop });
     return (
         <React.Fragment>
+            <NavBar />
             <div {...getRootProps()}>
                 <input {...getInputProps()} />
                 {isDragActive ? (
                     <p>Drop the files here ...</p>
                 ) : (
-                        <p>Drag 'n' drop some files here, or click to select files</p>
+                        <p>Drag your image here, or click to select a file.</p>
                     )}
             </div>
         </React.Fragment>
