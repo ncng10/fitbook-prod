@@ -1,12 +1,12 @@
 import { Box, Button, Flex } from '@chakra-ui/react';
-import { Field, Form, Formik } from 'formik'
-import React, { useState } from 'react'
+import { Form, Formik } from 'formik';
+import { useRouter } from 'next/router';
+import React, { useState } from 'react';
+import { AiOutlineEye } from 'react-icons/ai';
 import { InputField } from '../components/InputField';
 import { MeDocument, MeQuery, useLoginMutation } from '../generated/graphql';
 import { toErrorMap } from '../utils/toErrorMap';
-import { useRouter } from 'next/router'
 import { withApollo } from '../utils/withApollo';
-import { AiOutlineEye } from 'react-icons/ai';
 interface loginProps {
 
 }

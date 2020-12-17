@@ -25,7 +25,7 @@ export class ProfilePictureResolver {
             WHERE public.user.id = 25
             RETURNING *
         `)
-        console.log("upload", upload)
+        console.log("upload", createReadStream)
         if (!upload) {
             return false
         }

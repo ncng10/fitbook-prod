@@ -249,6 +249,16 @@ export type RegularErrorFragment = (
   & Pick<FieldError, 'field' | 'message'>
 );
 
+export type AddProfilePictureMutationVariables = Exact<{
+  file: Scalars['Upload'];
+}>;
+
+
+export type AddProfilePictureMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'addProfilePicture'>
+);
+
 export type CreateGroupMutationVariables = Exact<{
   input: GroupInput;
 }>;
@@ -307,7 +317,7 @@ export type LoginMutation = (
       & RegularErrorFragment
     )>>, user?: Maybe<(
       { __typename?: 'User' }
-      & Pick<User, 'username' | 'id' | 'email'>
+      & Pick<User, 'username' | 'id' | 'email' | 'profilePicture'>
     )> }
   ) }
 );
@@ -489,6 +499,36 @@ export const RegularErrorFragmentDoc = gql`
   message
 }
     `;
+export const AddProfilePictureDocument = gql`
+    mutation AddProfilePicture($file: Upload!) {
+  addProfilePicture(file: $file)
+}
+    `;
+export type AddProfilePictureMutationFn = Apollo.MutationFunction<AddProfilePictureMutation, AddProfilePictureMutationVariables>;
+
+/**
+ * __useAddProfilePictureMutation__
+ *
+ * To run a mutation, you first call `useAddProfilePictureMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAddProfilePictureMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [addProfilePictureMutation, { data, loading, error }] = useAddProfilePictureMutation({
+ *   variables: {
+ *      file: // value for 'file'
+ *   },
+ * });
+ */
+export function useAddProfilePictureMutation(baseOptions?: Apollo.MutationHookOptions<AddProfilePictureMutation, AddProfilePictureMutationVariables>) {
+        return Apollo.useMutation<AddProfilePictureMutation, AddProfilePictureMutationVariables>(AddProfilePictureDocument, baseOptions);
+      }
+export type AddProfilePictureMutationHookResult = ReturnType<typeof useAddProfilePictureMutation>;
+export type AddProfilePictureMutationResult = Apollo.MutationResult<AddProfilePictureMutation>;
+export type AddProfilePictureMutationOptions = Apollo.BaseMutationOptions<AddProfilePictureMutation, AddProfilePictureMutationVariables>;
 export const CreateGroupDocument = gql`
     mutation CreateGroup($input: GroupInput!) {
   createGroup(input: $input) {
@@ -603,6 +643,7 @@ export const LoginDocument = gql`
       username
       id
       email
+      profilePicture
     }
   }
 }

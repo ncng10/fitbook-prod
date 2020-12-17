@@ -3,7 +3,7 @@ import { NextPageContext } from 'next';
 import { createWithApollo } from "./createWithApollo";
 import { WebSocketLink } from "@apollo/client/link/ws";
 import { getMainDefinition } from '@apollo/client/utilities';
-
+import { createUploadLink } from "apollo-upload-client"
 const createClient = (ctx: NextPageContext) =>
     new ApolloClient({
         uri: "http://localhost:5001/graphql" as string,
@@ -32,10 +32,11 @@ const wsLink = process.browser ? new WebSocketLink({
         reconnect: true,
     }
 }) : null;
-const httpLink = new HttpLink({
+const httpLink = new createUploadLink({
     uri: 'http://localhost:5001/graphql',
     credentials: "include"
 });
+
 const splitLink = process.browser ? split(
     ({ query }) => {
         const definition = getMainDefinition(query);
@@ -45,7 +46,7 @@ const splitLink = process.browser ? split(
         );
     },
     wsLink,
-    httpLink,
+    httpLink
 ) : httpLink;
 
 export const withApollo = createWithApollo(createClient)

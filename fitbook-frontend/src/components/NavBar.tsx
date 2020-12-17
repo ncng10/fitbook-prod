@@ -127,12 +127,13 @@ export const NavBar: React.FC<NavBarProps> = ({ }) => {
                     </Box>
                     <Menu>
                         <MenuButton
-                            size="sm"
+                            cursor="pointer"
+                            size="md"
                             as={Avatar}
                             src={`http://localhost:5001/images/${data?.me.profilePicture}`}
                             position="fixed"
                             bg="lightgray"
-                            top="1.5rem"
+                            top="1rem"
                             right="1.25rem"
                         />
                         <MenuList>
