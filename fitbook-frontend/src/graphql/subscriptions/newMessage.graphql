@@ -1,9 +1,8 @@
 subscription NewMessage {
-    newMessage{
-        recipientId
-        sender
-        text
-        createdAt
-        senderId
-    }
+  newMessage{
+    sender
+    text
+    recipientId
+    senderId
+  }
 }

@@ -1,7 +1,3 @@
-mutation SendPersonalMessage($input:PersonalMessageInput!, $recipientId: Int!) {
-  sendPersonalMessage(input:$input, recipientId: $recipientId) {
-    text
-    recipientId
-    senderId
-  }
+mutation SendPersonalMessage($recipientId: Int!, $text: PersonalMessageInput!){
+  sendPersonalMessage(recipientId: $recipientId input:$text)
 }

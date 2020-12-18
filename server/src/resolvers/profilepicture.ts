@@ -1,9 +1,8 @@
-import { Resolver, Mutation, Arg, Ctx } from "type-graphql";
-import { GraphQLUpload, FileUpload } from "graphql-upload";
 import { createWriteStream } from "fs";
-import { getConnection } from "typeorm";
-import { User } from "../entities/User";
+import { FileUpload, GraphQLUpload } from "graphql-upload";
 import { MyContext } from "src/types";
+import { Arg, Ctx, Mutation, Resolver } from "type-graphql";
+import { getConnection } from "typeorm";
 
 
 @Resolver()
@@ -28,7 +27,6 @@ export class ProfilePictureResolver {
             WHERE public.user.id = ${req.session.userId}
             RETURNING *
         `)
-        console.log("upload", createReadStream)
         if (!upload) {
             return false
         }

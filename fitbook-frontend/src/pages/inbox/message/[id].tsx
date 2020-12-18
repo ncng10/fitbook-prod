@@ -20,16 +20,12 @@ const Message: React.FC<MessageProps> = ({ }) => {
         skip: intId === -1,
         variables: {
             input: intId,
-        },
+        }
     });
-    const { data: newMessage, loading, error } = useNewMessageSubscription({
-
-    });
-
-    if (newMessage?.newMessage) {
+    const { data: newMessage, loading, error } = useNewMessageSubscription();
+    if (newMessage?.newMessage.text) {
         refetch
     }
-    console.log(newMessage)
     return (
         <React.Fragment>
             <Box >
@@ -52,13 +48,13 @@ const Message: React.FC<MessageProps> = ({ }) => {
 
                     ))}
                 </Box>
+                {newMessage?.newMessage.text}
                 <Box>
                     <Formik
                         initialValues={{ text: "" }}
                         onSubmit={async (values) => {
                             const { errors } = await sendMessage({
-
-                                variables: { input: values, recipientId: intId },
+                                variables: { text: values, recipientId: intId },
                                 update: (cache) => {
                                     cache.evict({ fieldName: "viewPersonalMessages" })
                                 },

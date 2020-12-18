@@ -3,13 +3,16 @@ import connectRedis from 'connect-redis';
 import cors from 'cors';
 import express from 'express';
 import session from 'express-session';
+import { GraphQLError } from 'graphql';
 import { RedisPubSub } from "graphql-redis-subscriptions";
+import { graphqlUploadExpress } from 'graphql-upload';
 import http from "http";
 import Redis from 'ioredis';
 import path from 'path';
 import "reflect-metadata";
 import { buildSchema } from 'type-graphql';
-import { createConnection, getConnection } from 'typeorm';
+import { createConnection } from 'typeorm';
+import { v4 } from "uuid";
 import { Exercise } from './entities/Exercise';
 import { Group } from "./entities/Group";
 import { GroupMembers } from "./entities/GroupMembers";
@@ -20,14 +23,11 @@ import { User } from './entities/User';
 import { Workout } from './entities/Workout';
 import { GroupResolver } from "./resolvers/group";
 import { PersonalMessageResolver } from "./resolvers/personalmessage";
+import { ProfilePictureResolver } from './resolvers/profilepicture';
 import { ProgramResolver } from "./resolvers/program";
 import { UserResolver } from './resolvers/user';
 import { WorkoutResolver } from './resolvers/workout';
 import { createUserLoader } from "./utils/createUserLoader";
-import { v4 } from "uuid"
-import { GraphQLError } from 'graphql';
-import { ProfilePictureResolver } from './resolvers/profilepicture';
-import { graphqlUploadExpress } from 'graphql-upload';
 const PORT = 5001
 require("dotenv").config();
 const main = async () => {

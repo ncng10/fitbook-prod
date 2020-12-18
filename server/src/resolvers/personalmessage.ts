@@ -28,7 +28,7 @@ export class PersonalMessageResolver {
         return messages
     };
 
-    @Mutation(() => [PersonalMessage])
+    @Mutation(() => Boolean)
     async sendPersonalMessage(
         @Arg("input") input: PersonalMessageInput,
         @Arg("recipientId", () => Int) recipientId: number,
@@ -36,16 +36,14 @@ export class PersonalMessageResolver {
         @Ctx() { req }: MyContext
     ) {
         const user = await User.findOne(req.session.userId)
-        const personalMessage = await getConnection().query(
-            `
-            INSERT INTO public.personal_message 
-            ("recipientId", "senderId", sender, text)
-            VALUES ('${recipientId}', '${req.session.userId}', '${user?.username}', '${input.text}')
-            RETURNING *
-           `
-        );
+        const personalMessage = await PersonalMessage.create({
+            text: input.text,
+            recipientId: recipientId,
+            senderId: req.session.userId,
+            sender: user?.username
+        }).save()
         await pubSub.publish("MESSAGES", personalMessage)
-        return personalMessage
+        return true
     };
 
     @Query(() => [PersonalMessage])
@@ -60,13 +58,19 @@ export class PersonalMessageResolver {
         return inbox
     };
 
-    @Subscription(() => [PersonalMessage], {
+    @Subscription(() => PersonalMessage, {
         topics: "MESSAGES"
     })
     newMessage(
-        @Root() personalMessage: string[]
+        @Root() personalMessage: PersonalMessage
     ) {
-        return personalMessage
+        console.log(personalMessage)
+        return {
+            sender: personalMessage.sender,
+            text: personalMessage.text,
+            senderId: personalMessage.senderId,
+            recipientId: personalMessage.recipientId
+        }
     };
 
 }

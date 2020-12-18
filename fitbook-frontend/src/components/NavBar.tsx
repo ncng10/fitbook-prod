@@ -110,7 +110,7 @@ export const NavBar: React.FC<NavBarProps> = ({ }) => {
                         top="1.5rem"
                         position="fixed"
                         display='flex'
-                        right="4.95rem"
+                        right="5.4rem"
                     >
                         <NextLink href="/workout/programs/all">
                             <Box cursor="pointer" mr={5}>
@@ -130,7 +130,7 @@ export const NavBar: React.FC<NavBarProps> = ({ }) => {
                             cursor="pointer"
                             size="md"
                             as={Avatar}
-                            src={`http://localhost:5001/images/${data?.userProfile.profilePicture}`}
+                            src={`http://localhost:5001/images/${data?.userProfile?.profilePicture}`}
                             position="fixed"
                             bg="lightgray"
                             top="1rem"

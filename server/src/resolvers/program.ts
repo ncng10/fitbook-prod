@@ -45,7 +45,6 @@ export class ProgramResolver {
            SELECT * FROM public.program WHERE public.program."creatorId" = ${req.session.userId}
             `
         );
-        console.log(programs)
         return programs
     };
 }
