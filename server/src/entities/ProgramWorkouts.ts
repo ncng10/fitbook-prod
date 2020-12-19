@@ -1,7 +1,5 @@
 import { Field, ObjectType } from "type-graphql";
-import { Entity, BaseEntity, PrimaryColumn, ManyToOne, JoinColumn } from "typeorm";
-import { User } from "../entities/User"
-import { Group } from "./Group";
+import { BaseEntity, Entity, JoinColumn, ManyToOne, PrimaryColumn } from "typeorm";
 import { Program } from "./Program";
 import { Workout } from "./Workout";
 

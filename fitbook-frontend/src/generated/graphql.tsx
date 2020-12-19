@@ -17,6 +17,7 @@ export type Scalars = {
 
 export type Query = {
   __typename?: 'Query';
+  exercisesInAWorkout: Array<Exercise>;
   group: Group;
   groups: Array<Group>;
   isMember: Array<Group>;
@@ -28,6 +29,11 @@ export type Query = {
   userProfile: User;
   workouts: Array<Workout>;
   workout: Workout;
+};
+
+
+export type QueryExercisesInAWorkoutArgs = {
+  input: Scalars['Int'];
 };
 
 
@@ -48,6 +54,32 @@ export type QueryWorkoutsArgs = {
 
 export type QueryWorkoutArgs = {
   workoutId: Scalars['Int'];
+};
+
+export type Exercise = {
+  __typename?: 'Exercise';
+  id: Scalars['Float'];
+  workoutIdentity: Scalars['Float'];
+  exerciseName: Scalars['String'];
+  weight: Scalars['Float'];
+  sets: Scalars['Float'];
+  reps: Scalars['Float'];
+  time: Scalars['Float'];
+  rpe: Scalars['Float'];
+  notes: Scalars['String'];
+  workout: Workout;
+};
+
+export type Workout = {
+  __typename?: 'Workout';
+  id: Scalars['Float'];
+  workoutDate: Scalars['String'];
+  creatorId: Scalars['Float'];
+  workoutName: Scalars['String'];
+  workoutCompleted: Scalars['Boolean'];
+  isShared: Scalars['Boolean'];
+  workoutCategory: Scalars['String'];
+  exercises: Array<Exercise>;
 };
 
 export type Group = {
@@ -94,33 +126,9 @@ export type Program = {
   updatedAt: Scalars['String'];
 };
 
-export type Workout = {
-  __typename?: 'Workout';
-  id: Scalars['Float'];
-  workoutDate: Scalars['String'];
-  creatorId: Scalars['Float'];
-  workoutName: Scalars['String'];
-  workoutCompleted: Scalars['Boolean'];
-  isShared: Scalars['Boolean'];
-  workoutCategory: Scalars['String'];
-  exercises: Array<Exercise>;
-};
-
-export type Exercise = {
-  __typename?: 'Exercise';
-  id: Scalars['Float'];
-  exerciseName: Scalars['String'];
-  weight: Scalars['Float'];
-  sets: Scalars['Float'];
-  reps: Scalars['Float'];
-  time: Scalars['Float'];
-  rpe: Scalars['Float'];
-  notes: Scalars['String'];
-  workout: Workout;
-};
-
 export type Mutation = {
   __typename?: 'Mutation';
+  addExerciseToWorkout: Array<Exercise>;
   createGroup: Group;
   joinGroup: Array<GroupMembers>;
   sendPersonalMessage: Scalars['Boolean'];
@@ -131,6 +139,11 @@ export type Mutation = {
   logout: Scalars['Boolean'];
   createWorkout: Array<Workout>;
   addWorkoutToProgram: Array<ProgramWorkouts>;
+};
+
+
+export type MutationAddExerciseToWorkoutArgs = {
+  inputs: NewExerciseInput;
 };
 
 
@@ -178,6 +191,17 @@ export type MutationCreateWorkoutArgs = {
 
 export type MutationAddWorkoutToProgramArgs = {
   input: AddWorkoutToProgramInput;
+};
+
+export type NewExerciseInput = {
+  workoutIdentity: Scalars['Float'];
+  exerciseName: Scalars['String'];
+  weight: Scalars['Float'];
+  sets: Scalars['Float'];
+  reps: Scalars['Float'];
+  time: Scalars['Float'];
+  rpe: Scalars['Float'];
+  notes: Scalars['String'];
 };
 
 export type GroupInput = {
@@ -248,6 +272,19 @@ export type Subscription = {
 export type RegularErrorFragment = (
   { __typename?: 'FieldError' }
   & Pick<FieldError, 'field' | 'message'>
+);
+
+export type AddExerciseToWorkoutMutationVariables = Exact<{
+  inputs: NewExerciseInput;
+}>;
+
+
+export type AddExerciseToWorkoutMutation = (
+  { __typename?: 'Mutation' }
+  & { addExerciseToWorkout: Array<(
+    { __typename?: 'Exercise' }
+    & Pick<Exercise, 'id' | 'workoutIdentity' | 'exerciseName' | 'weight' | 'sets' | 'reps' | 'time' | 'rpe' | 'notes'>
+  )> }
 );
 
 export type AddProfilePictureMutationVariables = Exact<{
@@ -370,6 +407,19 @@ export type UserProfileQuery = (
     { __typename?: 'User' }
     & Pick<User, 'id' | 'username' | 'email' | 'profilePicture'>
   ) }
+);
+
+export type ExercisesInAWorkoutQueryVariables = Exact<{
+  input: Scalars['Int'];
+}>;
+
+
+export type ExercisesInAWorkoutQuery = (
+  { __typename?: 'Query' }
+  & { exercisesInAWorkout: Array<(
+    { __typename?: 'Exercise' }
+    & Pick<Exercise, 'exerciseName' | 'weight' | 'sets' | 'reps' | 'time' | 'rpe' | 'notes' | 'workoutIdentity' | 'id'>
+  )> }
 );
 
 export type GroupQueryVariables = Exact<{
@@ -508,6 +558,46 @@ export const RegularErrorFragmentDoc = gql`
   message
 }
     `;
+export const AddExerciseToWorkoutDocument = gql`
+    mutation AddExerciseToWorkout($inputs: NewExerciseInput!) {
+  addExerciseToWorkout(inputs: $inputs) {
+    id
+    workoutIdentity
+    exerciseName
+    weight
+    sets
+    reps
+    time
+    rpe
+    notes
+  }
+}
+    `;
+export type AddExerciseToWorkoutMutationFn = Apollo.MutationFunction<AddExerciseToWorkoutMutation, AddExerciseToWorkoutMutationVariables>;
+
+/**
+ * __useAddExerciseToWorkoutMutation__
+ *
+ * To run a mutation, you first call `useAddExerciseToWorkoutMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAddExerciseToWorkoutMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [addExerciseToWorkoutMutation, { data, loading, error }] = useAddExerciseToWorkoutMutation({
+ *   variables: {
+ *      inputs: // value for 'inputs'
+ *   },
+ * });
+ */
+export function useAddExerciseToWorkoutMutation(baseOptions?: Apollo.MutationHookOptions<AddExerciseToWorkoutMutation, AddExerciseToWorkoutMutationVariables>) {
+        return Apollo.useMutation<AddExerciseToWorkoutMutation, AddExerciseToWorkoutMutationVariables>(AddExerciseToWorkoutDocument, baseOptions);
+      }
+export type AddExerciseToWorkoutMutationHookResult = ReturnType<typeof useAddExerciseToWorkoutMutation>;
+export type AddExerciseToWorkoutMutationResult = Apollo.MutationResult<AddExerciseToWorkoutMutation>;
+export type AddExerciseToWorkoutMutationOptions = Apollo.BaseMutationOptions<AddExerciseToWorkoutMutation, AddExerciseToWorkoutMutationVariables>;
 export const AddProfilePictureDocument = gql`
     mutation AddProfilePicture($file: Upload!) {
   addProfilePicture(file: $file)
@@ -817,6 +907,47 @@ export function useUserProfileLazyQuery(baseOptions?: Apollo.LazyQueryHookOption
 export type UserProfileQueryHookResult = ReturnType<typeof useUserProfileQuery>;
 export type UserProfileLazyQueryHookResult = ReturnType<typeof useUserProfileLazyQuery>;
 export type UserProfileQueryResult = Apollo.QueryResult<UserProfileQuery, UserProfileQueryVariables>;
+export const ExercisesInAWorkoutDocument = gql`
+    query ExercisesInAWorkout($input: Int!) {
+  exercisesInAWorkout(input: $input) {
+    exerciseName
+    weight
+    sets
+    reps
+    time
+    rpe
+    notes
+    workoutIdentity
+    id
+  }
+}
+    `;
+
+/**
+ * __useExercisesInAWorkoutQuery__
+ *
+ * To run a query within a React component, call `useExercisesInAWorkoutQuery` and pass it any options that fit your needs.
+ * When your component renders, `useExercisesInAWorkoutQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useExercisesInAWorkoutQuery({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useExercisesInAWorkoutQuery(baseOptions: Apollo.QueryHookOptions<ExercisesInAWorkoutQuery, ExercisesInAWorkoutQueryVariables>) {
+        return Apollo.useQuery<ExercisesInAWorkoutQuery, ExercisesInAWorkoutQueryVariables>(ExercisesInAWorkoutDocument, baseOptions);
+      }
+export function useExercisesInAWorkoutLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ExercisesInAWorkoutQuery, ExercisesInAWorkoutQueryVariables>) {
+          return Apollo.useLazyQuery<ExercisesInAWorkoutQuery, ExercisesInAWorkoutQueryVariables>(ExercisesInAWorkoutDocument, baseOptions);
+        }
+export type ExercisesInAWorkoutQueryHookResult = ReturnType<typeof useExercisesInAWorkoutQuery>;
+export type ExercisesInAWorkoutLazyQueryHookResult = ReturnType<typeof useExercisesInAWorkoutLazyQuery>;
+export type ExercisesInAWorkoutQueryResult = Apollo.QueryResult<ExercisesInAWorkoutQuery, ExercisesInAWorkoutQueryVariables>;
 export const GroupDocument = gql`
     query Group($id: Int!) {
   group(id: $id) {

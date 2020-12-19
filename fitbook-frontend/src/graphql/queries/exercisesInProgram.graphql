@@ -1,0 +1,13 @@
+query ExercisesInAWorkout($input: Int!){
+  exercisesInAWorkout(input:$input){
+    exerciseName
+    weight
+    sets
+    reps
+    time
+    rpe
+    notes
+    workoutIdentity
+    id
+  }
+}

@@ -1,0 +1,13 @@
+mutation AddExerciseToWorkout($inputs: NewExerciseInput!) {
+  addExerciseToWorkout(inputs: $inputs) {
+    id
+    workoutIdentity
+    exerciseName
+    weight
+    sets
+    reps
+    time
+    rpe
+    notes
+  }
+}

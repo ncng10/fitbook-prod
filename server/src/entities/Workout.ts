@@ -1,8 +1,8 @@
 import { Field, ObjectType } from "type-graphql";
-import { BaseEntity, Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { BaseEntity, Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { Exercise } from "./Exercise";
-import { Program } from "./Program";
 import { ProgramWorkouts } from "./ProgramWorkouts";
+import { WorkoutExercises } from "./WorkoutExercise";
 
 @ObjectType()
 @Entity()
@@ -42,5 +42,9 @@ export class Workout extends BaseEntity {
 
     @OneToMany(() => ProgramWorkouts, (gb) => gb.group)
     programConnection: Promise<ProgramWorkouts[]>;
+
+    @OneToMany(() => WorkoutExercises, (we) => we.workout)
+    exerciseConnection: Promise<WorkoutExercises[]>;
+
 
 }

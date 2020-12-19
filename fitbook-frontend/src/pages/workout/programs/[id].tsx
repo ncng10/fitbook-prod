@@ -20,6 +20,7 @@ const Program: React.FC<ProgramProps> = ({ }) => {
             <NavBar />
             Program number {intId}
             <Box>
+                <Box>Your workouts:</Box>
                 <WorkoutsList />
             </Box>
         </React.Fragment>

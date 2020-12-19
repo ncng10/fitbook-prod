@@ -2,7 +2,6 @@ import { Field, ObjectType } from "type-graphql";
 import { BaseEntity, Column, CreateDateColumn, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 import { ProgramWorkouts } from "./ProgramWorkouts";
 import { User } from "./User";
-import { Workout } from "./Workout";
 
 @ObjectType()
 @Entity()
