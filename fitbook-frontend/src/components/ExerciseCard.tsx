@@ -8,11 +8,11 @@ interface ExerciseCardProps {
     exerciseName: string;
     id: number;
     workoutIdentity: number;
-    weight: number;
-    sets: number;
-    reps: number;
-    time: number;
-    rpe: number;
+    weight: string;
+    sets: string;
+    reps: string;
+    time: string;
+    rpe: string;
     notes: string;
 }
 

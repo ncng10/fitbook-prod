@@ -6,6 +6,7 @@ import { useExercisesInAWorkoutQuery } from '../../../../generated/graphql';
 import { useGetIntId } from '../../../../utils/useGetIntId';
 import { withApollo } from '../../../../utils/withApollo';
 import { RiMenuAddLine } from "react-icons/ri"
+import CreateExerciseForm from '../../../../components/CreateExerciseForm';
 
 interface WorkoutProps {
 
@@ -58,23 +59,7 @@ const Workout: React.FC<WorkoutProps> = ({ }) => {
                 marginTop="2rem"
             >
                 {body}
-                <IconButton
-                    // position="fixed"
-                    // bottom={45}
-                    // right={25}
-                    height={55}
-                    width={55}
-                    borderRadius={30}
-                    mt={5}
-                    mb={5}
-                    outline="none"
-                    color="#353535"
-                    boxShadow=" 5px 0px 15px -10px #52575a;"
-                    size="lg"
-                    fontSize={35}
-                    aria-label="add-exercise-button"
-                    icon={<RiMenuAddLine />}
-                />
+                <CreateExerciseForm />
             </Box>
         </React.Fragment>
     );

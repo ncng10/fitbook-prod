@@ -11,7 +11,7 @@ import Redis from 'ioredis';
 import path from 'path';
 import "reflect-metadata";
 import { buildSchema } from 'type-graphql';
-import { createConnection } from 'typeorm';
+import { createConnection, getConnection } from 'typeorm';
 import { v4 } from "uuid";
 import { Exercise } from './entities/Exercise';
 import { Group } from "./entities/Group";
@@ -47,7 +47,6 @@ const main = async () => {
         port: 6379,
         retryStrategy: times => Math.max(times * 100, 3000),
     };
-
 
 
     const app = express();

@@ -10,15 +10,15 @@ class NewExerciseInput {
     @Field()
     exerciseName: string;
     @Field()
-    weight: number;
+    weight: string;
     @Field()
-    sets: number;
+    sets: string;
     @Field()
-    reps: number;
+    reps: string;
     @Field()
-    time: number;
+    time: string;
     @Field()
-    rpe: number;
+    rpe: string;
     @Field()
     notes: string;
 }
@@ -37,8 +37,8 @@ export class ExerciseResolver {
             "time", "rpe", "notes"
             )
             VALUES(
-            '${input.workoutIdentity}', '${input.exerciseName}', ${input.weight},
-            ${input.sets}, ${input.reps}, ${input.time}, ${input.rpe}, '${input.notes}'
+            ${input.workoutIdentity}, '${input.exerciseName}', '${input.weight}',
+           ' ${input.sets}', '${input.reps}', '${input.time}', '${input.rpe}', '${input.notes}'
             )
             RETURNING *
             `

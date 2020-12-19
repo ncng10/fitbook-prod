@@ -18,24 +18,24 @@ export class Exercise extends BaseEntity {
     exerciseName: string;
 
     @Field()
-    @Column()
-    weight: number;
+    @Column({ nullable: true, default: "0" })
+    weight: string;
 
     @Field()
-    @Column({ nullable: true })
-    sets: number;
+    @Column({ nullable: true, default: "0" })
+    sets: string;
 
     @Field()
-    @Column({ nullable: true })
-    reps: number;
+    @Column({ nullable: true, default: "0" })
+    reps: string;
 
     @Field()
-    @Column({ nullable: true })
-    time: number;
+    @Column({ nullable: true, default: "0" })
+    time: string;
 
     @Field()
-    @Column({ nullable: true })
-    rpe: number;
+    @Column({ nullable: true, default: "0" })
+    rpe: string;
 
     @Field()
     @Column({ nullable: true })
