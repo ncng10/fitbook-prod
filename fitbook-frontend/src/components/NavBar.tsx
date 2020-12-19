@@ -2,7 +2,7 @@ import { useApolloClient } from '@apollo/client';
 import { Avatar, Box, Button, Menu, MenuButton, MenuDivider, MenuGroup, MenuItem, MenuList, Switch, Text, useColorMode, useMediaQuery, IconButton } from '@chakra-ui/react';
 import NextLink from "next/link";
 import { useRouter } from 'next/router';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { AiOutlineUnorderedList } from 'react-icons/ai';
 import { useLogoutMutation, useUserProfileQuery } from '../generated/graphql';
 import ProgramMenu from './ProgramMenu';
@@ -34,154 +34,83 @@ export const NavBar: React.FC<NavBarProps> = ({ }) => {
             </Box >
     } else {
         body =
-            !isLargerThan600 ?
-                <Box
-                    className="navBar"
-                    mt={5} display="flex" justifyContent="flex-start" ml={5}>
-                    <Box cursor="pointer" display="flex" flexDirection="row">
-                        <NextLink href="/">
-                            <Box mr={5}>
-                                <Text>Home</Text>
-                            </Box>
-                        </NextLink>
-                    </Box>
-                    <Box
-                        top="1.5rem"
-                        position="fixed"
-                        display='flex'
-                        right="5.4rem"
-                    >
-                        <NextLink href="/workout/programs/all">
-                            <Box cursor="pointer" mr={5}>
-                                <IconButton mt={-1}
-                                    borderRadius={50}
-                                    aria-label="list-of-programs-button"
-                                    icon={<AiOutlineUnorderedList />}
-                                />
-                            </Box>
-                        </NextLink>
-                        <Box mt={-1}>
-                            <ProgramMenu />
+            <Box
+                className="navBar"
+                mt={5} display="flex" justifyContent="flex-start" ml={5}
+            >
+                <Box cursor="pointer" display="flex" flexDirection="row">
+                    <NextLink href="/">
+                        <Box mr={5}>
+                            <Text>Home</Text>
                         </Box>
-                    </Box>
-                    <Menu>
-                        <MenuButton
-                            cursor="pointer"
-                            size="md"
-                            as={Avatar}
-                            src={`http://localhost:5001/images/${data?.userProfile?.profilePicture}`}
-                            position="fixed"
-                            bg="lightgray"
-                            top="1rem"
-                            right="1.25rem"
-                        />
-                        <MenuList>
-                            <MenuGroup title={`${data?.userProfile.username}`}>
-                                <MenuDivider />
-                                <NextLink href="/settings/avatar">
-                                    <MenuItem>
-                                        My Account
-                </MenuItem>
-                                </NextLink>
-
-                                <NextLink href="/groups/all">
-                                    <MenuItem>
-                                        Groups
-                </MenuItem>
-                                </NextLink>
-
-                                <NextLink href="/inbox/messages">
-                                    <MenuItem>
-                                        Inbox
-                    </MenuItem>
-                                </NextLink>
-
-                                <MenuDivider />
-                                <MenuItem onClick={async () => {
-                                    await logout();
-                                    apolloClient.resetStore();
-                                    router.push("/")
-                                }}>
-                                    Logout
-                </MenuItem>
-                            </MenuGroup>
-                        </MenuList>
-                    </Menu>
-                </Box >
-                :
+                    </NextLink>
+                </Box>
                 <Box
-                    className="navBar"
-                    mt={5} display="flex" justifyContent="flex-start" ml={5}>
-                    <Box cursor="pointer" display="flex" flexDirection="row">
-                        <NextLink href="/">
-                            <Box mr={5}>
-                                <Text>Home</Text>
-                            </Box>
-                        </NextLink>
-                    </Box>
-                    <Box
-                        top="1.5rem"
-                        position="fixed"
-                        display='flex'
-                        right="5.4rem"
-                    >
-                        <NextLink href="/workout/programs/all">
-                            <Box cursor="pointer" mr={5}>
-                                <IconButton mt={-1}
-                                    borderRadius={50}
-                                    aria-label="list-of-programs-button"
-                                    icon={<AiOutlineUnorderedList />}
-                                />
-                            </Box>
-                        </NextLink>
-                        <Box mt={-1}>
-                            <ProgramMenu />
+                    top="1.5rem"
+                    display='flex'
+                    right="4.75rem"
+                    position="fixed"
+                >
+                    <NextLink href="/workout/programs/all">
+                        <Box
+                            mr={12}
+                            cursor="pointer">
+                            <IconButton mt={-1}
+                                borderRadius={50}
+                                position="fixed"
+                                aria-label="list-of-programs-button"
+                                icon={<AiOutlineUnorderedList />}
+                            />
                         </Box>
+                    </NextLink>
+                    <Box mt={-1}>
+                        <ProgramMenu />
                     </Box>
-                    <Menu>
-                        <MenuButton
-                            cursor="pointer"
-                            size="md"
-                            as={Avatar}
-                            src={`http://localhost:5001/images/${data?.userProfile?.profilePicture}`}
-                            position="fixed"
-                            bg="lightgray"
-                            top="1rem"
-                            right="1.25rem"
-                        />
-                        <MenuList>
-                            <MenuGroup title={`${data?.userProfile.username}`}>
-                                <MenuDivider />
-                                <NextLink href="/settings/avatar">
-                                    <MenuItem>
-                                        My Account
+                </Box>
+                <Menu>
+                    <MenuButton
+                        cursor="pointer"
+                        size="md"
+                        as={Avatar}
+                        src={`http://localhost:5001/images/${data?.userProfile?.profilePicture}`}
+                        position="fixed"
+                        bg="lightgray"
+                        top="1rem"
+                        right="1.25rem"
+                    />
+                    <MenuList>
+                        <MenuGroup title={`${data?.userProfile.username}`}>
+                            <MenuDivider />
+                            <NextLink href="/settings/avatar">
+                                <MenuItem>
+                                    My Account
                         </MenuItem>
-                                </NextLink>
+                            </NextLink>
 
-                                <NextLink href="/groups/all">
-                                    <MenuItem>
-                                        Groups
+                            <NextLink href="/groups/all">
+                                <MenuItem>
+                                    Groups
                         </MenuItem>
-                                </NextLink>
+                            </NextLink>
 
-                                <NextLink href="/inbox/messages">
-                                    <MenuItem>
-                                        Inbox
+                            <NextLink href="/inbox/messages">
+                                <MenuItem>
+                                    Inbox
                             </MenuItem>
-                                </NextLink>
+                            </NextLink>
 
-                                <MenuDivider />
-                                <MenuItem onClick={async () => {
-                                    await logout();
-                                    apolloClient.resetStore();
-                                    router.push("/")
-                                }}>
-                                    Logout
+                            <MenuDivider />
+                            <MenuItem onClick={async () => {
+                                await logout();
+                                apolloClient.resetStore();
+                                router.push("/")
+                            }}>
+                                Logout
                         </MenuItem>
-                            </MenuGroup>
-                        </MenuList>
-                    </Menu>
-                </Box >
+                        </MenuGroup>
+                    </MenuList>
+                </Menu>
+            </Box >
     };
     return (
         <React.Fragment>

@@ -1,10 +1,11 @@
-import { Box } from '@chakra-ui/react';
-import React from 'react'
+import { Box, IconButton } from '@chakra-ui/react';
+import React from 'react';
 import ExerciseCard from '../../../../components/ExerciseCard';
 import { NavBar } from '../../../../components/NavBar';
 import { useExercisesInAWorkoutQuery } from '../../../../generated/graphql';
 import { useGetIntId } from '../../../../utils/useGetIntId';
 import { withApollo } from '../../../../utils/withApollo';
+import { RiMenuAddLine } from "react-icons/ri"
 
 interface WorkoutProps {
 
@@ -54,9 +55,26 @@ const Workout: React.FC<WorkoutProps> = ({ }) => {
                 flexDirection="column"
                 alignItems="center"
                 justifyContent="center"
-                marginTop="5rem"
+                marginTop="2rem"
             >
                 {body}
+                <IconButton
+                    // position="fixed"
+                    // bottom={45}
+                    // right={25}
+                    height={55}
+                    width={55}
+                    borderRadius={30}
+                    mt={5}
+                    mb={5}
+                    outline="none"
+                    color="#353535"
+                    boxShadow=" 5px 0px 15px -10px #52575a;"
+                    size="lg"
+                    fontSize={35}
+                    aria-label="add-exercise-button"
+                    icon={<RiMenuAddLine />}
+                />
             </Box>
         </React.Fragment>
     );

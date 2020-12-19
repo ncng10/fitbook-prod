@@ -11,7 +11,7 @@ import Redis from 'ioredis';
 import path from 'path';
 import "reflect-metadata";
 import { buildSchema } from 'type-graphql';
-import { createConnection, getConnection } from 'typeorm';
+import { createConnection } from 'typeorm';
 import { v4 } from "uuid";
 import { Exercise } from './entities/Exercise';
 import { Group } from "./entities/Group";
@@ -21,7 +21,6 @@ import { Program } from "./entities/Program";
 import { ProgramWorkouts } from './entities/ProgramWorkouts';
 import { User } from './entities/User';
 import { Workout } from './entities/Workout';
-import { WorkoutExercises } from './entities/WorkoutExercise';
 import { ExerciseResolver } from './resolvers/exercise';
 import { GroupResolver } from "./resolvers/group";
 import { PersonalMessageResolver } from "./resolvers/personalmessage";
@@ -40,7 +39,7 @@ const main = async () => {
         logging: true,
         synchronize: true,
         migrations: [path.join(__dirname, "./migrations/*")],
-        entities: [User, Group, GroupMembers, PersonalMessage, Program, Workout, Exercise, ProgramWorkouts, WorkoutExercises]
+        entities: [User, Group, GroupMembers, PersonalMessage, Program, Workout, Exercise, ProgramWorkouts]
     });
 
     const options: Redis.RedisOptions = {

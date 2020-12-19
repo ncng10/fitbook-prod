@@ -1,8 +1,8 @@
 
 import { Box, IconButton } from '@chakra-ui/react';
-
-import React from 'react'
+import React from 'react';
 import { AiOutlineEdit, AiOutlineInfo } from 'react-icons/ai';
+
 
 interface ExerciseCardProps {
     exerciseName: string;
@@ -34,15 +34,15 @@ const ExerciseCard: React.FC<ExerciseCardProps> = ({ exerciseName, id, workoutId
                         style={{
                             top: 88,
                             marginLeft: 0,
-                            width: 200,
+                            width: 800,
                             height: 35,
                             display: "flex",
                             alignItems: "center",
                             justifyContent: "center",
                             borderRadius: 12,
-                            borderBottomRightRadius: 5,
+                            borderBottomRightRadius: 0,
                             borderBottomLeftRadius: 5,
-                            borderTopRightRadius: 5,
+                            borderTopRightRadius: 0,
                             backgroundColor: "#353535",
                             color: "white",
                         }}

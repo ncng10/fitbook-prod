@@ -63,7 +63,7 @@ export class WorkoutResolver {
     ) {
         const workoutsList = await getConnection().query(
             `
-            SELECT * FROM public.workout INNER JOIN public.program_workouts ON public.workout.id = public.program_workouts."workoutIdentity"
+            SELECT * FROM public.workout INNER JOIN public.program_workouts ON public.workout.id = public.program_workouts."workoutId"
             AND public.program_workouts."programId" = ${programId} AND public.workout."creatorId" = ${req.session.userId}
             `
         )
