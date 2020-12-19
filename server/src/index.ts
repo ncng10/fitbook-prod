@@ -21,6 +21,7 @@ import { Program } from "./entities/Program";
 import { ProgramWorkouts } from './entities/ProgramWorkouts';
 import { User } from './entities/User';
 import { Workout } from './entities/Workout';
+import { ExerciseResolver } from './resolvers/exercise';
 import { GroupResolver } from "./resolvers/group";
 import { PersonalMessageResolver } from "./resolvers/personalmessage";
 import { ProfilePictureResolver } from './resolvers/profilepicture';
@@ -99,7 +100,8 @@ const main = async () => {
                     PersonalMessageResolver,
                     ProgramResolver,
                     WorkoutResolver,
-                    ProfilePictureResolver
+                    ProfilePictureResolver,
+                    ExerciseResolver
                 ],
             validate: false,
             pubSub: pubsub,

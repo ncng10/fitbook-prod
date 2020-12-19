@@ -35,34 +35,65 @@ export const NavBar: React.FC<NavBarProps> = ({ }) => {
     } else {
         body =
             !isLargerThan600 ?
-                <Box mt={5} display="flex" w="100%" justifyContent="flex-start" ml={5} >
+                <Box
+                    className="navBar"
+                    mt={5} display="flex" justifyContent="flex-start" ml={5}>
+                    <Box cursor="pointer" display="flex" flexDirection="row">
+                        <NextLink href="/">
+                            <Box mr={5}>
+                                <Text>Home</Text>
+                            </Box>
+                        </NextLink>
+                    </Box>
+                    <Box
+                        top="1.5rem"
+                        position="fixed"
+                        display='flex'
+                        right="5.4rem"
+                    >
+                        <NextLink href="/workout/programs/all">
+                            <Box cursor="pointer" mr={5}>
+                                <IconButton mt={-1}
+                                    borderRadius={50}
+                                    aria-label="list-of-programs-button"
+                                    icon={<AiOutlineUnorderedList />}
+                                />
+                            </Box>
+                        </NextLink>
+                        <Box mt={-1}>
+                            <ProgramMenu />
+                        </Box>
+                    </Box>
                     <Menu>
                         <MenuButton
+                            cursor="pointer"
                             size="md"
                             as={Avatar}
+                            src={`http://localhost:5001/images/${data?.userProfile?.profilePicture}`}
                             position="fixed"
-                            bg="teal.500"
+                            bg="lightgray"
                             top="1rem"
-                            right=".75rem"
-                            color="green"
+                            right="1.25rem"
                         />
                         <MenuList>
                             <MenuGroup title={`${data?.userProfile.username}`}>
                                 <MenuDivider />
-                                <MenuItem>
-                                    My Account
-                        </MenuItem>
+                                <NextLink href="/settings/avatar">
+                                    <MenuItem>
+                                        My Account
+                </MenuItem>
+                                </NextLink>
 
                                 <NextLink href="/groups/all">
                                     <MenuItem>
                                         Groups
-                        </MenuItem>
+                </MenuItem>
                                 </NextLink>
 
                                 <NextLink href="/inbox/messages">
                                     <MenuItem>
                                         Inbox
-                            </MenuItem>
+                    </MenuItem>
                                 </NextLink>
 
                                 <MenuDivider />
@@ -72,29 +103,11 @@ export const NavBar: React.FC<NavBarProps> = ({ }) => {
                                     router.push("/")
                                 }}>
                                     Logout
-                        </MenuItem>
+                </MenuItem>
                             </MenuGroup>
                         </MenuList>
                     </Menu>
-                    <Box
-                        className="navBar"
-                        display="flex"
-                        justifyContent="space-around"
-                        alignItems="center"
-                        width="100%"
-                        position="fixed"
-                        bottom={5}
-                        ml={-5}
-                    >
-                        <NextLink href="/">
-                            <Text>Programs</Text>
-                        </NextLink>
-                        <NextLink href="/workout/programs/all">
-                            <Text>Programs</Text>
-                        </NextLink>
-                        <ProgramMenu />
-                    </Box>
-                </Box>
+                </Box >
                 :
                 <Box
                     className="navBar"

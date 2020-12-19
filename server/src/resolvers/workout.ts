@@ -1,6 +1,6 @@
 import { ProgramWorkouts } from "../entities/ProgramWorkouts";
 import { MyContext } from "src/types";
-import { Arg, Ctx, Field, InputType, Int, Mutation, Query, Resolver } from "type-graphql";
+import { Arg, Ctx, Field, FieldResolver, InputType, Int, Mutation, Query, Resolver } from "type-graphql";
 import { getConnection } from "typeorm";
 import { Workout } from "../entities/Workout";
 
@@ -76,4 +76,16 @@ export class WorkoutResolver {
     ): Promise<Workout | undefined> {
         return Workout.findOne(workoutId)
     };
+
+    @FieldResolver(() => Workout)
+    exercises() {
+        const exercises = getConnection().query(
+            `
+            SELECT * FROM public.exercise
+            INNER JOIN public.workout ON 
+            public.exercise."workoutId" = public.workout.id
+            `
+        )
+        return exercises
+    }
 }

@@ -11,6 +11,10 @@ export class Exercise extends BaseEntity {
 
     @Field()
     @Column({ nullable: true })
+    workoutId: number;
+
+    @Field()
+    @Column({ nullable: true })
     exerciseName: string;
 
     @Field()
