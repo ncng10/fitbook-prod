@@ -17,13 +17,13 @@ class CreateWorkoutInput {
     programIdentity: number;
 };
 
-@InputType()
-class AddWorkoutToProgramInput {
-    @Field()
-    workoutId: number;
-    @Field()
-    programId: number;
-};
+// @InputType()
+// class AddWorkoutToProgramInput {
+//     @Field()
+//     workoutId: number;
+//     @Field()
+//     programId: number;
+// };
 
 @Resolver(Workout)
 export class WorkoutResolver {
@@ -65,7 +65,6 @@ export class WorkoutResolver {
         const workoutsList = await getConnection().query(
             `
             SELECT * FROM public.workout
-            INNER JOIN public.program ON public.program.id = public.workout."programIdentity"
             WHERE public.workout."programIdentity" = ${programId}
             `
         )

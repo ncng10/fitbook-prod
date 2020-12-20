@@ -1,5 +1,5 @@
-mutation AddExerciseToWorkout($inputs: NewExerciseInput!) {
-  addExerciseToWorkout(inputs: $inputs) {
+mutation AddExerciseToWorkout($input: NewExerciseInput!) {
+  addExerciseToWorkout(input: $input) {
     id
     workoutIdentity
     exerciseName

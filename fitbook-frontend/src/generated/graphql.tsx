@@ -33,7 +33,7 @@ export type Query = {
 
 
 export type QueryExercisesInAWorkoutArgs = {
-  input: Scalars['Int'];
+  workoutId: Scalars['Int'];
 };
 
 
@@ -73,12 +73,13 @@ export type Exercise = {
 export type Workout = {
   __typename?: 'Workout';
   id: Scalars['Float'];
+  programIdentity: Scalars['Float'];
   workoutDate: Scalars['String'];
   creatorId: Scalars['Float'];
   workoutName: Scalars['String'];
+  workoutCategory: Scalars['String'];
   workoutCompleted: Scalars['Boolean'];
   isShared: Scalars['Boolean'];
-  workoutCategory: Scalars['String'];
   exercises: Array<Exercise>;
 };
 
@@ -138,12 +139,11 @@ export type Mutation = {
   login: UserResponse;
   logout: Scalars['Boolean'];
   createWorkout: Array<Workout>;
-  addWorkoutToProgram: Array<ProgramWorkouts>;
 };
 
 
 export type MutationAddExerciseToWorkoutArgs = {
-  inputs: NewExerciseInput;
+  input: NewExerciseInput;
 };
 
 
@@ -186,11 +186,6 @@ export type MutationLoginArgs = {
 
 export type MutationCreateWorkoutArgs = {
   input: CreateWorkoutInput;
-};
-
-
-export type MutationAddWorkoutToProgramArgs = {
-  input: AddWorkoutToProgramInput;
 };
 
 export type NewExerciseInput = {
@@ -251,17 +246,7 @@ export type CreateWorkoutInput = {
   workoutName: Scalars['String'];
   workoutCategory: Scalars['String'];
   workoutDate: Scalars['String'];
-};
-
-export type ProgramWorkouts = {
-  __typename?: 'ProgramWorkouts';
-  programId: Scalars['Float'];
-  workoutId: Scalars['Float'];
-};
-
-export type AddWorkoutToProgramInput = {
-  workoutId: Scalars['Float'];
-  programId: Scalars['Float'];
+  programIdentity: Scalars['Float'];
 };
 
 export type Subscription = {
@@ -275,7 +260,7 @@ export type RegularErrorFragment = (
 );
 
 export type AddExerciseToWorkoutMutationVariables = Exact<{
-  inputs: NewExerciseInput;
+  input: NewExerciseInput;
 }>;
 
 
@@ -297,16 +282,16 @@ export type AddProfilePictureMutation = (
   & Pick<Mutation, 'addProfilePicture'>
 );
 
-export type AddWorkoutToProgramMutationVariables = Exact<{
-  input: AddWorkoutToProgramInput;
+export type CreateWorkoutMutationVariables = Exact<{
+  input: CreateWorkoutInput;
 }>;
 
 
-export type AddWorkoutToProgramMutation = (
+export type CreateWorkoutMutation = (
   { __typename?: 'Mutation' }
-  & { addWorkoutToProgram: Array<(
-    { __typename?: 'ProgramWorkouts' }
-    & Pick<ProgramWorkouts, 'programId' | 'workoutId'>
+  & { createWorkout: Array<(
+    { __typename?: 'Workout' }
+    & Pick<Workout, 'id' | 'programIdentity' | 'workoutDate' | 'creatorId' | 'workoutName' | 'isShared' | 'workoutCompleted' | 'workoutCategory'>
   )> }
 );
 
@@ -423,7 +408,7 @@ export type UserProfileQuery = (
 );
 
 export type ExercisesInAWorkoutQueryVariables = Exact<{
-  input: Scalars['Int'];
+  workoutId: Scalars['Int'];
 }>;
 
 
@@ -572,8 +557,8 @@ export const RegularErrorFragmentDoc = gql`
 }
     `;
 export const AddExerciseToWorkoutDocument = gql`
-    mutation AddExerciseToWorkout($inputs: NewExerciseInput!) {
-  addExerciseToWorkout(inputs: $inputs) {
+    mutation AddExerciseToWorkout($input: NewExerciseInput!) {
+  addExerciseToWorkout(input: $input) {
     id
     workoutIdentity
     exerciseName
@@ -601,7 +586,7 @@ export type AddExerciseToWorkoutMutationFn = Apollo.MutationFunction<AddExercise
  * @example
  * const [addExerciseToWorkoutMutation, { data, loading, error }] = useAddExerciseToWorkoutMutation({
  *   variables: {
- *      inputs: // value for 'inputs'
+ *      input: // value for 'input'
  *   },
  * });
  */
@@ -641,39 +626,45 @@ export function useAddProfilePictureMutation(baseOptions?: Apollo.MutationHookOp
 export type AddProfilePictureMutationHookResult = ReturnType<typeof useAddProfilePictureMutation>;
 export type AddProfilePictureMutationResult = Apollo.MutationResult<AddProfilePictureMutation>;
 export type AddProfilePictureMutationOptions = Apollo.BaseMutationOptions<AddProfilePictureMutation, AddProfilePictureMutationVariables>;
-export const AddWorkoutToProgramDocument = gql`
-    mutation AddWorkoutToProgram($input: AddWorkoutToProgramInput!) {
-  addWorkoutToProgram(input: $input) {
-    programId
-    workoutId
+export const CreateWorkoutDocument = gql`
+    mutation CreateWorkout($input: CreateWorkoutInput!) {
+  createWorkout(input: $input) {
+    id
+    programIdentity
+    workoutDate
+    creatorId
+    workoutName
+    isShared
+    workoutCompleted
+    workoutCategory
   }
 }
     `;
-export type AddWorkoutToProgramMutationFn = Apollo.MutationFunction<AddWorkoutToProgramMutation, AddWorkoutToProgramMutationVariables>;
+export type CreateWorkoutMutationFn = Apollo.MutationFunction<CreateWorkoutMutation, CreateWorkoutMutationVariables>;
 
 /**
- * __useAddWorkoutToProgramMutation__
+ * __useCreateWorkoutMutation__
  *
- * To run a mutation, you first call `useAddWorkoutToProgramMutation` within a React component and pass it any options that fit your needs.
- * When your component renders, `useAddWorkoutToProgramMutation` returns a tuple that includes:
+ * To run a mutation, you first call `useCreateWorkoutMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useCreateWorkoutMutation` returns a tuple that includes:
  * - A mutate function that you can call at any time to execute the mutation
  * - An object with fields that represent the current status of the mutation's execution
  *
  * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
  *
  * @example
- * const [addWorkoutToProgramMutation, { data, loading, error }] = useAddWorkoutToProgramMutation({
+ * const [createWorkoutMutation, { data, loading, error }] = useCreateWorkoutMutation({
  *   variables: {
  *      input: // value for 'input'
  *   },
  * });
  */
-export function useAddWorkoutToProgramMutation(baseOptions?: Apollo.MutationHookOptions<AddWorkoutToProgramMutation, AddWorkoutToProgramMutationVariables>) {
-        return Apollo.useMutation<AddWorkoutToProgramMutation, AddWorkoutToProgramMutationVariables>(AddWorkoutToProgramDocument, baseOptions);
+export function useCreateWorkoutMutation(baseOptions?: Apollo.MutationHookOptions<CreateWorkoutMutation, CreateWorkoutMutationVariables>) {
+        return Apollo.useMutation<CreateWorkoutMutation, CreateWorkoutMutationVariables>(CreateWorkoutDocument, baseOptions);
       }
-export type AddWorkoutToProgramMutationHookResult = ReturnType<typeof useAddWorkoutToProgramMutation>;
-export type AddWorkoutToProgramMutationResult = Apollo.MutationResult<AddWorkoutToProgramMutation>;
-export type AddWorkoutToProgramMutationOptions = Apollo.BaseMutationOptions<AddWorkoutToProgramMutation, AddWorkoutToProgramMutationVariables>;
+export type CreateWorkoutMutationHookResult = ReturnType<typeof useCreateWorkoutMutation>;
+export type CreateWorkoutMutationResult = Apollo.MutationResult<CreateWorkoutMutation>;
+export type CreateWorkoutMutationOptions = Apollo.BaseMutationOptions<CreateWorkoutMutation, CreateWorkoutMutationVariables>;
 export const CreateGroupDocument = gql`
     mutation CreateGroup($input: GroupInput!) {
   createGroup(input: $input) {
@@ -954,8 +945,8 @@ export type UserProfileQueryHookResult = ReturnType<typeof useUserProfileQuery>;
 export type UserProfileLazyQueryHookResult = ReturnType<typeof useUserProfileLazyQuery>;
 export type UserProfileQueryResult = Apollo.QueryResult<UserProfileQuery, UserProfileQueryVariables>;
 export const ExercisesInAWorkoutDocument = gql`
-    query ExercisesInAWorkout($input: Int!) {
-  exercisesInAWorkout(input: $input) {
+    query ExercisesInAWorkout($workoutId: Int!) {
+  exercisesInAWorkout(workoutId: $workoutId) {
     exerciseName
     weight
     sets
@@ -981,7 +972,7 @@ export const ExercisesInAWorkoutDocument = gql`
  * @example
  * const { data, loading, error } = useExercisesInAWorkoutQuery({
  *   variables: {
- *      input: // value for 'input'
+ *      workoutId: // value for 'workoutId'
  *   },
  * });
  */

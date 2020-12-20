@@ -17,21 +17,17 @@ const Workout: React.FC<WorkoutProps> = ({ }) => {
     const { data, loading, error } = useExercisesInAWorkoutQuery({
         skip: intId === -1,
         variables: {
-            input: intId,
+            workoutId: intId
         }
     });
 
-    const { data: workoutData } = useWorkoutQuery({
-        variables: {
-            workoutId: data?.exercisesInAWorkout?.map(x => x.workoutIdentity)[0] //all exercises belong to workout so taking the first item of the array is fine
-        }
-    })
+    // const { data: workoutData } = useWorkoutQuery({
+    //     variables: {
+    //         workoutId: data?.exercisesInAWorkout?.map(x => x.workoutIdentity)[0] //all exercises belong to workout so taking the first item of the array is fine
+    //     }
+    // })
 
     let body;
-    if (!data?.exercisesInAWorkout) {
-        body =
-            <Box> add some.</Box>
-    }
     if (data?.exercisesInAWorkout) {
         console.log(data?.exercisesInAWorkout)
         body =
@@ -42,9 +38,9 @@ const Workout: React.FC<WorkoutProps> = ({ }) => {
                     alignItems="center"
                     justifyContent="center"
                 >
-                    <h3 style={{ fontWeight: 1000, fontSize: 25 }}>
+                    {/* <h3 style={{ fontWeight: 1000, fontSize: 25 }}>
                         {workoutData?.workout.workoutName} ({workoutData?.workout.workoutDate})
-                    </h3>
+                    </h3> */}
                 </Box>
 
                 {data?.exercisesInAWorkout.map((exercise) => (
@@ -80,4 +76,4 @@ const Workout: React.FC<WorkoutProps> = ({ }) => {
         </React.Fragment>
     );
 }
-export default withApollo({ ssr: true })(Workout)
+export default withApollo({ ssr: false })(Workout)

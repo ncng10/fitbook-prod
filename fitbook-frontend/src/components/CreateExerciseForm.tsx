@@ -68,7 +68,7 @@ const CreateExerciseForm: React.FC<CreateExerciseFormProps> = ({ }) => {
                                         }}
                                         onSubmit={async (values) => {
                                             await addExercise({
-                                                variables: { inputs: values },
+                                                variables: { input: values },
                                                 update: (cache) => {
                                                     cache.evict({ fieldName: "exercisesInAWorkout" });
                                                 }

@@ -1,5 +1,5 @@
-query ExercisesInAWorkout($input: Int!){
-  exercisesInAWorkout(input:$input){
+query ExercisesInAWorkout($workoutId: Int!){
+  exercisesInAWorkout(workoutId:$workoutId){
     exerciseName
     weight
     sets

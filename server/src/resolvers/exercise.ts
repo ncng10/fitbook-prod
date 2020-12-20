@@ -28,7 +28,7 @@ export class ExerciseResolver {
 
     @Mutation(() => [Exercise])
     async addExerciseToWorkout(
-        @Arg("inputs", () => NewExerciseInput) input: NewExerciseInput
+        @Arg("input", () => NewExerciseInput) input: NewExerciseInput
     ) {
         const personalMessage = getConnection().query(
             `
@@ -48,13 +48,12 @@ export class ExerciseResolver {
 
     @Query(() => [Exercise])
     async exercisesInAWorkout(
-        @Arg("input", () => Int) workoutsId: number
+        @Arg("workoutId", () => Int) workoutId: number
     ) {
         const exercisesInAWorkout = getConnection().query(
             `
-           SELECT * FROM public.workout
-           INNER JOIN public.exercise ON public.exercise."workoutIdentity" = public.workout.id
-           WHERE public.exercise."workoutIdentity" = ${workoutsId}
+            SELECT * FROM public.exercise 
+            WHERE public.exercise."workoutIdentity" = ${workoutId}
             `
         )
         return exercisesInAWorkout

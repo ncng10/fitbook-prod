@@ -1,6 +1,12 @@
-mutation AddWorkoutToProgram($input: AddWorkoutToProgramInput!) {
-  addWorkoutToProgram(input:$input) {
-    programId
-    workoutId
+mutation CreateWorkout($input: CreateWorkoutInput!) {
+  createWorkout(input: $input){
+    id
+    programIdentity
+    workoutDate
+    creatorId
+    workoutName
+    isShared
+    workoutCompleted
+    workoutCategory
   }
 }
