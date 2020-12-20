@@ -16,9 +16,9 @@ export class ProgramWorkouts extends BaseEntity {
 
     @ManyToOne(() => Program, (program) => program.workoutConnection, { nullable: true })
     @JoinColumn({ name: "programId" })
-    group: Promise<Program>;
+    program: Promise<Program>;
 
     @ManyToOne(() => Workout, (workout) => workout.programConnection, { nullable: true })
     @JoinColumn({ name: "workoutId" })
-    member: Promise<Workout>;
+    workout: Promise<Workout>;
 }

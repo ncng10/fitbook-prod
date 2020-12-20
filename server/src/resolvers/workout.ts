@@ -13,6 +13,8 @@ class CreateWorkoutInput {
     workoutCategory: string;
     @Field()
     workoutDate: string;
+    @Field()
+    programIdentity: number;
 };
 
 @InputType()
@@ -34,37 +36,37 @@ export class WorkoutResolver {
         const workoutCreation = await getConnection().query(
             `
             INSERT INTO public.workout
-            ("workoutName", "workoutCategory", "workoutDate", "creatorId")
-            VALUES ('${input.workoutName}', '${input.workoutCategory}', '${input.workoutDate}',  ${req.session.userId})
+            ("workoutName", "workoutCategory", "workoutDate", "creatorId", "programIdentity")
+            VALUES ('${input.workoutName}', '${input.workoutCategory}', '${input.workoutDate}',  ${req.session.userId}, ${input.programIdentity})
             RETURNING *
             `
         )
         return workoutCreation
     };
 
-    @Mutation(() => [ProgramWorkouts])
-    async addWorkoutToProgram(
-        @Arg("input") input: AddWorkoutToProgramInput
-    ) {
-        const addWorkout = await getConnection().query(
-            `
-            INSERT INTO public.program_workouts
-            ("workoutId", "programId")
-            VALUES(${input.workoutId},${input.programId})
-            `
-        )
-        return addWorkout
-    };
+    // @Mutation(() => [ProgramWorkouts])
+    // async addWorkoutToProgram(
+    //     @Arg("input") input: AddWorkoutToProgramInput
+    // ) {
+    //     const addWorkout = await getConnection().query(
+    //         `
+    //         INSERT INTO public.program_workouts
+    //         ("workoutId", "programId")
+    //         VALUES(${input.workoutId},${input.programId})
+    //         `
+    //     )
+    //     return addWorkout
+    // };
 
     @Query(() => [Workout])
     async workouts(
         @Arg("programId", () => Int) programId: number,
-        @Ctx() { req }: MyContext
     ) {
         const workoutsList = await getConnection().query(
             `
-            SELECT * FROM public.workout INNER JOIN public.program_workouts ON public.workout.id = public.program_workouts."workoutId"
-            AND public.program_workouts."programId" = ${programId} AND public.workout."creatorId" = ${req.session.userId}
+            SELECT * FROM public.workout
+            INNER JOIN public.program ON public.program.id = public.workout."programIdentity"
+            WHERE public.workout."programIdentity" = ${programId}
             `
         )
         return workoutsList

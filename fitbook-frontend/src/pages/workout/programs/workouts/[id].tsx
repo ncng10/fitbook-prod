@@ -23,20 +23,30 @@ const Workout: React.FC<WorkoutProps> = ({ }) => {
 
     const { data: workoutData } = useWorkoutQuery({
         variables: {
-            workoutId: data?.exercisesInAWorkout?.map(x => x.workoutIdentity)[0]
+            workoutId: data?.exercisesInAWorkout?.map(x => x.workoutIdentity)[0] //all exercises belong to workout so taking the first item of the array is fine
         }
     })
 
     let body;
     if (!data?.exercisesInAWorkout) {
         body =
-            <Box>No ?.exercisesInAWorkout, add some.</Box>
+            <Box> add some.</Box>
     }
     if (data?.exercisesInAWorkout) {
         console.log(data?.exercisesInAWorkout)
         body =
             <Box>
-                <Box>Programs for this workout: {workoutData?.workout?.workoutName}</Box>
+                <Box
+                    width="100%"
+                    display="flex"
+                    alignItems="center"
+                    justifyContent="center"
+                >
+                    <h3 style={{ fontWeight: 1000, fontSize: 25 }}>
+                        {workoutData?.workout.workoutName} ({workoutData?.workout.workoutDate})
+                    </h3>
+                </Box>
+
                 {data?.exercisesInAWorkout.map((exercise) => (
                     <ExerciseCard
                         key={exercise.id}
@@ -70,4 +80,4 @@ const Workout: React.FC<WorkoutProps> = ({ }) => {
         </React.Fragment>
     );
 }
-export default withApollo({ ssr: false })(Workout)
+export default withApollo({ ssr: true })(Workout)

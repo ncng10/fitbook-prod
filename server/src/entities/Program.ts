@@ -27,7 +27,7 @@ export class Program extends BaseEntity {
     programCategory: string;
 
     @Field()
-    @Column({ nullable: true })
+    @Column({ nullable: true, default: false })
     isShared: boolean;
 
     @Field(() => String)
@@ -38,7 +38,7 @@ export class Program extends BaseEntity {
     @UpdateDateColumn()
     updatedAt: Date;
 
-    @OneToMany(() => ProgramWorkouts, (gb) => gb.member)
+    @OneToMany(() => ProgramWorkouts, (gb) => gb.workout)
     workoutConnection: Promise<ProgramWorkouts[]>;
 }
 

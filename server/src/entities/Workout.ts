@@ -11,6 +11,9 @@ export class Workout extends BaseEntity {
     @PrimaryGeneratedColumn()
     id!: number;
 
+    @Field()
+    @Column({ nullable: true })
+    programIdentity: number;
 
     @Field()
     @Column({ nullable: true })
@@ -25,6 +28,10 @@ export class Workout extends BaseEntity {
     workoutName: string;
 
     @Field()
+    @Column({ nullable: true })
+    workoutCategory: string;
+
+    @Field()
     @Column({ nullable: true, default: false })
     workoutCompleted: boolean;
 
@@ -32,15 +39,11 @@ export class Workout extends BaseEntity {
     @Column({ nullable: true, default: false })
     isShared: boolean;
 
-    @Field()
-    @Column({ nullable: true })
-    workoutCategory: string;
-
     @Field(() => [Exercise])
     @OneToMany(() => Exercise, (exercises) => exercises.workout, { nullable: true })
     exercises: Exercise[]
 
-    @OneToMany(() => ProgramWorkouts, (gb) => gb.group)
+    @OneToMany(() => ProgramWorkouts, (gb) => gb.program)
     programConnection: Promise<ProgramWorkouts[]>;
 
     // @OneToMany(() => WorkoutExercises, (we) => we.workout)
