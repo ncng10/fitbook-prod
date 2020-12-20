@@ -1,7 +1,6 @@
 import { MyContext } from "src/types";
 import { Arg, Ctx, Field, InputType, Int, Mutation, Query, Resolver } from "type-graphql";
 import { getConnection } from "typeorm";
-import { ProgramWorkouts } from "../entities/ProgramWorkouts";
 import { Workout } from "../entities/Workout";
 
 

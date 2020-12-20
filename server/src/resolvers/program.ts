@@ -30,12 +30,6 @@ export class ProgramResolver {
         return createProgram
     };
 
-    @FieldResolver(() => Program)
-    creator(@Root() program: Program, @Ctx() { userLoader }: MyContext) {
-        return userLoader.load(program.creatorId)
-    };
-
-
     @Query(() => [Program])
     async myPrograms(
         @Ctx() { req }: MyContext
@@ -46,5 +40,10 @@ export class ProgramResolver {
             `
         );
         return programs
+    };
+
+    @FieldResolver(() => Program)
+    creator(@Root() program: Program, @Ctx() { userLoader }: MyContext) {
+        return userLoader.load(program.creatorId)
     };
 }
