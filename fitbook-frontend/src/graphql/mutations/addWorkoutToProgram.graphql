@@ -1,0 +1,6 @@
+mutation AddWorkoutToProgram($input: AddWorkoutToProgramInput!) {
+  addWorkoutToProgram(input:$input) {
+    programId
+    workoutId
+  }
+}

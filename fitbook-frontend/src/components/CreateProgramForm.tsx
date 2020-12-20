@@ -27,7 +27,7 @@ const CreateProgramForm: React.FC<CreateProgramFormProps> = ({ }) => {
                     })
                     if (!errors) {
                         toast({
-                            position: "bottom-left",
+                            position: "top-right",
                             title: "Program created.",
                             description: `Successfully added a program, titled: '${values.programName}'.`,
                             status: "success",

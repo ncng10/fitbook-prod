@@ -11,6 +11,7 @@ import { useMyProgramsQuery } from '../generated/graphql';
 import { Box, Heading, IconButton, Text, useMediaQuery, VStack } from '@chakra-ui/react';
 import { AiOutlineArrowRight } from 'react-icons/ai';
 import NextLink from "next/link"
+import ProgramMenu from './ProgramMenu';
 
 const useStyles = makeStyles({
     table: {
@@ -45,6 +46,9 @@ export default function ProgramsListTable() {
                     </NextLink>
                 ))}
             </VStack>
+            <Box>
+                <ProgramMenu />
+            </Box>
         </Box>
 
 

@@ -63,9 +63,6 @@ export const NavBar: React.FC<NavBarProps> = ({ }) => {
                             />
                         </Box>
                     </NextLink>
-                    <Box mt={-1}>
-                        <ProgramMenu />
-                    </Box>
                 </Box>
                 <Menu>
                     <MenuButton

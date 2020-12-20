@@ -1,6 +1,6 @@
 import { Box } from '@chakra-ui/react';
 import React from 'react'
-import { useWorkoutsQuery } from '../generated/graphql';
+import { useWorkoutQuery, useWorkoutsQuery } from '../generated/graphql';
 import { useGetIntId } from '../utils/useGetIntId';
 import NextLink from "next/link"
 interface WorkoutsListProps {

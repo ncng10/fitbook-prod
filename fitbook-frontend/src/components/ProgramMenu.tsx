@@ -23,7 +23,7 @@ const ProgramMenu: React.FC<ProgramMenuProps> = ({ }) => {
             />
             <Drawer
                 isOpen={isOpen}
-                placement="right"
+                placement="bottom"
                 initialFocusRef={firstField}
                 onClose={onClose}
             >

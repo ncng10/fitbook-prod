@@ -2,7 +2,7 @@ import { Box, IconButton } from '@chakra-ui/react';
 import React from 'react';
 import ExerciseCard from '../../../../components/ExerciseCard';
 import { NavBar } from '../../../../components/NavBar';
-import { useExercisesInAWorkoutQuery } from '../../../../generated/graphql';
+import { useExercisesInAWorkoutQuery, useWorkoutQuery } from '../../../../generated/graphql';
 import { useGetIntId } from '../../../../utils/useGetIntId';
 import { withApollo } from '../../../../utils/withApollo';
 import { RiMenuAddLine } from "react-icons/ri"
@@ -21,6 +21,11 @@ const Workout: React.FC<WorkoutProps> = ({ }) => {
         }
     });
 
+    const { data: workoutData } = useWorkoutQuery({
+        variables: {
+            workoutId: data?.exercisesInAWorkout?.map(x => x.workoutIdentity)[0]
+        }
+    })
 
     let body;
     if (!data?.exercisesInAWorkout) {
@@ -31,6 +36,7 @@ const Workout: React.FC<WorkoutProps> = ({ }) => {
         console.log(data?.exercisesInAWorkout)
         body =
             <Box>
+                <Box>Programs for this workout: {workoutData?.workout?.workoutName}</Box>
                 {data?.exercisesInAWorkout.map((exercise) => (
                     <ExerciseCard
                         key={exercise.id}
