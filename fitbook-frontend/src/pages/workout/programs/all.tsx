@@ -20,6 +20,7 @@ const All: React.FC<AllProps> = ({ }) => {
     } else {
         body =
             <ProgramsListTable />
+
     }
     return (
         <React.Fragment>
