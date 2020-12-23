@@ -1,13 +1,18 @@
 import { Avatar, Box, IconButton } from '@chakra-ui/react';
 import React from 'react'
 import { RiUserAddFill } from 'react-icons/ri';
+import { useAddFriendMutation } from '../generated/graphql';
 
 interface SearchListCardProps {
     username: string;
     profilePicture: string;
+    id: number;
 }
 
-const SearchListCard: React.FC<SearchListCardProps> = ({ username, profilePicture }) => {
+const SearchListCard: React.FC<SearchListCardProps> = ({ username, profilePicture, id }) => {
+
+    const [addFriend] = useAddFriendMutation();
+
     return (
         <React.Fragment>
             <Box
@@ -39,6 +44,16 @@ const SearchListCard: React.FC<SearchListCardProps> = ({ username, profilePictur
                         mr={5}
                         icon={<RiUserAddFill />}
                         aria-label="add-friend-button"
+                        onClick={async () => {
+                            addFriend({
+                                variables: {
+                                    input: {
+                                        friendshipStatus: 0,
+                                        userTwoIdentity: id
+                                    }
+                                }
+                            })
+                        }}
                     />
                 </Box>
             </Box>

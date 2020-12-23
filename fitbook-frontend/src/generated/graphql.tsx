@@ -315,6 +315,16 @@ export type AddExerciseToWorkoutMutation = (
   )> }
 );
 
+export type AddFriendMutationVariables = Exact<{
+  input: AddFriendInput;
+}>;
+
+
+export type AddFriendMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'addFriend'>
+);
+
 export type AddProfilePictureMutationVariables = Exact<{
   file: Scalars['Upload'];
 }>;
@@ -704,6 +714,36 @@ export function useAddExerciseToWorkoutMutation(baseOptions?: Apollo.MutationHoo
 export type AddExerciseToWorkoutMutationHookResult = ReturnType<typeof useAddExerciseToWorkoutMutation>;
 export type AddExerciseToWorkoutMutationResult = Apollo.MutationResult<AddExerciseToWorkoutMutation>;
 export type AddExerciseToWorkoutMutationOptions = Apollo.BaseMutationOptions<AddExerciseToWorkoutMutation, AddExerciseToWorkoutMutationVariables>;
+export const AddFriendDocument = gql`
+    mutation AddFriend($input: AddFriendInput!) {
+  addFriend(AddFriendInput: $input)
+}
+    `;
+export type AddFriendMutationFn = Apollo.MutationFunction<AddFriendMutation, AddFriendMutationVariables>;
+
+/**
+ * __useAddFriendMutation__
+ *
+ * To run a mutation, you first call `useAddFriendMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAddFriendMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [addFriendMutation, { data, loading, error }] = useAddFriendMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useAddFriendMutation(baseOptions?: Apollo.MutationHookOptions<AddFriendMutation, AddFriendMutationVariables>) {
+        return Apollo.useMutation<AddFriendMutation, AddFriendMutationVariables>(AddFriendDocument, baseOptions);
+      }
+export type AddFriendMutationHookResult = ReturnType<typeof useAddFriendMutation>;
+export type AddFriendMutationResult = Apollo.MutationResult<AddFriendMutation>;
+export type AddFriendMutationOptions = Apollo.BaseMutationOptions<AddFriendMutation, AddFriendMutationVariables>;
 export const AddProfilePictureDocument = gql`
     mutation AddProfilePicture($file: Upload!) {
   addProfilePicture(file: $file)

@@ -1,0 +1,3 @@
+mutation AddFriend($input: AddFriendInput!) {
+  addFriend(AddFriendInput:$input)
+}

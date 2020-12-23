@@ -44,6 +44,7 @@ const Search: React.FC<SearchProps> = ({ }) => {
                 <SearchListCard
                     username={data?.searchUsers.username}
                     profilePicture={data?.searchUsers.profilePicture}
+                    id={data?.searchUsers.id}
                 />
                 :
                 null
