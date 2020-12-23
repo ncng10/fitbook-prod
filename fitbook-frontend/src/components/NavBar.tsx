@@ -15,7 +15,6 @@ interface NavBarProps {
 
 export const NavBar: React.FC<NavBarProps> = ({ }) => {
     const [isLargerThan600] = useMediaQuery("(min-width:600px)");
-    const toast = useToast()
     const [logout] = useLogoutMutation();
     const { data } = useUserProfileQuery();
     console.log(data?.userProfile.id)
@@ -23,18 +22,8 @@ export const NavBar: React.FC<NavBarProps> = ({ }) => {
     const router = useRouter();
     let body = null;
     const { data: friendRequestSubsciptionData } = useNewFriendRequestSubscription();
-    const { data: pendingFriendsData } = usePendingFriendsQuery();
+    const { data: pendingFriendsData, refetch } = usePendingFriendsQuery();
 
-    if (friendRequestSubsciptionData) {
-        toast({
-            position: "bottom-right",
-            title: "New friend request.",
-            description: "Someone wants to add you, click to see who!",
-            status: "success",
-            duration: 5000,
-            isClosable: true,
-        })
-    }
     if (!data?.userProfile) {
         body =
             <Box mt={5}>
@@ -72,23 +61,34 @@ export const NavBar: React.FC<NavBarProps> = ({ }) => {
                         mr={5}
                         marginTop="-.25rem"
                     >
-                        {friendRequestSubsciptionData || pendingFriendsData ?
-                            <Badge
-                                color="secondary"
-                                variant="dot"
-                            >
-                                <PendingFriends />
-                            </Badge>
-                            :
-                            <Badge
-                                color="secondary"
-                            >
-                                <IconButton
-                                    aria-label="friend-requests-button"
-                                    icon={<RiUserFill />}
-                                    borderRadius={50}
-                                />
-                            </Badge>
+                        {
+                            friendRequestSubsciptionData?.newFriendRequest.length >= 1
+                                ||
+                                pendingFriendsData?.pendingFriends.length >= 1
+
+                                ?
+                                <NextLink href={router.pathname === "/friends/pending" ? "" : "/friends/pending"}>
+                                    <Badge
+                                        color="secondary"
+                                        variant="dot"
+                                    >
+                                        <IconButton
+                                            aria-label="pending-friend-requests-button"
+                                            icon={<RiUser2Fill />}
+                                            borderRadius={50} />
+                                    </Badge>
+                                </NextLink>
+                                :
+                                <NextLink href={router.pathname === "/friends/pending" ? "" : "/friends/pending"}>
+                                    <Badge
+                                        color="secondary"
+                                    >
+                                        <IconButton
+                                            aria-label="pending-friend-requests-button"
+                                            icon={<RiUser2Fill />}
+                                            borderRadius={50} />
+                                    </Badge>
+                                </NextLink>
                         }
                     </Box>
                     <NextLink href="/workout/programs/all">

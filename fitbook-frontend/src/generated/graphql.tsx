@@ -19,7 +19,7 @@ export type Query = {
   __typename?: 'Query';
   exercisesInAWorkout: Array<Exercise>;
   pendingFriends: Array<User>;
-  myFriends: UserFriends;
+  myFriends: Array<UserFriends>;
   group: Group;
   groups: Array<Group>;
   isMember: Array<Group>;
@@ -283,13 +283,23 @@ export type CreateWorkoutInput = {
 
 export type Subscription = {
   __typename?: 'Subscription';
-  newFriendRequest: Array<UserFriends>;
+  newFriendRequest: Array<User>;
   newMessage: PersonalMessage;
 };
 
 export type RegularErrorFragment = (
   { __typename?: 'FieldError' }
   & Pick<FieldError, 'field' | 'message'>
+);
+
+export type AcceptFriendRequestMutationVariables = Exact<{
+  userTwoIdentity: Scalars['Int'];
+}>;
+
+
+export type AcceptFriendRequestMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'acceptFriendRequest'>
 );
 
 export type AddExerciseToWorkoutMutationVariables = Exact<{
@@ -540,7 +550,7 @@ export type PendingFriendsQuery = (
   { __typename?: 'Query' }
   & { pendingFriends: Array<(
     { __typename?: 'User' }
-    & Pick<User, 'username' | 'email'>
+    & Pick<User, 'username' | 'email' | 'id'>
   )> }
 );
 
@@ -602,8 +612,8 @@ export type NewFriendRequestSubscriptionVariables = Exact<{ [key: string]: never
 export type NewFriendRequestSubscription = (
   { __typename?: 'Subscription' }
   & { newFriendRequest: Array<(
-    { __typename?: 'UserFriends' }
-    & Pick<UserFriends, 'userOneIdentity' | 'userTwoIdentity'>
+    { __typename?: 'User' }
+    & Pick<User, 'username' | 'id' | 'email'>
   )> }
 );
 
@@ -624,6 +634,36 @@ export const RegularErrorFragmentDoc = gql`
   message
 }
     `;
+export const AcceptFriendRequestDocument = gql`
+    mutation AcceptFriendRequest($userTwoIdentity: Int!) {
+  acceptFriendRequest(userTwoIdentity: $userTwoIdentity)
+}
+    `;
+export type AcceptFriendRequestMutationFn = Apollo.MutationFunction<AcceptFriendRequestMutation, AcceptFriendRequestMutationVariables>;
+
+/**
+ * __useAcceptFriendRequestMutation__
+ *
+ * To run a mutation, you first call `useAcceptFriendRequestMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useAcceptFriendRequestMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [acceptFriendRequestMutation, { data, loading, error }] = useAcceptFriendRequestMutation({
+ *   variables: {
+ *      userTwoIdentity: // value for 'userTwoIdentity'
+ *   },
+ * });
+ */
+export function useAcceptFriendRequestMutation(baseOptions?: Apollo.MutationHookOptions<AcceptFriendRequestMutation, AcceptFriendRequestMutationVariables>) {
+        return Apollo.useMutation<AcceptFriendRequestMutation, AcceptFriendRequestMutationVariables>(AcceptFriendRequestDocument, baseOptions);
+      }
+export type AcceptFriendRequestMutationHookResult = ReturnType<typeof useAcceptFriendRequestMutation>;
+export type AcceptFriendRequestMutationResult = Apollo.MutationResult<AcceptFriendRequestMutation>;
+export type AcceptFriendRequestMutationOptions = Apollo.BaseMutationOptions<AcceptFriendRequestMutation, AcceptFriendRequestMutationVariables>;
 export const AddExerciseToWorkoutDocument = gql`
     mutation AddExerciseToWorkout($input: NewExerciseInput!) {
   addExerciseToWorkout(input: $input) {
@@ -1276,6 +1316,7 @@ export const PendingFriendsDocument = gql`
   pendingFriends {
     username
     email
+    id
   }
 }
     `;
@@ -1458,8 +1499,9 @@ export type WorkoutsQueryResult = Apollo.QueryResult<WorkoutsQuery, WorkoutsQuer
 export const NewFriendRequestDocument = gql`
     subscription NewFriendRequest {
   newFriendRequest {
-    userOneIdentity
-    userTwoIdentity
+    username
+    id
+    email
   }
 }
     `;

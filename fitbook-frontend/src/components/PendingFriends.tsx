@@ -1,16 +1,17 @@
-import { Box, Button, Drawer, DrawerBody, DrawerCloseButton, DrawerContent, DrawerFooter, DrawerHeader, DrawerOverlay, IconButton, Input, useDisclosure } from '@chakra-ui/react';
+import { Box, Button, Drawer, DrawerBody, DrawerCloseButton, DrawerContent, DrawerFooter, DrawerHeader, DrawerOverlay, IconButton, Input, useDisclosure, useToast } from '@chakra-ui/react';
 import React from 'react';
 import { RiUser2Fill } from 'react-icons/ri';
-import { usePendingFriendsQuery } from '../generated/graphql';
+import { useAcceptFriendRequestMutation, useNewFriendRequestSubscription, usePendingFriendsQuery } from '../generated/graphql';
 
 interface PendingFriendsProps {
-
 }
 
 const PendingFriends: React.FC<PendingFriendsProps> = ({ }) => {
     const { isOpen, onOpen, onClose } = useDisclosure();
+    const [acceptFriendRequest] = useAcceptFriendRequestMutation();
     const btnRef = React.useRef();
-    const { data } = usePendingFriendsQuery();
+    const { data, refetch } = usePendingFriendsQuery();
+    const { data: friendRequestSubsciptionData } = useNewFriendRequestSubscription();
     return (
         <React.Fragment>
             <IconButton
@@ -30,8 +31,22 @@ const PendingFriends: React.FC<PendingFriendsProps> = ({ }) => {
 
                         <DrawerBody>
                             {data?.pendingFriends.map((friendRequest) => (
-                                <Box>
+                                <Box key={friendRequest.id}>
                                     <Box>{friendRequest.username}</Box>
+                                    <Box>
+                                        <Button
+                                            onClick={async () => {
+                                                await acceptFriendRequest({
+                                                    variables: {
+                                                        userTwoIdentity: friendRequest.id
+                                                    },
+                                                    update: (cache) => {
+                                                        cache.evict({ fieldName: "pendingFriends" })
+                                                    }
+                                                })
+                                            }}
+                                        >Accept</Button>
+                                    </Box>
                                 </Box>
                             ))}
                         </DrawerBody>

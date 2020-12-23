@@ -28,7 +28,7 @@ export default function ProgramsListTable() {
         <Box w="100%" mt="3.5rem" display="flex" flexDirection="column">
             <VStack w="100%">
                 {data?.myPrograms.map((program) => (
-                    <NextLink href="/workout/programs/[id]" as={`/workout/programs/${program.id}`}>
+                    <NextLink key={program.id} href="/workout/programs/[id]" as={`/workout/programs/${program.id}`}>
                         <Box
                             w="15rem"
                             borderRadius={8}

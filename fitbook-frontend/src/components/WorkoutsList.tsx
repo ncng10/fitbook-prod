@@ -33,7 +33,7 @@ const WorkoutsList: React.FC<WorkoutsListProps> = ({ }) => {
         body =
             <Box>
                 {data?.workouts.map((workout) => (
-                    <NextLink href="/workout/programs/workouts/[id]" as={`/workout/programs/workouts/${workout.id}`}>
+                    <NextLink key={workout.id} href="/workout/programs/workouts/[id]" as={`/workout/programs/workouts/${workout.id}`}>
                         <Box>{workout.workoutName}</Box>
                     </NextLink>
                 ))}

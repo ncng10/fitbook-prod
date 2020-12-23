@@ -31,8 +31,9 @@ export class FriendRelationship {
         const requests = await getConnection().query(
             `
             SELECT * FROM public.user_friends
-            WHERE user_friends."friendshipStatus" = 0
-            AND user_friends."userOneIdentity" = ${req.session.userId}
+           INNER JOIN public.user ON public.user_friends."userOneIdentity" = public.user.id
+           WHERE public.user_friends."userTwoIdentity" = ${req.session.userId}
+           AND public.user_friends."friendshipStatus" = 0
             `
         )
         await pubSub.publish("NEW_FRIEND_REQUEST", requests)
@@ -48,13 +49,13 @@ export class FriendRelationship {
            SELECT * FROM public.user_friends
            INNER JOIN public.user ON public.user_friends."userOneIdentity" = public.user.id
            WHERE public.user_friends."userTwoIdentity" = ${req.session.userId}
+           AND public.user_friends."friendshipStatus" = 0
             `
         )
-        console.log(pendingFriends)
         return pendingFriends
     };
 
-    @Query(() => UserFriends)
+    @Query(() => [UserFriends])
     async myFriends(
         @Ctx() { req }: MyContext
     ) {
@@ -78,7 +79,7 @@ export class FriendRelationship {
             `
             UPDATE public.user_friends
             SET "friendshipStatus" = 1
-            WHERE user_friends."userOneIdentity" = ${req.session.userId} AND user_friends."userTwoIdentity" = ${userTwoIdentity}
+            WHERE user_friends."userTwoIdentity" = ${req.session.userId} AND user_friends."userOneIdentity" = ${userTwoIdentity}
             RETURNING *
             `
         )
@@ -89,11 +90,11 @@ export class FriendRelationship {
     };
 
 
-    @Subscription(() => [UserFriends], {
+    @Subscription(() => [User], {
         topics: "NEW_FRIEND_REQUEST"
     })
     async newFriendRequest(
-        @Root() payload: UserFriends[]
+        @Root() payload: User[]
     ) {
         return payload
     };

@@ -1,6 +1,7 @@
 subscription NewFriendRequest {
     newFriendRequest {
-        userOneIdentity
-        userTwoIdentity
+    username
+    id
+    email
     }
 }

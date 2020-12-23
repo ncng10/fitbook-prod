@@ -2,5 +2,6 @@ query PendingFriends {
   pendingFriends{
    username
    email
+   id
   }
 }
