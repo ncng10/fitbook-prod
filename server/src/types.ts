@@ -1,3 +1,4 @@
+import { ExpressContext } from 'apollo-server-express/dist/ApolloServer';
 import { Request, Response } from 'express';
 import { SessionData } from "express-session";
 import { Session } from "inspector";
@@ -9,6 +10,7 @@ export type MyContext = {
     res: Response;
     redis: Redis;
     userLoader: ReturnType<typeof createUserLoader>;
+    connection: ExpressContext & { session: Session & Partial<SessionData> & { userId?: number } }
 }
 
 

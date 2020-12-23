@@ -533,6 +533,17 @@ export type MyProgramsQuery = (
   )> }
 );
 
+export type PendingFriendsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type PendingFriendsQuery = (
+  { __typename?: 'Query' }
+  & { pendingFriends: Array<(
+    { __typename?: 'UserFriends' }
+    & Pick<UserFriends, 'userOneIdentity' | 'userTwoIdentity' | 'friendshipStatus'>
+  )> }
+);
+
 export type SearchUsersQueryVariables = Exact<{
   input: Scalars['String'];
 }>;
@@ -583,6 +594,17 @@ export type WorkoutsQuery = (
     { __typename?: 'Workout' }
     & Pick<Workout, 'workoutName' | 'id' | 'workoutDate' | 'workoutCompleted' | 'workoutCategory' | 'creatorId' | 'isShared'>
   )> }
+);
+
+export type NewFriendRequestSubscriptionVariables = Exact<{ [key: string]: never; }>;
+
+
+export type NewFriendRequestSubscription = (
+  { __typename?: 'Subscription' }
+  & { newFriendRequest: (
+    { __typename?: 'UserFriends' }
+    & Pick<UserFriends, 'userOneIdentity' | 'userTwoIdentity'>
+  ) }
 );
 
 export type NewMessageSubscriptionVariables = Exact<{ [key: string]: never; }>;
@@ -1249,6 +1271,40 @@ export function useMyProgramsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions
 export type MyProgramsQueryHookResult = ReturnType<typeof useMyProgramsQuery>;
 export type MyProgramsLazyQueryHookResult = ReturnType<typeof useMyProgramsLazyQuery>;
 export type MyProgramsQueryResult = Apollo.QueryResult<MyProgramsQuery, MyProgramsQueryVariables>;
+export const PendingFriendsDocument = gql`
+    query PendingFriends {
+  pendingFriends {
+    userOneIdentity
+    userTwoIdentity
+    friendshipStatus
+  }
+}
+    `;
+
+/**
+ * __usePendingFriendsQuery__
+ *
+ * To run a query within a React component, call `usePendingFriendsQuery` and pass it any options that fit your needs.
+ * When your component renders, `usePendingFriendsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = usePendingFriendsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function usePendingFriendsQuery(baseOptions?: Apollo.QueryHookOptions<PendingFriendsQuery, PendingFriendsQueryVariables>) {
+        return Apollo.useQuery<PendingFriendsQuery, PendingFriendsQueryVariables>(PendingFriendsDocument, baseOptions);
+      }
+export function usePendingFriendsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<PendingFriendsQuery, PendingFriendsQueryVariables>) {
+          return Apollo.useLazyQuery<PendingFriendsQuery, PendingFriendsQueryVariables>(PendingFriendsDocument, baseOptions);
+        }
+export type PendingFriendsQueryHookResult = ReturnType<typeof usePendingFriendsQuery>;
+export type PendingFriendsLazyQueryHookResult = ReturnType<typeof usePendingFriendsLazyQuery>;
+export type PendingFriendsQueryResult = Apollo.QueryResult<PendingFriendsQuery, PendingFriendsQueryVariables>;
 export const SearchUsersDocument = gql`
     query SearchUsers($input: String!) {
   searchUsers(search: $input) {
@@ -1400,6 +1456,35 @@ export function useWorkoutsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<W
 export type WorkoutsQueryHookResult = ReturnType<typeof useWorkoutsQuery>;
 export type WorkoutsLazyQueryHookResult = ReturnType<typeof useWorkoutsLazyQuery>;
 export type WorkoutsQueryResult = Apollo.QueryResult<WorkoutsQuery, WorkoutsQueryVariables>;
+export const NewFriendRequestDocument = gql`
+    subscription NewFriendRequest {
+  newFriendRequest {
+    userOneIdentity
+    userTwoIdentity
+  }
+}
+    `;
+
+/**
+ * __useNewFriendRequestSubscription__
+ *
+ * To run a query within a React component, call `useNewFriendRequestSubscription` and pass it any options that fit your needs.
+ * When your component renders, `useNewFriendRequestSubscription` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the subscription, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useNewFriendRequestSubscription({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useNewFriendRequestSubscription(baseOptions?: Apollo.SubscriptionHookOptions<NewFriendRequestSubscription, NewFriendRequestSubscriptionVariables>) {
+        return Apollo.useSubscription<NewFriendRequestSubscription, NewFriendRequestSubscriptionVariables>(NewFriendRequestDocument, baseOptions);
+      }
+export type NewFriendRequestSubscriptionHookResult = ReturnType<typeof useNewFriendRequestSubscription>;
+export type NewFriendRequestSubscriptionResult = Apollo.SubscriptionResult<NewFriendRequestSubscription>;
 export const NewMessageDocument = gql`
     subscription NewMessage {
   newMessage {

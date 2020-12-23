@@ -50,6 +50,13 @@ const main = async () => {
         retryStrategy: times => Math.max(times * 100, 3000),
     };
 
+    // await getConnection().query(
+    //     `
+    //     DELETE FROM public.user_friends
+    //     `
+    // )
+
+
     const app = express();
 
     const RedisStore = connectRedis(session);
@@ -109,7 +116,7 @@ const main = async () => {
             pubSub: pubsub,
         }),
         uploads: false,
-        context: ({ req, res }) => ({ req, res, redis, userLoader: createUserLoader(), pubsub }),
+        context: ({ req, res, connection }) => ({ req, res, connection, redis, userLoader: createUserLoader(), pubsub }),
         formatError: (error: GraphQLError) => {
             const errorId = v4();
             console.log("Error ID:", errorId)
@@ -117,8 +124,6 @@ const main = async () => {
 
             return new GraphQLError(`Internal Error: ${errorId}`)
         },
-        subscriptions: {
-        }
     });
     apolloServer.applyMiddleware({ app, cors: { origin: false } });
     const httpServer = http.createServer(app)

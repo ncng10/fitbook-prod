@@ -3,6 +3,8 @@ import { MyContext } from "../types";
 import { Arg, Ctx, Field, InputType, Int, Mutation, PubSub, PubSubEngine, Query, Resolver, Root, Subscription } from "type-graphql";
 import { getConnection } from "typeorm";
 import { User } from "../entities/User";
+import { ConnectionContext } from "subscriptions-transport-ws";
+import { ExpressContext } from "apollo-server-express/dist/ApolloServer";
 
 @InputType()
 class AddFriendInput {
@@ -26,8 +28,14 @@ export class FriendRelationship {
             userOneIdentity: req.session.userId,
             userTwoIdentity: input.userTwoIdentity
         }).save()
-
-        await pubSub.publish("NEW_FRIEND_REQUEST", addFriend)
+        const requests = await getConnection().query(
+            `
+            SELECT * FROM public.user_friends
+            WHERE user_friends."friendshipStatus" = 0
+            AND user_friends."userOneIdentity" = ${req.session.userId}
+            `
+        )
+        await pubSub.publish("NEW_FRIEND_REQUEST", requests)
         return true
     };
 
@@ -81,17 +89,12 @@ export class FriendRelationship {
     };
 
 
-    @Subscription(() => UserFriends, {
+    @Subscription(() => [UserFriends], {
         topics: "NEW_FRIEND_REQUEST"
     })
-    newFriendRequest(
-        @Root() friendRequestInfo: UserFriends
+    async newFriendRequest(
+        @Root() payload: UserFriends[]
     ) {
-        return {
-            userOneIdentity: friendRequestInfo.userOneIdentity,
-            userTwoIdentity: friendRequestInfo.userTwoIdentity,
-            friendshipStatus: friendRequestInfo.friendshipStatus
-        }
+        return payload
     };
-
 }

@@ -1,0 +1,7 @@
+query PendingFriends {
+  pendingFriends{
+    userOneIdentity
+    userTwoIdentity
+    friendshipStatus
+  }
+}
