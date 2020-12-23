@@ -283,7 +283,7 @@ export type CreateWorkoutInput = {
 
 export type Subscription = {
   __typename?: 'Subscription';
-  newFriendRequest: Array<User>;
+  newFriendRequest: UserFriends;
   newMessage: PersonalMessage;
 };
 
@@ -621,10 +621,10 @@ export type NewFriendRequestSubscriptionVariables = Exact<{ [key: string]: never
 
 export type NewFriendRequestSubscription = (
   { __typename?: 'Subscription' }
-  & { newFriendRequest: Array<(
-    { __typename?: 'User' }
-    & Pick<User, 'username' | 'id' | 'email'>
-  )> }
+  & { newFriendRequest: (
+    { __typename?: 'UserFriends' }
+    & Pick<UserFriends, 'userTwoIdentity' | 'userOneIdentity' | 'friendshipStatus'>
+  ) }
 );
 
 export type NewMessageSubscriptionVariables = Exact<{ [key: string]: never; }>;
@@ -1540,9 +1540,9 @@ export type WorkoutsQueryResult = Apollo.QueryResult<WorkoutsQuery, WorkoutsQuer
 export const NewFriendRequestDocument = gql`
     subscription NewFriendRequest {
   newFriendRequest {
-    username
-    id
-    email
+    userTwoIdentity
+    userOneIdentity
+    friendshipStatus
   }
 }
     `;

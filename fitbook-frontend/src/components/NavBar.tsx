@@ -15,6 +15,7 @@ interface NavBarProps {
 
 export const NavBar: React.FC<NavBarProps> = ({ }) => {
     const [isLargerThan600] = useMediaQuery("(min-width:600px)");
+    const toast = useToast()
     const [logout] = useLogoutMutation();
     const { data } = useUserProfileQuery();
     console.log(data?.userProfile.id)
@@ -23,6 +24,14 @@ export const NavBar: React.FC<NavBarProps> = ({ }) => {
     let body = null;
     const { data: friendRequestSubsciptionData } = useNewFriendRequestSubscription();
     const { data: pendingFriendsData, refetch } = usePendingFriendsQuery();
+
+    if (friendRequestSubsciptionData?.newFriendRequest?.userTwoIdentity === data?.userProfile?.id) {
+        toast({
+            position: "top-right",
+            description: "New friend request",
+            status: "success"
+        })
+    }
 
     if (!data?.userProfile) {
         body =
@@ -62,7 +71,7 @@ export const NavBar: React.FC<NavBarProps> = ({ }) => {
                         marginTop="-.25rem"
                     >
                         {
-                            friendRequestSubsciptionData?.newFriendRequest.length >= 1
+                            friendRequestSubsciptionData?.newFriendRequest.userTwoIdentity === data?.userProfile.id
                                 ||
                                 pendingFriendsData?.pendingFriends.length >= 1
 

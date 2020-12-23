@@ -28,15 +28,15 @@ export class FriendRelationship {
             userOneIdentity: req.session.userId,
             userTwoIdentity: input.userTwoIdentity
         }).save()
-        const requests = await getConnection().query(
-            `
-            SELECT * FROM public.user_friends
-           INNER JOIN public.user ON public.user_friends."userOneIdentity" = public.user.id
-           WHERE public.user_friends."userTwoIdentity" = ${req.session.userId}
-           AND public.user_friends."friendshipStatus" = 0
-            `
-        )
-        await pubSub.publish("NEW_FRIEND_REQUEST", requests)
+        // const requests = await getConnection().query(
+        //     `
+        //     SELECT * FROM public.user_friends
+        //    INNER JOIN public.user ON public.user_friends."userOneIdentity" = public.user.id
+        //    WHERE public.user_friends."userTwoIdentity" = ${req.session.userId}
+        //    AND public.user_friends."friendshipStatus" = 0
+        //     `
+        // )
+        await pubSub.publish("NEW_FRIEND_REQUEST", addFriend)
         return true
     };
 
@@ -90,11 +90,11 @@ export class FriendRelationship {
     };
 
 
-    @Subscription(() => [User], {
+    @Subscription(() => UserFriends, {
         topics: "NEW_FRIEND_REQUEST"
     })
     async newFriendRequest(
-        @Root() payload: User[]
+        @Root() payload: UserFriends
     ) {
         return payload
     };
