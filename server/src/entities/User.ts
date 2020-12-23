@@ -3,6 +3,7 @@ import { BaseEntity, Column, CreateDateColumn, Entity, OneToMany, PrimaryGenerat
 import { Group } from './Group';
 import { GroupMembers } from "./GroupMembers";
 import { Program } from "./Program";
+import { UserFriends } from "./UserFriends";
 @ObjectType()
 @Entity()
 export class User extends BaseEntity {
@@ -44,4 +45,9 @@ export class User extends BaseEntity {
     @Column({ nullable: true, default: "none" })
     profilePicture: string;
 
+    @OneToMany(() => UserFriends, (uf) => uf.user1)
+    friend1: Promise<UserFriends[]>;
+
+    @OneToMany(() => UserFriends, (uf) => uf.user2)
+    friend2: Promise<UserFriends[]>;
 }

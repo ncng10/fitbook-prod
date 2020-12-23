@@ -20,8 +20,10 @@ import { PersonalMessage } from "./entities/PersonalMessage";
 import { Program } from "./entities/Program";
 import { ProgramWorkouts } from './entities/ProgramWorkouts';
 import { User } from './entities/User';
+import { UserFriends } from './entities/UserFriends';
 import { Workout } from './entities/Workout';
 import { ExerciseResolver } from './resolvers/exercise';
+import { FriendRelationship } from './resolvers/friendrelationship';
 import { GroupResolver } from "./resolvers/group";
 import { PersonalMessageResolver } from "./resolvers/personalmessage";
 import { ProfilePictureResolver } from './resolvers/profilepicture';
@@ -39,7 +41,7 @@ const main = async () => {
         logging: true,
         synchronize: true,
         migrations: [path.join(__dirname, "./migrations/*")],
-        entities: [User, Group, GroupMembers, PersonalMessage, Program, Workout, Exercise, ProgramWorkouts]
+        entities: [User, Group, GroupMembers, PersonalMessage, Program, Workout, Exercise, ProgramWorkouts, UserFriends]
     });
 
     const options: Redis.RedisOptions = {
@@ -47,6 +49,12 @@ const main = async () => {
         port: 6379,
         retryStrategy: times => Math.max(times * 100, 3000),
     };
+
+    // await getConnection().query(
+    //     `
+    //     DELETE FROM public.user_friends
+    //     `
+    // )
 
 
     const app = express();
@@ -102,6 +110,7 @@ const main = async () => {
                     WorkoutResolver,
                     ProfilePictureResolver,
                     ExerciseResolver,
+                    FriendRelationship
                 ],
             validate: false,
             pubSub: pubsub,
