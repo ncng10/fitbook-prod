@@ -18,6 +18,8 @@ export type Scalars = {
 export type Query = {
   __typename?: 'Query';
   exercisesInAWorkout: Array<Exercise>;
+  pendingFriends: Array<UserFriends>;
+  myFriends: UserFriends;
   group: Group;
   groups: Array<Group>;
   isMember: Array<Group>;
@@ -27,6 +29,7 @@ export type Query = {
   hello: Scalars['String'];
   me: User;
   userProfile: User;
+  searchUsers: User;
   workouts: Array<Workout>;
   workout: Workout;
 };
@@ -44,6 +47,11 @@ export type QueryGroupArgs = {
 
 export type QueryViewPersonalMessagesArgs = {
   senderId: Scalars['Int'];
+};
+
+
+export type QuerySearchUsersArgs = {
+  search: Scalars['String'];
 };
 
 
@@ -81,6 +89,13 @@ export type Workout = {
   workoutCompleted: Scalars['Boolean'];
   isShared: Scalars['Boolean'];
   exercises: Array<Exercise>;
+};
+
+export type UserFriends = {
+  __typename?: 'UserFriends';
+  userOneIdentity: Scalars['Float'];
+  userTwoIdentity: Scalars['Float'];
+  friendshipStatus: Scalars['Float'];
 };
 
 export type Group = {
@@ -130,6 +145,8 @@ export type Program = {
 export type Mutation = {
   __typename?: 'Mutation';
   addExerciseToWorkout: Array<Exercise>;
+  addFriend: Scalars['Boolean'];
+  acceptFriendRequest: Scalars['Boolean'];
   createGroup: Group;
   joinGroup: Array<GroupMembers>;
   sendPersonalMessage: Scalars['Boolean'];
@@ -144,6 +161,16 @@ export type Mutation = {
 
 export type MutationAddExerciseToWorkoutArgs = {
   input: NewExerciseInput;
+};
+
+
+export type MutationAddFriendArgs = {
+  AddFriendInput: AddFriendInput;
+};
+
+
+export type MutationAcceptFriendRequestArgs = {
+  userTwoIdentity: Scalars['Int'];
 };
 
 
@@ -199,6 +226,11 @@ export type NewExerciseInput = {
   notes: Scalars['String'];
 };
 
+export type AddFriendInput = {
+  userTwoIdentity: Scalars['Float'];
+  friendshipStatus: Scalars['Float'];
+};
+
 export type GroupInput = {
   groupName: Scalars['String'];
   groupCategory: Scalars['String'];
@@ -251,6 +283,7 @@ export type CreateWorkoutInput = {
 
 export type Subscription = {
   __typename?: 'Subscription';
+  newFriendRequest: UserFriends;
   newMessage: PersonalMessage;
 };
 
@@ -498,6 +531,19 @@ export type MyProgramsQuery = (
       & Pick<User, 'username' | 'email'>
     ) }
   )> }
+);
+
+export type SearchUsersQueryVariables = Exact<{
+  input: Scalars['String'];
+}>;
+
+
+export type SearchUsersQuery = (
+  { __typename?: 'Query' }
+  & { searchUsers: (
+    { __typename?: 'User' }
+    & Pick<User, 'username' | 'email' | 'profilePicture'>
+  ) }
 );
 
 export type ViewPersonalMessagesQueryVariables = Exact<{
@@ -1203,6 +1249,41 @@ export function useMyProgramsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions
 export type MyProgramsQueryHookResult = ReturnType<typeof useMyProgramsQuery>;
 export type MyProgramsLazyQueryHookResult = ReturnType<typeof useMyProgramsLazyQuery>;
 export type MyProgramsQueryResult = Apollo.QueryResult<MyProgramsQuery, MyProgramsQueryVariables>;
+export const SearchUsersDocument = gql`
+    query SearchUsers($input: String!) {
+  searchUsers(search: $input) {
+    username
+    email
+    profilePicture
+  }
+}
+    `;
+
+/**
+ * __useSearchUsersQuery__
+ *
+ * To run a query within a React component, call `useSearchUsersQuery` and pass it any options that fit your needs.
+ * When your component renders, `useSearchUsersQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useSearchUsersQuery({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useSearchUsersQuery(baseOptions: Apollo.QueryHookOptions<SearchUsersQuery, SearchUsersQueryVariables>) {
+        return Apollo.useQuery<SearchUsersQuery, SearchUsersQueryVariables>(SearchUsersDocument, baseOptions);
+      }
+export function useSearchUsersLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<SearchUsersQuery, SearchUsersQueryVariables>) {
+          return Apollo.useLazyQuery<SearchUsersQuery, SearchUsersQueryVariables>(SearchUsersDocument, baseOptions);
+        }
+export type SearchUsersQueryHookResult = ReturnType<typeof useSearchUsersQuery>;
+export type SearchUsersLazyQueryHookResult = ReturnType<typeof useSearchUsersLazyQuery>;
+export type SearchUsersQueryResult = Apollo.QueryResult<SearchUsersQuery, SearchUsersQueryVariables>;
 export const ViewPersonalMessagesDocument = gql`
     query viewPersonalMessages($input: Int!) {
   viewPersonalMessages(senderId: $input) {

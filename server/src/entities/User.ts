@@ -42,8 +42,8 @@ export class User extends BaseEntity {
     groupConnection: Promise<GroupMembers[]>;
 
     @Field(() => String)
-    @Column({ nullable: true, default: "none" })
-    profilePicture: string;
+    @Column({ nullable: true, default: "" })
+    profilePicture: string
 
     @OneToMany(() => UserFriends, (uf) => uf.user1)
     friend1: Promise<UserFriends[]>;

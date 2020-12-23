@@ -50,13 +50,6 @@ const main = async () => {
         retryStrategy: times => Math.max(times * 100, 3000),
     };
 
-    // await getConnection().query(
-    //     `
-    //     DELETE FROM public.user_friends
-    //     `
-    // )
-
-
     const app = express();
 
     const RedisStore = connectRedis(session);

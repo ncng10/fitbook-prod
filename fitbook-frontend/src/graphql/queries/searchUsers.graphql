@@ -1,0 +1,7 @@
+query SearchUsers($input: String!) {
+  searchUsers(search: $input) {
+    username
+    email
+    profilePicture
+  }
+}
