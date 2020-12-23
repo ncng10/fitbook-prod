@@ -39,18 +39,18 @@ export class FriendRelationship {
         return true
     };
 
-    @Query(() => [UserFriends])
+    @Query(() => [User])
     async pendingFriends(
         @Ctx() { req }: MyContext
     ) {
         const pendingFriends = await getConnection().query(
             `
-            SELECT * FROM public.user_friends
-            WHERE user_friends."userOneIdentity"= ${req.session.userId} AND user_friends."friendshipStatus" = 0
-            OR 
-            user_friends."userTwoIdentity" = ${req.session.userId} AND user_friends."friendshipStatus" = 0
+           SELECT * FROM public.user_friends
+           INNER JOIN public.user ON public.user_friends."userOneIdentity" = public.user.id
+           WHERE public.user_friends."userTwoIdentity" = ${req.session.userId}
             `
         )
+        console.log(pendingFriends)
         return pendingFriends
     };
 

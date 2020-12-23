@@ -18,7 +18,7 @@ export type Scalars = {
 export type Query = {
   __typename?: 'Query';
   exercisesInAWorkout: Array<Exercise>;
-  pendingFriends: Array<UserFriends>;
+  pendingFriends: Array<User>;
   myFriends: UserFriends;
   group: Group;
   groups: Array<Group>;
@@ -91,6 +91,17 @@ export type Workout = {
   exercises: Array<Exercise>;
 };
 
+export type User = {
+  __typename?: 'User';
+  id: Scalars['Float'];
+  username: Scalars['String'];
+  email: Scalars['String'];
+  password: Scalars['String'];
+  createdAt: Scalars['String'];
+  updatedAt: Scalars['String'];
+  profilePicture: Scalars['String'];
+};
+
 export type UserFriends = {
   __typename?: 'UserFriends';
   userOneIdentity: Scalars['Float'];
@@ -107,17 +118,6 @@ export type Group = {
   creator: User;
   createdAt: Scalars['String'];
   updatedAt: Scalars['String'];
-};
-
-export type User = {
-  __typename?: 'User';
-  id: Scalars['Float'];
-  username: Scalars['String'];
-  email: Scalars['String'];
-  password: Scalars['String'];
-  createdAt: Scalars['String'];
-  updatedAt: Scalars['String'];
-  profilePicture: Scalars['String'];
 };
 
 export type PersonalMessage = {
@@ -283,7 +283,7 @@ export type CreateWorkoutInput = {
 
 export type Subscription = {
   __typename?: 'Subscription';
-  newFriendRequest: UserFriends;
+  newFriendRequest: Array<UserFriends>;
   newMessage: PersonalMessage;
 };
 
@@ -539,8 +539,8 @@ export type PendingFriendsQueryVariables = Exact<{ [key: string]: never; }>;
 export type PendingFriendsQuery = (
   { __typename?: 'Query' }
   & { pendingFriends: Array<(
-    { __typename?: 'UserFriends' }
-    & Pick<UserFriends, 'userOneIdentity' | 'userTwoIdentity' | 'friendshipStatus'>
+    { __typename?: 'User' }
+    & Pick<User, 'username' | 'email'>
   )> }
 );
 
@@ -601,10 +601,10 @@ export type NewFriendRequestSubscriptionVariables = Exact<{ [key: string]: never
 
 export type NewFriendRequestSubscription = (
   { __typename?: 'Subscription' }
-  & { newFriendRequest: (
+  & { newFriendRequest: Array<(
     { __typename?: 'UserFriends' }
     & Pick<UserFriends, 'userOneIdentity' | 'userTwoIdentity'>
-  ) }
+  )> }
 );
 
 export type NewMessageSubscriptionVariables = Exact<{ [key: string]: never; }>;
@@ -1274,9 +1274,8 @@ export type MyProgramsQueryResult = Apollo.QueryResult<MyProgramsQuery, MyProgra
 export const PendingFriendsDocument = gql`
     query PendingFriends {
   pendingFriends {
-    userOneIdentity
-    userTwoIdentity
-    friendshipStatus
+    username
+    email
   }
 }
     `;

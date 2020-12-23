@@ -7,6 +7,7 @@ import React, { useEffect, useState } from 'react';
 import { AiOutlineUnorderedList } from 'react-icons/ai';
 import { RiUser2Fill, RiUser3Fill, RiUser5Fill, RiUser6Line, RiUserFill } from 'react-icons/ri';
 import { useLogoutMutation, useNewFriendRequestSubscription, usePendingFriendsQuery, useUserProfileQuery } from '../generated/graphql';
+import PendingFriends from './PendingFriends';
 import ProgramMenu from './ProgramMenu';
 interface NavBarProps {
 
@@ -23,11 +24,12 @@ export const NavBar: React.FC<NavBarProps> = ({ }) => {
     let body = null;
     const { data: friendRequestSubsciptionData } = useNewFriendRequestSubscription();
     const { data: pendingFriendsData } = usePendingFriendsQuery();
+
     if (friendRequestSubsciptionData) {
         toast({
             position: "bottom-right",
             title: "New friend request.",
-            description: "Someone wants to add you, click to see who!.",
+            description: "Someone wants to add you, click to see who!",
             status: "success",
             duration: 5000,
             isClosable: true,
@@ -70,16 +72,12 @@ export const NavBar: React.FC<NavBarProps> = ({ }) => {
                         mr={5}
                         marginTop="-.25rem"
                     >
-                        {friendRequestSubsciptionData?.newFriendRequest || pendingFriendsData?.pendingFriends ?
+                        {friendRequestSubsciptionData || pendingFriendsData ?
                             <Badge
                                 color="secondary"
                                 variant="dot"
                             >
-                                <IconButton
-                                    aria-label="friend-requests-button"
-                                    icon={<RiUserFill />}
-                                    borderRadius={50}
-                                />
+                                <PendingFriends />
                             </Badge>
                             :
                             <Badge
