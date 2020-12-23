@@ -1,6 +1,6 @@
 import { UserFriends } from "../entities/UserFriends";
 import { MyContext } from "../types";
-import { Arg, Ctx, Field, InputType, Int, Mutation, Query, Resolver } from "type-graphql";
+import { Arg, Ctx, Field, InputType, Int, Mutation, PubSub, PubSubEngine, Query, Resolver, Root, Subscription } from "type-graphql";
 import { getConnection } from "typeorm";
 import { User } from "../entities/User";
 
@@ -15,20 +15,20 @@ class AddFriendInput {
 // friendship codes: [{0: pending}, {1: friends}, {2: rejected}, {3: blocked}]
 @Resolver(User)
 export class FriendRelationship {
-    @Mutation(() => [UserFriends])
+    @Mutation(() => Boolean)
     async addFriend(
         @Arg("AddFriendInput") input: AddFriendInput,
+        @PubSub() pubSub: PubSubEngine,
         @Ctx() { req }: MyContext
     ) {
-        const addFriend = await getConnection().query(
-            `
-           INSERT INTO public.user_friends
-           ("userOneIdentity", "userTwoIdentity","friendshipStatus")
-           VALUES(${req.session.userId},${input.userTwoIdentity}, ${input.friendshipStatus})
-           RETURNING *
-           `
-        )
-        return addFriend
+        const addFriend = await UserFriends.create({
+            friendshipStatus: input.friendshipStatus,
+            userOneIdentity: req.session.userId,
+            userTwoIdentity: input.userTwoIdentity
+        }).save()
+
+        await pubSub.publish("NEW_FRIEND_REQUEST", addFriend)
+        return true
     };
 
     @Query(() => [UserFriends])
@@ -46,7 +46,7 @@ export class FriendRelationship {
         return pendingFriends
     };
 
-    @Query(() => [UserFriends])
+    @Query(() => UserFriends)
     async myFriends(
         @Ctx() { req }: MyContext
     ) {
@@ -78,5 +78,20 @@ export class FriendRelationship {
             return false
         }
         return true
-    }
+    };
+
+
+    @Subscription(() => UserFriends, {
+        topics: "NEW_FRIEND_REQUEST"
+    })
+    newFriendRequest(
+        @Root() friendRequestInfo: UserFriends
+    ) {
+        return {
+            userOneIdentity: friendRequestInfo.userOneIdentity,
+            userTwoIdentity: friendRequestInfo.userTwoIdentity,
+            friendshipStatus: friendRequestInfo.friendshipStatus
+        }
+    };
+
 }

@@ -43,6 +43,7 @@ export class PersonalMessageResolver {
             sender: user?.username
         }).save()
         await pubSub.publish("MESSAGES", personalMessage)
+        console.log(personalMessage)
         return true
     };
 
