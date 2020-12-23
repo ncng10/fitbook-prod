@@ -160,8 +160,8 @@ export class UserResolver {
         const searchResult =
             await getConnection()
                 .createQueryBuilder(User, "u")
-                .where("username = :username", {
-                    username: input
+                .where("LOWER(username) LIKE :username", {
+                    username: input.toLowerCase()
                 }).orWhere("email= :email", {
                     email: input
                 })

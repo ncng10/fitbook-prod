@@ -1,8 +1,10 @@
-import { Box } from '@chakra-ui/react';
+import { Avatar, Box } from '@chakra-ui/react';
 import { Button } from '@material-ui/core';
 import { Form, Formik } from 'formik';
 import React, { useState } from 'react'
 import { InputField } from '../../components/InputField';
+import { NavBar } from '../../components/NavBar';
+import SearchListCard from '../../components/SearchListCard';
 import { useSearchUsersQuery } from '../../generated/graphql';
 import { withApollo } from '../../utils/withApollo';
 
@@ -22,6 +24,7 @@ const Search: React.FC<SearchProps> = ({ }) => {
 
     return (
         <React.Fragment>
+            <NavBar />
             <Formik
                 initialValues={{ input: "" }}
                 onSubmit={async (values) => {
@@ -37,14 +40,15 @@ const Search: React.FC<SearchProps> = ({ }) => {
                     <Button type="submit">Search</Button>
                 </Form>
             </Formik>
+            {data?.searchUsers ?
+                <SearchListCard
+                    username={data?.searchUsers.username}
+                    profilePicture={data?.searchUsers.profilePicture}
+                />
+                :
+                null
 
-            <Box>
-                Results:
-                <Box>
-                    <span>{data?.searchUsers.username}</span>
-                    <img src={`http://localhost:5001/images/${data?.searchUsers.profilePicture}`} />
-                </Box>
-            </Box>
+            }
         </React.Fragment>
     );
 }
