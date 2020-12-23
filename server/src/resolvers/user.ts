@@ -162,8 +162,8 @@ export class UserResolver {
                 .createQueryBuilder(User, "u")
                 .where("LOWER(username) LIKE :username", {
                     username: input.toLowerCase()
-                }).orWhere("email= :email", {
-                    email: input
+                }).orWhere("LOWER(email) LIKE :email", {
+                    email: input.toLowerCase()
                 })
                 .getOne()
         return searchResult
