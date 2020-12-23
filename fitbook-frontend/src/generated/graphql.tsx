@@ -563,7 +563,7 @@ export type SearchUsersQuery = (
   { __typename?: 'Query' }
   & { searchUsers: (
     { __typename?: 'User' }
-    & Pick<User, 'username' | 'email' | 'profilePicture'>
+    & Pick<User, 'username' | 'email' | 'profilePicture' | 'id'>
   ) }
 );
 
@@ -1351,6 +1351,7 @@ export const SearchUsersDocument = gql`
     username
     email
     profilePicture
+    id
   }
 }
     `;

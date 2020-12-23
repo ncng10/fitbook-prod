@@ -3,5 +3,6 @@ query SearchUsers($input: String!) {
     username
     email
     profilePicture
+    id
   }
 }
