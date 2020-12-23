@@ -2,7 +2,7 @@ import { Arg, Ctx, Field, Mutation, ObjectType, Query, Resolver } from "type-gra
 import { User } from '../entities/User'
 import { UsernamePasswordInput } from "./UsernamePasswordInput";
 import { MyContext } from '../types'
-import { getConnection } from "typeorm";
+import { Connection, getConnection } from "typeorm";
 import argon2 from 'argon2';
 import { validateRegister } from "../utils/validateRegister";
 
@@ -152,4 +152,20 @@ export class UserResolver {
         }));
     };
 
+
+    @Query(() => User)
+    async searchUsers(
+        @Arg("search", () => String) input: string
+    ) {
+        const searchResult =
+            await getConnection()
+                .createQueryBuilder(User, "u")
+                .where("username = :username", {
+                    username: input
+                }).orWhere("email= :email", {
+                    email: input
+                })
+                .getOne()
+        return searchResult
+    }
 }
