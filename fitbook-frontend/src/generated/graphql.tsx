@@ -151,6 +151,7 @@ export type Mutation = {
   joinGroup: Array<GroupMembers>;
   sendPersonalMessage: Scalars['Boolean'];
   addProfilePicture: Scalars['Boolean'];
+  productionUpload: Scalars['String'];
   createProgram: Array<Program>;
   register: UserResponse;
   login: UserResponse;
@@ -192,6 +193,11 @@ export type MutationSendPersonalMessageArgs = {
 
 export type MutationAddProfilePictureArgs = {
   file: Scalars['Upload'];
+};
+
+
+export type MutationProductionUploadArgs = {
+  photo: Scalars['String'];
 };
 
 
@@ -433,6 +439,16 @@ export type LogoutMutationVariables = Exact<{ [key: string]: never; }>;
 export type LogoutMutation = (
   { __typename?: 'Mutation' }
   & Pick<Mutation, 'logout'>
+);
+
+export type ProductionUploadMutationVariables = Exact<{
+  photo: Scalars['String'];
+}>;
+
+
+export type ProductionUploadMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'productionUpload'>
 );
 
 export type RegisterMutationVariables = Exact<{
@@ -1042,6 +1058,36 @@ export function useLogoutMutation(baseOptions?: Apollo.MutationHookOptions<Logou
 export type LogoutMutationHookResult = ReturnType<typeof useLogoutMutation>;
 export type LogoutMutationResult = Apollo.MutationResult<LogoutMutation>;
 export type LogoutMutationOptions = Apollo.BaseMutationOptions<LogoutMutation, LogoutMutationVariables>;
+export const ProductionUploadDocument = gql`
+    mutation ProductionUpload($photo: String!) {
+  productionUpload(photo: $photo)
+}
+    `;
+export type ProductionUploadMutationFn = Apollo.MutationFunction<ProductionUploadMutation, ProductionUploadMutationVariables>;
+
+/**
+ * __useProductionUploadMutation__
+ *
+ * To run a mutation, you first call `useProductionUploadMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useProductionUploadMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [productionUploadMutation, { data, loading, error }] = useProductionUploadMutation({
+ *   variables: {
+ *      photo: // value for 'photo'
+ *   },
+ * });
+ */
+export function useProductionUploadMutation(baseOptions?: Apollo.MutationHookOptions<ProductionUploadMutation, ProductionUploadMutationVariables>) {
+  return Apollo.useMutation<ProductionUploadMutation, ProductionUploadMutationVariables>(ProductionUploadDocument, baseOptions);
+}
+export type ProductionUploadMutationHookResult = ReturnType<typeof useProductionUploadMutation>;
+export type ProductionUploadMutationResult = Apollo.MutationResult<ProductionUploadMutation>;
+export type ProductionUploadMutationOptions = Apollo.BaseMutationOptions<ProductionUploadMutation, ProductionUploadMutationVariables>;
 export const RegisterDocument = gql`
     mutation Register($options: UsernamePasswordInput!) {
   register(options: $options) {

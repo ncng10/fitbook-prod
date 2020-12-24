@@ -16,6 +16,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@google-cloud/storage": "^5.7.0",
     "@types/dotenv": "^8.2.0",
     "@types/nodemailer": "^6.4.0",
     "apollo-server": "^2.19.0",

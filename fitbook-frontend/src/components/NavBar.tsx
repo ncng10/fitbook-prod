@@ -111,7 +111,7 @@ export const NavBar: React.FC<NavBarProps> = ({ }) => {
                         cursor="pointer"
                         size="md"
                         as={Avatar}
-                        src={`http://localhost:5001/images/${data?.userProfile?.profilePicture}`}
+                        src={`https://storage.cloud.google.com/fitbook-production/${data?.userProfile.profilePicture}`}
                         position="fixed"
                         bg="lightgray"
                         top="1rem"
