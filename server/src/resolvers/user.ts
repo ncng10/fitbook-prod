@@ -88,7 +88,6 @@ export class UserResolver {
                     }],
                 }
             }
-            console.log('message:', err.message)
         }
         //log user in when registering 
         //store user id session
@@ -144,7 +143,6 @@ export class UserResolver {
         return new Promise((resolve) => req.session.destroy(err => {
             res.clearCookie("jid");
             if (err) {
-                console.log(err);
                 resolve(false);
                 return
             }

@@ -43,7 +43,6 @@ export class PersonalMessageResolver {
             sender: user?.username
         }).save()
         await pubSub.publish("MESSAGES", personalMessage)
-        console.log(personalMessage)
         return true
     };
 
@@ -65,7 +64,7 @@ export class PersonalMessageResolver {
     newMessage(
         @Root() personalMessage: PersonalMessage
     ) {
-        console.log(personalMessage)
+
         return {
             sender: personalMessage.sender,
             text: personalMessage.text,

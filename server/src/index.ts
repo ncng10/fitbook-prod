@@ -45,31 +45,25 @@ const main = async () => {
         entities: [User, Group, GroupMembers, PersonalMessage, Program, Workout, Exercise, ProgramWorkouts, UserFriends]
     });
 
+    const app = express();
 
+    const RedisStore = connectRedis(session);
+    const redis = new Redis(process.env.REDIS_URL);
     const options: Redis.RedisOptions = {
         host: '192.168.1.8',
         port: 6379,
         retryStrategy: times => Math.max(times * 100, 3000),
     };
 
-    // await getConnection().query(
-    //     `
-    //     DELETE FROM public.user_friends
-    //     `as
-    // )
 
 
-    const app = express();
-
-    const RedisStore = connectRedis(session);
-    const redis = new Redis(process.env.REDIS_URL);
 
     app.set("trust proxy", 1);
 
     app.use(cors(
         {
             credentials: true,
-            origin: process.env.NODE_ENV === "production" ? "https://ncong.app" : "http://localhost:3000"
+            origin: __prod__ ? "https://fitbookit.com" : "http://localhost:3000"
         }
     ));
 
@@ -85,7 +79,7 @@ const main = async () => {
                 httpOnly: true,
                 sameSite: 'lax', //csrf protection
                 secure: __prod__,  //cookie only works in https
-                domain: __prod__ ? ".ncong.app" : undefined,
+                domain: __prod__ ? ".fitbookit.com" : undefined,
             },
             saveUninitialized: false,
             secret: process.env.REDIS_SECRET,
@@ -99,8 +93,6 @@ const main = async () => {
         }
         : {});
 
-    app.use(graphqlUploadExpress({ maxFileSize: 10000000, maxFiles: 10 }));
-    app.use("/images", express.static(path.join(__dirname, "../../images")));
     const apolloServer = new ApolloServer({
         schema: await buildSchema({
             resolvers:
@@ -127,6 +119,8 @@ const main = async () => {
             return new GraphQLError(`Internal Error: ${errorId}`)
         },
     });
+    app.use(graphqlUploadExpress({ maxFileSize: 10000000, maxFiles: 10 }));
+    app.use("/images", express.static(path.join(__dirname, "../../images")));
     apolloServer.applyMiddleware({ app, cors: { origin: false } });
     const httpServer = http.createServer(app)
     apolloServer.installSubscriptionHandlers(httpServer)
@@ -135,6 +129,7 @@ const main = async () => {
         console.log(`server started on port ${PORT}${apolloServer.graphqlPath}`)
         console.log(`Subs started at ${PORT}${apolloServer.subscriptionsPath}`)
     });
+
 
 };
 

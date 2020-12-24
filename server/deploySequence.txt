@@ -1,0 +1,10 @@
+docker build -t ncng10/fitbook-prod:$version .
+docker push ncng10/fitbook-prod:$version
+
+GO TO DOKKU CONSOLE
+
+docker pull ncng10/fitbook-prod:$version
+
+docker tag ncng10/fitbook-prod:$version dokku/api:latest
+
+dokku tags:deploy api latest
