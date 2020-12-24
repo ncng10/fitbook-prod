@@ -33,7 +33,8 @@ const Avatar: React.FC<AvatarProps> = ({ }) => {
                 {isDragActive ? (
                     <p>Drop the files here ...</p>
                 ) : (
-                        <p>Drag your image here, or click to select a file.</p>
+                        <p>Drag your image here, or click to select a file.<p>Images above ~1mb will not work</p></p>
+
                     )}
             </div>
         </React.Fragment>

@@ -32,7 +32,7 @@ const SearchListCard: React.FC<SearchListCardProps> = ({ username, profilePictur
                 >
                     <Avatar
                         size="xl"
-                        src={`http://localhost:5001/images/${profilePicture}`}
+                        src={`https://storage.googleapis.com/fitbook-production/${profilePicture}`}
                     />
                     <p style={{ fontSize: 25, marginLeft: 15 }}>{username}</p>
                 </Box>

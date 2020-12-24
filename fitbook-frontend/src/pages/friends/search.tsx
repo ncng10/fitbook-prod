@@ -43,7 +43,7 @@ const Search: React.FC<SearchProps> = ({ }) => {
             {data?.searchUsers && data?.searchUsers.id !== meData?.me.id ?
                 <SearchListCard
                     username={data?.searchUsers.username}
-                    profilePicture={data?.searchUsers.profilePicture}
+                    profilePicture={data?.searchUsers?.profilePicture}
                     id={data?.searchUsers.id}
                 />
                 :

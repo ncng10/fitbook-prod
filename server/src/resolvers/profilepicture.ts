@@ -31,7 +31,8 @@ export class ProfilePictureResolver {
                 .pipe(
                     fitbookBucket.file(filename).createWriteStream({
                         resumable: false,
-                        gzip: true
+                        gzip: true,
+                        contentType: ""
                     })
                 )
                 .on("finish", () => resolve(true))
