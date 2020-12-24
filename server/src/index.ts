@@ -33,6 +33,7 @@ import { ProgramResolver } from "./resolvers/program";
 import { UserResolver } from './resolvers/user';
 import { WorkoutResolver } from './resolvers/workout';
 import { createUserLoader } from "./utils/createUserLoader";
+
 const PORT = 5001
 require("dotenv").config();
 const main = async () => {
@@ -116,6 +117,7 @@ const main = async () => {
             return new GraphQLError(`Internal Error: ${errorId}`)
         },
     });
+
     app.use(graphqlUploadExpress({ maxFileSize: 10000000, maxFiles: 10 }));
     app.use("/images", express.static(path.join(__dirname, "../../images")));
     apolloServer.applyMiddleware({ app, cors: { origin: false } });
@@ -126,6 +128,8 @@ const main = async () => {
         console.log(`server started on port ${PORT}${apolloServer.graphqlPath}`)
         console.log(`Subs started at ${PORT}${apolloServer.subscriptionsPath}`)
     });
+
+
 
 
 };
