@@ -43,7 +43,7 @@ const Login: React.FC<loginProps> = ({ }) => {
                     });
                     if (response.data?.login.errors) {
                         //fails
-                        setErrors(toErrorMap(response.data.login.errors));
+                        setErrors(toErrorMap(response.data?.login.errors));
                     } else if (response.data?.login.user) {
                         //worked
 

@@ -1,4 +1,4 @@
-import { ApolloClient, HttpLink, InMemoryCache, split } from '@apollo/client';
+import { ApolloClient, InMemoryCache, split } from '@apollo/client';
 import { NextPageContext } from 'next';
 import { createWithApollo } from "./createWithApollo";
 import { WebSocketLink } from "@apollo/client/link/ws";
@@ -6,7 +6,7 @@ import { getMainDefinition } from '@apollo/client/utilities';
 import { createUploadLink } from "apollo-upload-client"
 const createClient = (ctx: NextPageContext) =>
     new ApolloClient({
-        uri: "http://localhost:5001/graphql" as string,
+        uri: process.env.NEXT_PUBLIC_API_URL as string,
         credentials: "include",
         headers: {
             cookie:
@@ -33,7 +33,7 @@ const wsLink = process.browser ? new WebSocketLink({
     }
 }) : null;
 const httpLink = new createUploadLink({
-    uri: 'http://localhost:5001/graphql',
+    uri: process.env.NEXT_PUBLIC_API_URL as string,
     credentials: "include"
 });
 

@@ -13,7 +13,6 @@ const Avatar: React.FC<AvatarProps> = ({ }) => {
     const [upload] = useAddProfilePictureMutation();
     const onDrop = useCallback(
         ([file]) => {
-            console.log(file)
             upload({
                 variables: {
                     file

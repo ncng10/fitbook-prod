@@ -29,7 +29,6 @@ const Workout: React.FC<WorkoutProps> = ({ }) => {
 
     let body;
     if (data?.exercisesInAWorkout) {
-        console.log(data?.exercisesInAWorkout)
         body =
             <Box>
                 <Box

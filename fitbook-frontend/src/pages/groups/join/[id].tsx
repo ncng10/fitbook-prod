@@ -16,7 +16,6 @@ const JoinGroup: React.FC = ({ }) => {
         },
     });
     const [joinGroup] = useJoinGroupMutation()
-    console.log(intId)
     return (
         <React.Fragment>
             <div>Are you sure you want to join group {data?.group.groupName}?</div>

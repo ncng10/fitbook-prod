@@ -13,7 +13,6 @@ interface MessageProps {
 const Message: React.FC<MessageProps> = ({ }) => {
     const intId = useGetIntId();
     const { data: meData } = useMeQuery();
-    console.log(intId);
     const [sendMessage] = useSendPersonalMessageMutation();
 
     const { data, refetch } = useViewPersonalMessagesQuery({

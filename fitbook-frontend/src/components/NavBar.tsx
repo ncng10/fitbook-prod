@@ -19,14 +19,11 @@ export const NavBar: React.FC<NavBarProps> = ({ }) => {
     const [toaster, setToaster] = useState(false)
     const [logout] = useLogoutMutation();
     const { data } = useUserProfileQuery();
-    console.log(data?.userProfile.id)
     const apolloClient = useApolloClient();
     const router = useRouter();
     let body = null;
     const { data: friendRequestSubsciptionData } = useNewFriendRequestSubscription();
     const { data: pendingFriendsData } = usePendingFriendsQuery();
-
-    console.log(friendRequestSubsciptionData)
 
     if (!data?.userProfile) {
         body =

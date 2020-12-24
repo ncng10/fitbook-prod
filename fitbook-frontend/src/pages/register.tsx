@@ -35,14 +35,14 @@ const Register: React.FC<registerProps> = ({ }) => {
                                 query: MeDocument,
                                 data: {
                                     __typename: "Query",
-                                    me: data.register.user
+                                    me: data?.register.user
                                 },
                             });
                         },
                     });
                     if (response.data?.register.errors) {
                         //fails
-                        setErrors(toErrorMap(response.data.register.errors));
+                        setErrors(toErrorMap(response.data?.register.errors));
                     } else if (response.data?.register.user) {
                         //worked
                         router.push("/")
