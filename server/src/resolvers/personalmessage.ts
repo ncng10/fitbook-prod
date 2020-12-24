@@ -1,5 +1,6 @@
-import { MyContext } from "src/types";
-import { Arg, Ctx, Field, InputType, Int, Mutation, Query, Resolver, Root, Subscription, PubSub, PubSubEngine } from "type-graphql";
+import { MyContext } from "../types";
+import { isAuth } from "../utils/middleware/isAuth";
+import { Arg, Ctx, Field, InputType, Int, Mutation, Query, Resolver, Root, Subscription, PubSub, PubSubEngine, UseMiddleware } from "type-graphql";
 import { getConnection } from "typeorm";
 import { PersonalMessage } from "../entities/PersonalMessage";
 import { User } from "../entities/User";
@@ -13,6 +14,7 @@ class PersonalMessageInput {
 export class PersonalMessageResolver {
 
     @Query(() => [PersonalMessage])
+    @UseMiddleware(isAuth)
     async viewPersonalMessages(
         @Ctx() { req }: MyContext,
         @Arg("senderId", () => Int) senderId: number
@@ -29,6 +31,7 @@ export class PersonalMessageResolver {
     };
 
     @Mutation(() => Boolean)
+    @UseMiddleware(isAuth)
     async sendPersonalMessage(
         @Arg("input") input: PersonalMessageInput,
         @Arg("recipientId", () => Int) recipientId: number,
@@ -47,6 +50,7 @@ export class PersonalMessageResolver {
     };
 
     @Query(() => [PersonalMessage])
+    @UseMiddleware(isAuth)
     async inboxMessages(
         @Ctx() { req }: MyContext
     ) {
@@ -61,6 +65,7 @@ export class PersonalMessageResolver {
     @Subscription(() => PersonalMessage, {
         topics: "MESSAGES"
     })
+    @UseMiddleware(isAuth)
     newMessage(
         @Root() personalMessage: PersonalMessage
     ) {

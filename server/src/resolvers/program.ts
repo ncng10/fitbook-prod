@@ -1,5 +1,6 @@
 import { MyContext } from "src/types";
-import { Arg, Ctx, Field, FieldResolver, InputType, Mutation, Query, Resolver, Root } from "type-graphql";
+import { isAuth } from "../utils/middleware/isAuth";
+import { Arg, Ctx, Field, FieldResolver, InputType, Mutation, Query, Resolver, Root, UseMiddleware } from "type-graphql";
 import { getConnection } from "typeorm";
 import { Program } from "../entities/Program";
 
@@ -15,6 +16,7 @@ class ProgramInput {
 export class ProgramResolver {
 
     @Mutation(() => [Program])
+    @UseMiddleware(isAuth)
     async createProgram(
         @Arg("input") input: ProgramInput,
         @Ctx() { req }: MyContext
@@ -31,6 +33,7 @@ export class ProgramResolver {
     };
 
     @Query(() => [Program])
+    @UseMiddleware(isAuth)
     async myPrograms(
         @Ctx() { req }: MyContext
     ): Promise<Program[]> {

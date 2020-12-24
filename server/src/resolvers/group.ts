@@ -1,4 +1,5 @@
-import { Arg, Ctx, Field, FieldResolver, InputType, Int, Mutation, Query, Resolver, Root } from "type-graphql";
+import { isAuth } from "../utils/middleware/isAuth";
+import { Arg, Ctx, Field, FieldResolver, InputType, Int, Mutation, Query, Resolver, Root, UseMiddleware } from "type-graphql";
 import { getConnection } from "typeorm";
 import { Group } from "../entities/Group";
 import { GroupMembers } from "../entities/GroupMembers";
@@ -26,6 +27,7 @@ class JoinGroupInput {
 @Resolver(Group)
 export class GroupResolver {
     @Mutation(() => Group)
+    @UseMiddleware(isAuth)
     async createGroup(
         @Arg("input") input: GroupInput,
         @Ctx() { req }: MyContext
@@ -37,6 +39,7 @@ export class GroupResolver {
     };
 
     @Query(() => Group)
+    @UseMiddleware(isAuth)
     async group(
         @Arg("id", () => Int) id: number
     ): Promise<Group | undefined> {
@@ -44,6 +47,7 @@ export class GroupResolver {
     };
 
     @Mutation(() => [GroupMembers])
+    @UseMiddleware(isAuth)
     async joinGroup(
         @Arg("input") input: JoinGroupInput,
         @Ctx() { req }: MyContext
@@ -59,6 +63,7 @@ export class GroupResolver {
     };
 
     @Query(() => [Group])
+    @UseMiddleware(isAuth)
     async groups(
     ) {
         const groups = await getConnection().query(
@@ -70,6 +75,7 @@ export class GroupResolver {
     };
 
     @Query(() => [Group])
+    @UseMiddleware(isAuth)
     async isMember(
         @Ctx() { req }: MyContext,
     ) {

@@ -1,4 +1,5 @@
-import { Arg, Field, InputType, Int, Mutation, Query, Resolver } from "type-graphql";
+import { isAuth } from "../utils/middleware/isAuth";
+import { Arg, Field, InputType, Int, Mutation, Query, Resolver, UseMiddleware } from "type-graphql";
 import { getConnection } from "typeorm";
 import { Exercise } from "../entities/Exercise";
 
@@ -27,6 +28,7 @@ class NewExerciseInput {
 export class ExerciseResolver {
 
     @Mutation(() => [Exercise])
+    @UseMiddleware(isAuth)
     async addExerciseToWorkout(
         @Arg("input", () => NewExerciseInput) input: NewExerciseInput
     ) {
@@ -47,6 +49,7 @@ export class ExerciseResolver {
     }
 
     @Query(() => [Exercise])
+    @UseMiddleware(isAuth)
     async exercisesInAWorkout(
         @Arg("workoutId", () => Int) workoutId: number
     ) {

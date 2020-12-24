@@ -1,4 +1,5 @@
-import { Arg, Ctx, Field, InputType, Int, Mutation, PubSub, PubSubEngine, Query, Resolver, Root, Subscription } from "type-graphql";
+import { isAuth } from "../utils/middleware/isAuth";
+import { Arg, Ctx, Field, InputType, Int, Mutation, PubSub, PubSubEngine, Query, Resolver, Root, Subscription, UseMiddleware } from "type-graphql";
 import { getConnection } from "typeorm";
 import { User } from "../entities/User";
 import { UserFriends } from "../entities/UserFriends";
@@ -16,6 +17,7 @@ class AddFriendInput {
 @Resolver(User)
 export class FriendRelationship {
     @Mutation(() => Boolean)
+    @UseMiddleware(isAuth)
     async addFriend(
         @Arg("AddFriendInput") input: AddFriendInput,
         @PubSub() pubSub: PubSubEngine,
@@ -39,6 +41,7 @@ export class FriendRelationship {
     };
 
     @Query(() => [User])
+    @UseMiddleware(isAuth)
     async pendingFriends(
         @Ctx() { req }: MyContext
     ) {
@@ -54,6 +57,7 @@ export class FriendRelationship {
     };
 
     @Query(() => [UserFriends])
+    @UseMiddleware(isAuth)
     async myFriends(
         @Ctx() { req }: MyContext
     ) {
@@ -69,6 +73,7 @@ export class FriendRelationship {
     };
 
     @Mutation(() => Boolean)
+    @UseMiddleware(isAuth)
     async acceptFriendRequest(
         @Ctx() { req }: MyContext,
         @Arg("userTwoIdentity", () => Int) userTwoIdentity: number,
@@ -91,6 +96,7 @@ export class FriendRelationship {
     @Subscription(() => UserFriends, {
         topics: "NEW_FRIEND_REQUEST"
     })
+    @UseMiddleware(isAuth)
     async newFriendRequest(
         @Root() payload: UserFriends
     ) {

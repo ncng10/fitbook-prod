@@ -1,13 +1,15 @@
 import { createWriteStream } from "fs";
 import { FileUpload, GraphQLUpload } from "graphql-upload";
-import { MyContext } from "src/types";
-import { Arg, Ctx, Mutation, Resolver } from "type-graphql";
+import { MyContext } from "../types";
+import { isAuth } from "../utils/middleware/isAuth";
+import { Arg, Ctx, Mutation, Resolver, UseMiddleware } from "type-graphql";
 import { getConnection } from "typeorm";
 
 
 @Resolver()
 export class ProfilePictureResolver {
     @Mutation(() => Boolean)
+    @UseMiddleware(isAuth)
     async addProfilePicture(
         @Ctx() { req }: MyContext,
         @Arg("file", () => GraphQLUpload)

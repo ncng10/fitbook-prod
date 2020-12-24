@@ -1,5 +1,6 @@
 import { MyContext } from "src/types";
-import { Arg, Ctx, Field, InputType, Int, Mutation, Query, Resolver } from "type-graphql";
+import { isAuth } from "../utils/middleware/isAuth";
+import { Arg, Ctx, Field, InputType, Int, Mutation, Query, Resolver, UseMiddleware } from "type-graphql";
 import { getConnection } from "typeorm";
 import { Workout } from "../entities/Workout";
 
@@ -28,6 +29,7 @@ class CreateWorkoutInput {
 export class WorkoutResolver {
 
     @Mutation(() => [Workout])
+    @UseMiddleware(isAuth)
     async createWorkout(
         @Arg("input") input: CreateWorkoutInput,
         @Ctx() { req }: MyContext
@@ -58,6 +60,7 @@ export class WorkoutResolver {
     // };
 
     @Query(() => [Workout])
+    @UseMiddleware(isAuth)
     async workouts(
         @Arg("programId", () => Int) programId: number,
     ) {
@@ -71,6 +74,7 @@ export class WorkoutResolver {
     };
 
     @Query(() => Workout)
+    @UseMiddleware(isAuth)
     workout(
         @Arg("workoutId", () => Int) workoutId: number,
     ): Promise<Workout | undefined> {
