@@ -1,8 +1,8 @@
 import { ApolloServer } from 'apollo-server-express';
 import connectRedis from 'connect-redis';
 import cors from 'cors';
-import express from 'express';
 import "dotenv-safe/config";
+import express from 'express';
 import session from 'express-session';
 import { GraphQLError } from 'graphql';
 import { RedisPubSub } from "graphql-redis-subscriptions";
@@ -44,7 +44,7 @@ const main = async () => {
         migrations: [path.join(__dirname, "./migrations/*")],
         entities: [User, Group, GroupMembers, PersonalMessage, Program, Workout, Exercise, ProgramWorkouts, UserFriends]
     });
-
+    connection.runMigrations();
     const app = express();
 
     const RedisStore = connectRedis(session);
@@ -54,9 +54,6 @@ const main = async () => {
         port: 6379,
         retryStrategy: times => Math.max(times * 100, 3000),
     };
-
-
-
 
     app.set("trust proxy", 1);
 

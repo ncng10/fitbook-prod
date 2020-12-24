@@ -1,7 +1,7 @@
-import { MigrationInterface, QueryRunner } from "typeorm";
+import {MigrationInterface, QueryRunner} from "typeorm";
 
-export class Inital1608797435825 implements MigrationInterface {
-    name = 'Inital1608797435825'
+export class ProdDb1608807707921 implements MigrationInterface {
+    name = 'ProdDb1608807707921'
 
     public async up(queryRunner: QueryRunner): Promise<void> {
         await queryRunner.query(`CREATE TABLE "group_members" ("memberId" integer NOT NULL, "groupId" integer NOT NULL, CONSTRAINT "PK_9628ac5e4c7b969e4becf07a77b" PRIMARY KEY ("memberId", "groupId"))`);
