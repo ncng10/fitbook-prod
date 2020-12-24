@@ -2,6 +2,7 @@ import { ApolloServer } from 'apollo-server-express';
 import connectRedis from 'connect-redis';
 import cors from 'cors';
 import express from 'express';
+import "dotenv-safe/config";
 import session from 'express-session';
 import { GraphQLError } from 'graphql';
 import { RedisPubSub } from "graphql-redis-subscriptions";
@@ -11,8 +12,9 @@ import Redis from 'ioredis';
 import path from 'path';
 import "reflect-metadata";
 import { buildSchema } from 'type-graphql';
-import { createConnection, getConnection } from 'typeorm';
+import { createConnection } from 'typeorm';
 import { v4 } from "uuid";
+import { __prod__ } from './constants';
 import { Exercise } from './entities/Exercise';
 import { Group } from "./entities/Group";
 import { GroupMembers } from "./entities/GroupMembers";
@@ -36,13 +38,13 @@ require("dotenv").config();
 const main = async () => {
     const connection = await createConnection({
         type: "postgres",
-        password: process.env.DB_PASSWORD,
         url: process.env.DATABASE_URL,
         logging: true,
-        synchronize: true,
+        // synchronize: true,
         migrations: [path.join(__dirname, "./migrations/*")],
         entities: [User, Group, GroupMembers, PersonalMessage, Program, Workout, Exercise, ProgramWorkouts, UserFriends]
     });
+
 
     const options: Redis.RedisOptions = {
         host: '192.168.1.8',
@@ -53,7 +55,7 @@ const main = async () => {
     // await getConnection().query(
     //     `
     //     DELETE FROM public.user_friends
-    //     `
+    //     `as
     // )
 
 
@@ -82,11 +84,11 @@ const main = async () => {
                 maxAge: 1000 * 60 * 60 * 24 * 365 * 10, //10 years
                 httpOnly: true,
                 sameSite: 'lax', //csrf protection
-                // secure: __prod__,  //cookie only works in https
-                // domain: __prod__ ? ".ncong.app" : undefined,
+                secure: __prod__,  //cookie only works in https
+                domain: __prod__ ? ".ncong.app" : undefined,
             },
             saveUninitialized: false,
-            secret: 'asdasfgajnav',
+            secret: process.env.REDIS_SECRET,
             resave: false,
         })
     );
@@ -129,7 +131,7 @@ const main = async () => {
     const httpServer = http.createServer(app)
     apolloServer.installSubscriptionHandlers(httpServer)
 
-    httpServer.listen(PORT, () => {
+    httpServer.listen(parseInt(process.env.PORT), () => {
         console.log(`server started on port ${PORT}${apolloServer.graphqlPath}`)
         console.log(`Subs started at ${PORT}${apolloServer.subscriptionsPath}`)
     });

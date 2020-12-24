@@ -1,10 +1,8 @@
-import { UserFriends } from "../entities/UserFriends";
-import { MyContext } from "../types";
 import { Arg, Ctx, Field, InputType, Int, Mutation, PubSub, PubSubEngine, Query, Resolver, Root, Subscription } from "type-graphql";
 import { getConnection } from "typeorm";
 import { User } from "../entities/User";
-import { ConnectionContext } from "subscriptions-transport-ws";
-import { ExpressContext } from "apollo-server-express/dist/ApolloServer";
+import { UserFriends } from "../entities/UserFriends";
+import { MyContext } from "../types";
 
 @InputType()
 class AddFriendInput {

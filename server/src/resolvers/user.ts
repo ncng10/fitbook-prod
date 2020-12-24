@@ -1,10 +1,10 @@
-import { Arg, Ctx, Field, Mutation, ObjectType, Query, Resolver } from "type-graphql";
-import { User } from '../entities/User'
-import { UsernamePasswordInput } from "./UsernamePasswordInput";
-import { MyContext } from '../types'
-import { Connection, getConnection } from "typeorm";
 import argon2 from 'argon2';
+import { Arg, Ctx, Field, Mutation, ObjectType, Query, Resolver } from "type-graphql";
+import { getConnection } from "typeorm";
+import { User } from '../entities/User';
+import { MyContext } from '../types';
 import { validateRegister } from "../utils/validateRegister";
+import { UsernamePasswordInput } from "./UsernamePasswordInput";
 
 @ObjectType()
 class FieldError {
