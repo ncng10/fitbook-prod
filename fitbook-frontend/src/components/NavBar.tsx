@@ -16,6 +16,7 @@ interface NavBarProps {
 export const NavBar: React.FC<NavBarProps> = ({ }) => {
     const [isLargerThan600] = useMediaQuery("(min-width:600px)");
     const toast = useToast()
+    const [toaster, setToaster] = useState(false)
     const [logout] = useLogoutMutation();
     const { data } = useUserProfileQuery();
     console.log(data?.userProfile.id)
@@ -23,15 +24,9 @@ export const NavBar: React.FC<NavBarProps> = ({ }) => {
     const router = useRouter();
     let body = null;
     const { data: friendRequestSubsciptionData } = useNewFriendRequestSubscription();
-    const { data: pendingFriendsData, refetch } = usePendingFriendsQuery();
+    const { data: pendingFriendsData } = usePendingFriendsQuery();
 
-    if (friendRequestSubsciptionData?.newFriendRequest?.userTwoIdentity === data?.userProfile?.id) {
-        toast({
-            position: "top-right",
-            description: "New friend request",
-            status: "success"
-        })
-    }
+    console.log(friendRequestSubsciptionData)
 
     if (!data?.userProfile) {
         body =
