@@ -50,37 +50,5 @@ export class ProfilePictureResolver {
         return true
     };
 
-    // @Mutation(() => Boolean)
-    // @UseMiddleware(isAuth)
-    // async productionUpload(
-    //     @Arg("photo",()=> GraphQLUpload)
-    //     @Ctx() { req }: MyContext,
-    // ) {
-    //     cloudinary.config({
-    //         cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-    //         api_key: process.env.CLOUDINARY_API_KEY,
-    //         api_secret: process.env.CLOUDINARY_API_SECRET
-    //     });
-    //     try {
-    //         const res = await cloudinary.v2.uploader.upload(photo, {
-    //             allowed_formats: ["jpg", "png"],
-    //             public_id: "",
-    //             folder: "images",
-    //         });
-    //         const upload = await getConnection().query(`
-    //         UPDATE public.user
-    //         SET "profilePicture" = '${res.url}'
-    //         WHERE public.user.id = ${req.session.userId}
-    //         RETURNING *
-    //     `)
-    //         if (!upload) {
-    //             return false
-    //         }
-    //         return `it worked: ${upload}`
-
-    //     } catch (error) {
-    //         return `Image not uploaded. ${error.message}`
-    //     }
-    // }
 }
 
