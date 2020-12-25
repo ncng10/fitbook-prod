@@ -1,8 +1,9 @@
-import React, { useState, useEffect, useCallback, useRef } from "react";
+import { Box, useMediaQuery } from "@chakra-ui/react";
 import { useEmblaCarousel } from "embla-carousel/react";
+import NextLink from 'next/link';
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useMyProgramsQuery } from "../generated/graphql";
-import { Box } from "@chakra-ui/react";
-import NextLink from 'next/link'
+import ProgramCard from "./MobileViews/ProgramCard";
 
 
 const PrevButton = ({ enabled, onClick }) => (
@@ -121,6 +122,7 @@ const useInfiniteScroll = (embla, slides, hasMoreToLoad) => {
 };
 
 const EmblaCarousel = () => {
+    const [isLargerThan600] = useMediaQuery("(min-width:600px)");
     const { data, loading } = useMyProgramsQuery();
     const [hasMoreToLoad, setHasMoreToLoad] = useState(true);
     const [prevBtnEnabled, setPrevBtnEnabled] = useState(false);
@@ -157,25 +159,19 @@ const EmblaCarousel = () => {
             <div className="embla__viewport" ref={viewportRef}>
                 <div className="embla__container">
                     {data?.myPrograms.map((program) => (
-                        <div className="embla__slide" key={program.id}>
-                            <div className="embla__slide__inner">
-                                <div className="embla__slide" key={program.id}>
-                                    <div className="embla__slide__inner">
-                                        <NextLink href="/workout/programs/[id]" as={`/workout/programs/${program.id}`}>
-                                            <Box
-                                                display="flex"
-                                                alignItems="center"
-                                                justifyContent="center"
-                                                bgColor="lightblue"
-                                                height="100%"
-                                                width={200}
-                                                borderRadius={15}
-                                            >{program.programName}</Box>
-                                        </NextLink>
+                        <NextLink href="/workout/programs/[id]" as={`/workout/programs/${program.id}`}>
+                            <div className="embla__slide" key={program.id}>
+                                <div className="embla__slide__inner">
+                                    <div className="embla__slide" key={program.id}>
+                                        <div className="embla__slide__inner">
+
+                                            <ProgramCard />
+
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                        </NextLink>
                     ))}
                     {hasMoreToLoad && (
                         <div className="embla__slide embla__slide--loading">
@@ -186,8 +182,10 @@ const EmblaCarousel = () => {
                     )}
                 </div>
             </div>
-            <PrevButton onClick={scrollPrev} enabled={prevBtnEnabled} />
-            <NextButton onClick={scrollNext} enabled={nextBtnEnabled} />
+            {isLargerThan600 ? <Box>
+                <PrevButton onClick={scrollPrev} enabled={prevBtnEnabled} />
+                <NextButton onClick={scrollNext} enabled={nextBtnEnabled} />
+            </Box> : null}
         </div>
     );
 };

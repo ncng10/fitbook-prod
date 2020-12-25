@@ -41,22 +41,23 @@ export const NavBar: React.FC<NavBarProps> = ({ }) => {
     } else {
         body =
             <Box
+                backgroundColor="#F9F6EC"
                 className="navBar"
-                mt={5} display="flex" justifyContent="flex-start" ml={5}
+                display="flex" justifyContent="flex-start"
             >
-                <Box cursor="pointer" display="flex" flexDirection="row">
-                    <NextLink href="/">
-                        <Box mr={5}>
-                            <Text>Home</Text>
-                        </Box>
-                    </NextLink>
-                </Box>
                 <Box
                     top="1.5rem"
                     display='flex'
                     right="4.75rem"
                     position="fixed"
                 >
+                    <Box cursor="pointer" position="fixed" left={5} top={7} >
+                        <NextLink href="/">
+                            <Box mr={5}>
+                                <Text>Home</Text>
+                            </Box>
+                        </NextLink>
+                    </Box>
                     <Box
                         mr={5}
                         marginTop="-.25rem"

@@ -25,7 +25,7 @@ const All: React.FC<AllProps> = ({ }) => {
     return (
         <React.Fragment>
             <NavBar />
-            <Box w="100%" display="flex" alignItems="center" justifyContent="center">
+            <Box h="100vh" bgColor="#fff" w="100%" display="flex" alignItems="center" justifyContent="center">
                 {body}
             </Box>
         </React.Fragment>

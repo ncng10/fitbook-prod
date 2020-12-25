@@ -4,7 +4,7 @@ import { withApollo } from "../utils/withApollo";
 
 function Home() {
   return (
-    <div >
+    <div style={{ backgroundColor: "#fff" }}>
       <NavBar />
     </div>
   )

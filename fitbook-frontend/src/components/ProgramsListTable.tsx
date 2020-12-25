@@ -3,8 +3,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import { useEmblaCarousel } from 'embla-carousel/react';
 import React, { useEffect } from 'react';
 import { useMyProgramsQuery } from '../generated/graphql';
-import Carousel from "./Carousel";
-import Infcar from './Infcar';
+import ProgramsCarousel from './ProgramsCarousel';
 import ProgramMenu from './ProgramMenu';
 const useStyles = makeStyles({
     table: {
@@ -38,7 +37,7 @@ export default function ProgramsListTable() {
     return (
         <Box w="100%" mt="3.5rem" display="flex" flexDirection="column">
             <Box>
-                <Infcar />
+                <ProgramsCarousel />
             </Box>
             <Box >
                 <ProgramMenu />
