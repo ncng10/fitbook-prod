@@ -23,7 +23,7 @@ const CreateProgramForm: React.FC<CreateProgramFormProps> = ({ }) => {
                         },
                         update: (cache) => {
                             cache.evict({ fieldName: "myPrograms" });
-                        }
+                        },
                     })
                     if (!errors) {
                         toast({
@@ -33,7 +33,7 @@ const CreateProgramForm: React.FC<CreateProgramFormProps> = ({ }) => {
                             status: "success",
                             duration: 6000,
                             isClosable: true,
-                        })
+                        });
                     }
                 }}
             >

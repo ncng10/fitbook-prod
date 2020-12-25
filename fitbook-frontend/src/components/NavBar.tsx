@@ -91,19 +91,6 @@ export const NavBar: React.FC<NavBarProps> = ({ }) => {
                             </NextLink>
                         }
                     </Box>
-                    <NextLink href="/workout/programs/all">
-                        <Box
-                            mr={12}
-                            cursor="pointer">
-                            <IconButton
-                                mt={-1}
-                                borderRadius={50}
-                                position="fixed"
-                                aria-label="list-of-programs-button"
-                                icon={<AiOutlineUnorderedList />}
-                            />
-                        </Box>
-                    </NextLink>
                 </Box>
                 <Menu>
                     <MenuButton
@@ -119,12 +106,13 @@ export const NavBar: React.FC<NavBarProps> = ({ }) => {
                     <MenuList>
                         <MenuGroup title={`${data?.userProfile.username}`}>
                             <MenuDivider />
-                            <NextLink href="/settings/avatar">
-                                <MenuItem>
-                                    My Account
-                        </MenuItem>
-                            </NextLink>
+                            <NextLink href="/workout/programs/all">
 
+                                <MenuItem>
+                                    My Programs
+                                </MenuItem>
+
+                            </NextLink>
                             <NextLink href="/groups/all">
                                 <MenuItem>
                                     Groups
@@ -138,6 +126,11 @@ export const NavBar: React.FC<NavBarProps> = ({ }) => {
                             </NextLink>
 
                             <MenuDivider />
+                            <NextLink href="/settings/avatar">
+                                <MenuItem>
+                                    My Account
+                        </MenuItem>
+                            </NextLink>
                             <MenuItem onClick={async () => {
                                 await logout();
                                 apolloClient.resetStore();

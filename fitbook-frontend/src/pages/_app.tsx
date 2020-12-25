@@ -4,7 +4,7 @@ import * as React from "react"
 import { ChakraProvider } from "@chakra-ui/react"
 import "../stylesheets/loginpage.css"
 import "../stylesheets/navbars.css"
-
+import "../stylesheets/carousel.css"
 function MyApp({ Component, pageProps }) {
   return (
     <ChakraProvider>
