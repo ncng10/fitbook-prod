@@ -65,7 +65,6 @@ export class PersonalMessageResolver {
     @Subscription(() => PersonalMessage, {
         topics: "MESSAGES"
     })
-    @UseMiddleware(isAuth)
     newMessage(
         @Root() personalMessage: PersonalMessage
     ) {

@@ -96,7 +96,6 @@ export class FriendRelationship {
     @Subscription(() => UserFriends, {
         topics: "NEW_FRIEND_REQUEST"
     })
-    @UseMiddleware(isAuth)
     async newFriendRequest(
         @Root() payload: UserFriends
     ) {

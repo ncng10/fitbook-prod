@@ -1,13 +1,10 @@
-import { createWriteStream } from "fs";
+import { Storage } from "@google-cloud/storage";
 import { FileUpload, GraphQLUpload } from "graphql-upload";
-import { MyContext } from "../types";
-import { isAuth } from "../utils/middleware/isAuth";
+import path from "path";
 import { Arg, Ctx, Mutation, Resolver, UseMiddleware } from "type-graphql";
 import { getConnection } from "typeorm";
-import { Storage } from "@google-cloud/storage"
-import path from "path";
-
-
+import { MyContext } from "../types";
+import { isAuth } from "../utils/middleware/isAuth";
 const gc = new Storage({
     keyFilename: path.join(__dirname, '../../alien-climber-299619-f34fc9524d0e.json'),
     projectId: 'alien-climber-299619'
@@ -44,7 +41,6 @@ export class ProfilePictureResolver {
             WHERE public.user.id = ${req.session.userId}
             RETURNING *
         `)
-        console.log(upload)
         if (!upload) {
             return false
         }

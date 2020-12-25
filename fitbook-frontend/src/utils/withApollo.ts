@@ -27,7 +27,7 @@ const createClient = (ctx: NextPageContext) =>
     });
 
 const wsLink = process.browser ? new WebSocketLink({
-    uri: `ws://localhost:5001/graphql`,
+    uri: `wss://api.fitbookit.com/graphql`,
     options: {
         reconnect: true,
     }

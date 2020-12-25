@@ -24,7 +24,6 @@ export const NavBar: React.FC<NavBarProps> = ({ }) => {
     let body = null;
     const { data: friendRequestSubsciptionData } = useNewFriendRequestSubscription();
     const { data: pendingFriendsData } = usePendingFriendsQuery();
-
     if (!data?.userProfile) {
         body =
             <Box mt={5}>
@@ -62,34 +61,34 @@ export const NavBar: React.FC<NavBarProps> = ({ }) => {
                         mr={5}
                         marginTop="-.25rem"
                     >
-                        {
+                        {friendRequestSubsciptionData?.newFriendRequest &&
                             friendRequestSubsciptionData?.newFriendRequest.userTwoIdentity === data?.userProfile.id
-                                ||
-                                pendingFriendsData?.pendingFriends.length >= 1
+                            ||
+                            pendingFriendsData?.pendingFriends.length >= 1
 
-                                ?
-                                <NextLink href={router.pathname === "/friends/pending" ? "" : "/friends/pending"}>
-                                    <Badge
-                                        color="secondary"
-                                        variant="dot"
-                                    >
-                                        <IconButton
-                                            aria-label="pending-friend-requests-button"
-                                            icon={<RiUser2Fill />}
-                                            borderRadius={50} />
-                                    </Badge>
-                                </NextLink>
-                                :
-                                <NextLink href={router.pathname === "/friends/pending" ? "" : "/friends/pending"}>
-                                    <Badge
-                                        color="secondary"
-                                    >
-                                        <IconButton
-                                            aria-label="pending-friend-requests-button"
-                                            icon={<RiUser2Fill />}
-                                            borderRadius={50} />
-                                    </Badge>
-                                </NextLink>
+                            ?
+                            <NextLink href={router.pathname === "/friends/pending" ? "" : "/friends/pending"}>
+                                <Badge
+                                    color="secondary"
+                                    variant="dot"
+                                >
+                                    <IconButton
+                                        aria-label="pending-friend-requests-button"
+                                        icon={<RiUser2Fill />}
+                                        borderRadius={50} />
+                                </Badge>
+                            </NextLink>
+                            :
+                            <NextLink href={router.pathname === "/friends/pending" ? "" : "/friends/pending"}>
+                                <Badge
+                                    color="secondary"
+                                >
+                                    <IconButton
+                                        aria-label="pending-friend-requests-button"
+                                        icon={<RiUser2Fill />}
+                                        borderRadius={50} />
+                                </Badge>
+                            </NextLink>
                         }
                     </Box>
                     <NextLink href="/workout/programs/all">
