@@ -25,9 +25,9 @@ export class SharedProgram extends BaseEntity {
 
     @ManyToOne(() => User, (user) => user.friend1, { nullable: true })
     @JoinColumn({ name: "sharedToId" })
-    group: Promise<Group>;
+    sharedBy: Promise<User>;
 
     @ManyToOne(() => User, (user) => user.friend2, { nullable: true })
     @JoinColumn({ name: "sharedById" })
-    member: Promise<User>;
+    sharedTo: Promise<User>;
 }

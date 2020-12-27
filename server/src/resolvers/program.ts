@@ -1,9 +1,11 @@
 import { MyContext } from "../types";
 import { isAuth } from "../utils/middleware/isAuth";
-import { Arg, Ctx, Field, FieldResolver, InputType, Mutation, Query, Resolver, Root, UseMiddleware } from "type-graphql";
+import { Arg, Ctx, Field, FieldResolver, InputType, Int, Mutation, PubSub, PubSubEngine, Query, Resolver, Root, Subscription, UseMiddleware } from "type-graphql";
 import { getConnection } from "typeorm";
 import { Program } from "../entities/Program";
 import { User } from "../entities/User";
+import { Workout } from "../entities/Workout";
+import { SharedProgram } from "../entities/SharedProgram";
 
 @InputType()
 class ProgramInput {
@@ -53,6 +55,14 @@ export class ProgramResolver {
         return programs
     };
 
+    @Query(() => Program)
+    async program(
+        @Arg("input", () => Int) programId: number
+    ) {
+        const program = await Program.findOne(programId)
+        return program
+    }
+
     @FieldResolver(() => Program)
     creator(@Root() program: Program, @Ctx() { userLoader }: MyContext) {
         return userLoader.load(program.creatorId)
@@ -61,33 +71,37 @@ export class ProgramResolver {
     @Mutation(() => Boolean)
     async shareProgram(
         @Arg("input") input: ShareProgramInput,
-        @Ctx() { req }: MyContext
+        @Ctx() { req }: MyContext,
+        @PubSub() pubSub: PubSubEngine,
     ) {
         await getConnection().query(
             `
             UPDATE public.program
             SET "isShared" = true 
             WHERE public.program.id = ${input.programId};
-            INSERT INTO public.shared_program 
-            ("sharedById", "sharedToId", "programId")
-            VALUES(${req.session.userId}, ${input.sharedToId},${input.programId})
-            RETURNING *
             `
         )
+        const shareProgram = await SharedProgram.create({
+            sharedById: req.session.userId,
+            sharedToId: input.sharedToId,
+            programId: input.programId
+        }).save()
+        pubSub.publish("NEW_SHARED_PROGRAM", shareProgram)
         return true
     };
 
     @FieldResolver(() => [User])
-    async sharedWith() {
+    async sharedWith(
+        @Arg("input", () => Int) programId: number,
+    ) {
         const sharedWith = await getConnection().query(
-            `
+            `   
             SELECT * FROM public.shared_program
-            INNER JOIN public.program
-            ON
-            public.program.id = public.shared_program."programId"
             INNER JOIN public.user
             ON
             public.user.id = public.shared_program."sharedToId"
+            WHERE
+            public.shared_program."programId" = ${programId}
             `
         )
         return sharedWith
@@ -108,5 +122,49 @@ export class ProgramResolver {
             `
         )
         return programsSharedWithMe
+    }
+
+
+    @Query(() => [Program])
+    async programSharedWithMe(
+        @Ctx() { req }: MyContext,
+        @Arg("input", () => Int) programId: number
+    ) {
+        const programSharedWithMe = await getConnection().query(
+            `
+            SELECT * FROM public.shared_program 
+            INNER JOIN public.program
+            ON
+            public.program.id = public.shared_program."programId"
+            WHERE
+            public.shared_program."sharedToId" = ${req.session.userId}
+            AND public.program.id = ${programId}
+            `
+        )
+        return programSharedWithMe
+    };
+
+    @Subscription(() => [SharedProgram], {
+        topics: "NEW_SHARED_PROGRAM"
+    }
+    )
+    async newSharedProgram() {
+
+    }
+
+    @FieldResolver(() => [Workout])
+    async workoutsInAProgram(
+        @Arg("input", () => Int) programId: number
+    ) {
+        const workouts = await getConnection().query(
+            `
+            SELECT * FROM public.program
+            INNER JOIN public.workout
+            ON
+            PUBLIC.program.id = public.workout."programIdentity"
+            WHERE public.program.id = ${programId}
+            `
+        )
+        return workouts
     }
 }
