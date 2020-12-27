@@ -1,12 +1,12 @@
-import { Box, useMediaQuery } from '@chakra-ui/react'
-import React from 'react'
+import { Box } from '@chakra-ui/react';
+import React from 'react';
 
 interface ProgramCardProps {
 
 }
 
 const ProgramCard: React.FC<ProgramCardProps> = ({ }) => {
-    const [isLargerThan600] = useMediaQuery("(min-width:600px)");
+
 
     return (
         <React.Fragment>
@@ -26,8 +26,8 @@ const ProgramCard: React.FC<ProgramCardProps> = ({ }) => {
                 </Box>
 
                 <Box
-                    height={365}
-                    w={310}
+                    height={250}
+                    w={200}
                     display="flex"
                     alignItems="center"
                     justifyContent="center"

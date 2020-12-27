@@ -1,11 +1,11 @@
 import { Box, Button, Flex } from '@chakra-ui/react';
 import { Form, Formik } from 'formik';
 import { useRouter } from 'next/router';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { AiOutlineEye } from 'react-icons/ai';
 import { InputField } from '../components/InputField';
 import AuthFlowCard from '../components/MobileViews/AuthFlowCard';
-import { MeDocument, MeQuery, useLoginMutation } from '../generated/graphql';
+import { MeDocument, MeQuery, useLoginMutation, useUserProfileQuery } from '../generated/graphql';
 import { toErrorMap } from '../utils/toErrorMap';
 import { withApollo } from '../utils/withApollo';
 import NextLink from "next/link";
@@ -17,14 +17,22 @@ const Login: React.FC<loginProps> = ({ }) => {
     const router = useRouter();
     const [login] = useLoginMutation();
     const [hidePassword, setHidePassword] = useState(true);
-
+    const { data } = useUserProfileQuery();
     const showPassword = () => {
         if (hidePassword === true) {
             setHidePassword(false)
         } else {
             setHidePassword(true)
         }
-    }
+    };
+
+
+    useEffect(() => {
+        if (data?.userProfile) {
+            router.push("/dashboard")
+        }
+    });
+
     return (
         <React.Fragment>
             <Formik

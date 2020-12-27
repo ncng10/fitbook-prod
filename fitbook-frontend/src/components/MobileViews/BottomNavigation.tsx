@@ -59,7 +59,12 @@ const BottomNavigation: React.FC<BottomNavigationProps> = ({ }) => {
                     </PopoverContent>
                 </Popover>
                 <IconButton aria-label="" style={{ fontSize: 25, width: "100%", backgroundColor: "#FFFFFF", outline: "none" }} icon={<RiNotification2Line />} />
-                <IconButton aria-label="" style={{ fontSize: 25, width: "100%", backgroundColor: "#FFFFFF", outline: "none" }} icon={<RiProfileLine />} />
+                <NextLink href="/profile">
+                    <IconButton aria-label="" style={router.pathname === "/profile" ?
+                        { fontSize: 25, width: "100%", backgroundColor: "#FFFFFF", outline: "none", color: "#86574d" }
+                        :
+                        { fontSize: 25, width: "100%", backgroundColor: "#FFFFFF", outline: "none" }} icon={<RiProfileLine />} />
+                </NextLink>
             </Box>
             <Box>
 

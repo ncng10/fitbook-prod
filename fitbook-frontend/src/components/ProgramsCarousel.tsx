@@ -29,7 +29,7 @@ const NextButton = ({ enabled, onClick }) => (
         </svg>
     </button>
 );
-const useInfiniteScroll = (embla, slides, hasMoreToLoad) => {
+const useInfiniteScroll = (embla, slides: any, hasMoreToLoad) => {
     const scrollListener = useRef(null);
     const [loadingMore, setLoadingMore] = useState(false);
     const [pointerIsDown, setPointerIsDown] = useState(false);
@@ -73,7 +73,7 @@ const useInfiniteScroll = (embla, slides, hasMoreToLoad) => {
     }, [embla]);
 
     useEffect(() => {
-        if (!embla || slides.length === embla.slideNodes().length - 1) return;
+        if (!embla || slides?.length === embla.slideNodes().length - 1) return;
         const engine = embla.dangerouslyGetEngine();
         const boundsActive = engine.limit.reachedMax(engine.target.get());
         engine.scrollBounds.toggleActive(boundsActive);
@@ -81,7 +81,7 @@ const useInfiniteScroll = (embla, slides, hasMoreToLoad) => {
 
     useEffect(() => {
         if (!embla || !hasMoreToLoad || pointerIsDown) return;
-        if (slides.length === embla.slideNodes().length - 1) return;
+        if (slides?.length === embla.slideNodes().length - 1) return;
         reloadEmbla();
         addScrollListener();
     }, [
@@ -95,7 +95,7 @@ const useInfiniteScroll = (embla, slides, hasMoreToLoad) => {
 
     useEffect(() => {
         if (!embla || hasMoreToLoad) return;
-        if (slides.length === embla.slideNodes().length) return;
+        if (slides?.length === embla.slideNodes().length) return;
         if (pointerIsDown && !lastSlideIsInView()) return;
         reloadEmbla();
         embla.off("pointerDown", setPointerDown);
