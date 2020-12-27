@@ -90,14 +90,17 @@ export class ProgramResolver {
         return true
     };
 
+
+    //only use for an individual program, not a full list of them
     @FieldResolver(() => [User])
     async sharedWith(
         @Arg("input", () => Int) programId: number,
     ) {
         const sharedWith = await getConnection().query(
             `   
-            SELECT * FROM public.shared_program
-            INNER JOIN public.user
+            SELECT DISTINCT public.shared_program."sharedToId",public.shared_program."sharedById", public.user.id, public.user.username, public.user.email, public.shared_program."programId"
+            FROM public.shared_program
+            INNER JOIN  public.user
             ON
             public.user.id = public.shared_program."sharedToId"
             WHERE
@@ -124,7 +127,7 @@ export class ProgramResolver {
         return programsSharedWithMe
     }
 
-
+    //individual program shared with me
     @Query(() => [Program])
     async programSharedWithMe(
         @Ctx() { req }: MyContext,
@@ -144,12 +147,14 @@ export class ProgramResolver {
         return programSharedWithMe
     };
 
-    @Subscription(() => [SharedProgram], {
+    @Subscription(() => SharedProgram, {
         topics: "NEW_SHARED_PROGRAM"
     }
     )
-    async newSharedProgram() {
-
+    async newSharedProgram(
+        @Root() payload: SharedProgram
+    ) {
+        return payload
     }
 
     @FieldResolver(() => [Workout])
