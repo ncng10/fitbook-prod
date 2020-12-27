@@ -1,12 +1,14 @@
-import { NavBar } from "../components/NavBar";
+import { Button, Box } from "@chakra-ui/react";
+import React from "react";
+import LandingPageUI from "../components/landingpage/LandingPageUI";
 import { withApollo } from "../utils/withApollo";
 
 
 function Home() {
   return (
-    < div >
-      <NavBar />
-    </div >
+    <React.Fragment>
+      <LandingPageUI />
+    </React.Fragment>
   )
 }
 

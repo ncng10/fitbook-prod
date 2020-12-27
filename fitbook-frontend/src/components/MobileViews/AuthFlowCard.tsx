@@ -25,7 +25,7 @@ const AuthFlowCard: React.FC<AuthFlowCardProps> = ({ ...props }) => {
                     justify-content="center"
                     flexDirection="column"
                     width={350}
-                    height={450}
+                    height={500}
                     borderRadius={25}
                     className="loginCard"
                 >
