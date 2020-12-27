@@ -1,12 +1,12 @@
-import { Avatar, Box } from '@chakra-ui/react';
 import { Button } from '@material-ui/core';
 import { Form, Formik } from 'formik';
-import React, { useState } from 'react'
-import { InputField } from '../../components/InputField';
-import { NavBar } from '../../components/NavBar';
-import SearchListCard from '../../components/SearchListCard';
-import { useMeQuery, useSearchUsersQuery } from '../../generated/graphql';
-import { withApollo } from '../../utils/withApollo';
+import React, { useState } from 'react';
+import { InputField } from '../components/InputField';
+import BottomNavigation from '../components/MobileViews/BottomNavigation';
+import { NavBar } from '../components/NavBar';
+import SearchListCard from '../components/SearchListCard';
+import { useMeQuery, useSearchUsersQuery } from '../generated/graphql';
+import { withApollo } from '../utils/withApollo';
 
 interface SearchProps {
 
@@ -24,7 +24,6 @@ const Search: React.FC<SearchProps> = ({ }) => {
 
     return (
         <React.Fragment>
-            <NavBar />
             <Formik
                 initialValues={{ input: "" }}
                 onSubmit={async (values) => {
@@ -50,6 +49,7 @@ const Search: React.FC<SearchProps> = ({ }) => {
                 null
 
             }
+            <BottomNavigation />
         </React.Fragment>
     );
 }

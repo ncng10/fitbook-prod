@@ -52,7 +52,7 @@ export const NavBar: React.FC<NavBarProps> = ({ }) => {
                     position="fixed"
                 >
                     <Box cursor="pointer" position="fixed" left={5} top={7} >
-                        <NextLink href="/">
+                        <NextLink href="/dashboard">
                             <Box mr={5}>
                                 <Text>Home</Text>
                             </Box>
