@@ -12,7 +12,7 @@ import Redis from 'ioredis';
 import path from 'path';
 import "reflect-metadata";
 import { buildSchema } from 'type-graphql';
-import { createConnection, getConnection } from 'typeorm';
+import { createConnection } from 'typeorm';
 import { v4 } from "uuid";
 import { __prod__ } from './constants';
 import { Exercise } from './entities/Exercise';

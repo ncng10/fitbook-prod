@@ -91,5 +91,22 @@ export class ProgramResolver {
             `
         )
         return sharedWith
+    };
+
+    @Query(() => [Program])
+    async programsSharedWithMe(
+        @Ctx() { req }: MyContext
+    ) {
+        const programsSharedWithMe = await getConnection().query(
+            `
+            SELECT * FROM public.shared_program 
+            INNER JOIN public.program
+            ON
+            public.program.id = public.shared_program."programId"
+            WHERE
+            public.shared_program."sharedToId" = ${req.session.userId}
+            `
+        )
+        return programsSharedWithMe
     }
 }
