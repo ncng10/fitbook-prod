@@ -168,4 +168,14 @@ export class UserResolver {
     };
 
 
+    @Query(() => User)
+    async publicUserProfile(
+        @Arg("input", () => String) username: string
+    ) {
+        const userprofile = User.findOne({
+            username: username
+        })
+        return userprofile
+    }
+
 }

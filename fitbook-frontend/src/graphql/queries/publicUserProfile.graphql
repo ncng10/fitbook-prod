@@ -1,0 +1,6 @@
+query PublicUserProfile($input: String!) {
+  publicUserProfile(input:$input){
+    username
+    profilePicture
+  }
+}

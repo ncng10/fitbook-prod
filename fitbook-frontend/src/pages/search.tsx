@@ -8,7 +8,7 @@ import { NavBar } from '../components/NavBar';
 import SearchListCard from '../components/SearchListCard';
 import { useMeQuery, useSearchUsersQuery } from '../generated/graphql';
 import { withApollo } from '../utils/withApollo';
-
+import NextLink from 'next/link';
 interface SearchProps {
 
 }

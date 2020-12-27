@@ -2,6 +2,7 @@ import { Avatar, Box, IconButton } from '@chakra-ui/react';
 import React from 'react'
 import { RiUserAddFill } from 'react-icons/ri';
 import { useAddFriendMutation } from '../generated/graphql';
+import NextLink from 'next/link';
 
 interface SearchListCardProps {
     username: string;
@@ -30,10 +31,14 @@ const SearchListCard: React.FC<SearchListCardProps> = ({ username, profilePictur
                     justifyContent="center"
                     ml={5}
                 >
-                    <Avatar
-                        size="xl"
-                        src={`https://storage.googleapis.com/fitbook-production/${profilePicture}`}
-                    />
+                    <NextLink href="/users/[username]" as={`/users/${username}`}>
+
+                        <Avatar
+                            size="xl"
+                            src={`https://storage.googleapis.com/fitbook-production/${profilePicture}`}
+                        />
+
+                    </NextLink>
                     <p style={{ fontSize: 25, marginLeft: 15 }}>{username}</p>
                 </Box>
                 <Box>

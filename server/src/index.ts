@@ -12,7 +12,7 @@ import Redis from 'ioredis';
 import path from 'path';
 import "reflect-metadata";
 import { buildSchema } from 'type-graphql';
-import { createConnection } from 'typeorm';
+import { createConnection, getConnection } from 'typeorm';
 import { v4 } from "uuid";
 import { __prod__ } from './constants';
 import { Exercise } from './entities/Exercise';
@@ -65,6 +65,7 @@ const main = async () => {
             origin: __prod__ ? "https://fitbookit.com" : "http://localhost:3000"
         }
     ));
+
 
     app.use(
         session({

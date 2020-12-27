@@ -162,7 +162,7 @@ const EmblaCarousel = () => {
                         <NextLink key={program.id} href="/workout/programs/[id]" as={`/workout/programs/${program.id}`}>
                             <div className="embla__slide" key={program.id}>
                                 <div className="embla__slide__inner">
-                                    <div className="embla__slide" key={program.id}>
+                                    <div className="embla__slide">
                                         <div className="embla__slide__inner">
                                             <ProgramCard
                                                 programName={program.programName}

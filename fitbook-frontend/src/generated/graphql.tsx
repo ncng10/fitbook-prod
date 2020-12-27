@@ -33,6 +33,7 @@ export type Query = {
   me: User;
   userProfile: User;
   searchUsers: User;
+  publicUserProfile: User;
   workouts: Array<Workout>;
   workout: Workout;
 };
@@ -65,6 +66,11 @@ export type QueryProgramSharedWithMeArgs = {
 
 export type QuerySearchUsersArgs = {
   search: Scalars['String'];
+};
+
+
+export type QueryPublicUserProfileArgs = {
+  input: Scalars['String'];
 };
 
 
@@ -624,6 +630,19 @@ export type ProgramsSharedWithMeQuery = (
       & Pick<User, 'id' | 'username' | 'email'>
     ) }
   )> }
+);
+
+export type PublicUserProfileQueryVariables = Exact<{
+  input: Scalars['String'];
+}>;
+
+
+export type PublicUserProfileQuery = (
+  { __typename?: 'Query' }
+  & { publicUserProfile: (
+    { __typename?: 'User' }
+    & Pick<User, 'username' | 'profilePicture'>
+  ) }
 );
 
 export type SearchUsersQueryVariables = Exact<{
@@ -1494,6 +1513,40 @@ export function useProgramsSharedWithMeLazyQuery(baseOptions?: Apollo.LazyQueryH
 export type ProgramsSharedWithMeQueryHookResult = ReturnType<typeof useProgramsSharedWithMeQuery>;
 export type ProgramsSharedWithMeLazyQueryHookResult = ReturnType<typeof useProgramsSharedWithMeLazyQuery>;
 export type ProgramsSharedWithMeQueryResult = Apollo.QueryResult<ProgramsSharedWithMeQuery, ProgramsSharedWithMeQueryVariables>;
+export const PublicUserProfileDocument = gql`
+    query PublicUserProfile($input: String!) {
+  publicUserProfile(input: $input) {
+    username
+    profilePicture
+  }
+}
+    `;
+
+/**
+ * __usePublicUserProfileQuery__
+ *
+ * To run a query within a React component, call `usePublicUserProfileQuery` and pass it any options that fit your needs.
+ * When your component renders, `usePublicUserProfileQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = usePublicUserProfileQuery({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function usePublicUserProfileQuery(baseOptions: Apollo.QueryHookOptions<PublicUserProfileQuery, PublicUserProfileQueryVariables>) {
+        return Apollo.useQuery<PublicUserProfileQuery, PublicUserProfileQueryVariables>(PublicUserProfileDocument, baseOptions);
+      }
+export function usePublicUserProfileLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<PublicUserProfileQuery, PublicUserProfileQueryVariables>) {
+          return Apollo.useLazyQuery<PublicUserProfileQuery, PublicUserProfileQueryVariables>(PublicUserProfileDocument, baseOptions);
+        }
+export type PublicUserProfileQueryHookResult = ReturnType<typeof usePublicUserProfileQuery>;
+export type PublicUserProfileLazyQueryHookResult = ReturnType<typeof usePublicUserProfileLazyQuery>;
+export type PublicUserProfileQueryResult = Apollo.QueryResult<PublicUserProfileQuery, PublicUserProfileQueryVariables>;
 export const SearchUsersDocument = gql`
     query SearchUsers($input: String!) {
   searchUsers(search: $input) {
