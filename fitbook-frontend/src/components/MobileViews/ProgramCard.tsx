@@ -26,7 +26,6 @@ const ProgramCard: React.FC<ProgramCardProps> = ({ }) => {
                 </Box>
 
                 <Box
-                    mt={3}
                     height={365}
                     w={310}
                     display="flex"

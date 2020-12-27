@@ -4,9 +4,11 @@ import { useRouter } from 'next/router';
 import React, { useState } from 'react';
 import { AiOutlineEye } from 'react-icons/ai';
 import { InputField } from '../components/InputField';
+import AuthFlowCard from '../components/MobileViews/AuthFlowCard';
 import { MeDocument, MeQuery, useLoginMutation } from '../generated/graphql';
 import { toErrorMap } from '../utils/toErrorMap';
 import { withApollo } from '../utils/withApollo';
+import NextLink from "next/link";
 interface loginProps {
 
 }
@@ -61,39 +63,59 @@ const Login: React.FC<loginProps> = ({ }) => {
                 }}
             >
                 {({ isSubmitting }) => (
-                    <div className="loginFormWrapper">
-                        <Form>
-                            <Box mt={4} w={500} >
-                                <InputField
-                                    name="userNameOrEmail"
-                                    placeholder="Username or Email"
-                                    label="Username or Email"
-                                />
+                    <AuthFlowCard>
+                        <Box color="#6A6B6D" mb={5} fontSize={25}>Login</Box>
 
-                                <InputField
-                                    name="password"
-                                    placeholder="Password"
-                                    label="Password"
-                                    type={hidePassword ? "password" : "text"}
-                                />
-                                <Flex justifyContent="flex-end">
-                                    <AiOutlineEye onClick={showPassword} style={{ fontSize: 25, marginTop: ".5rem" }} />
+                        <Form>
+                            <Box mt={4} w={310} >
+                                <Box mb={7}>
+                                    <InputField
+                                        style={{ height: 31, backgroundColor: "#F2F5FC", border: "none", outline: "none" }}
+                                        name="userNameOrEmail"
+                                        label="Username or Email"
+                                    />
+
+                                </Box>
+                                <Box >
+                                    <InputField
+                                        style={{ height: 31, backgroundColor: "#F2F5FC", border: "none", outline: "none" }}
+                                        name="password"
+                                        label="Password"
+                                        type={hidePassword ? "password" : "text"}
+                                    />
+                                </Box>
+                                <Flex
+                                    marginTop=".5rem"
+                                    fontSize={12}
+                                    ml=".25rem"
+                                    justifyContent="space-between">
+                                    <p>Forgot Password?</p>
+                                    <AiOutlineEye onClick={showPassword} style={{ fontSize: 20 }} />
                                 </Flex>
                                 <Flex justifyContent="center" alignItems="center" flexDirection="column" >
                                     <Button
-                                        mt={5}
-                                        w={250}
-                                        ml={0}
+                                        mt={12}
+                                        w={215}
+                                        h={35}
+                                        borderRadius={15}
+                                        bgColor="#74B4D9"
+                                        color="#F2F5FC"
+                                        fontWeight={500}
                                         isLoading={isSubmitting}
-                                        type="submit">Login
-                                    </Button>
-                                    <Box mt={2}>
-                                        <label>Forgot Passoword?</label>
-                                    </Box>
+                                        type="submit">
+                                        Login
+        </Button>
+                                    <NextLink href="/register">
+                                        <Box
+                                            mt={3}
+                                            color="#6A6B6D"
+                                        >Create an Account</Box>
+                                    </NextLink>
                                 </Flex>
                             </Box>
                         </Form>
-                    </div>)}
+                    </AuthFlowCard>
+                )}
             </Formik>
         </React.Fragment >
     );
