@@ -12,7 +12,7 @@ import Redis from 'ioredis';
 import path from 'path';
 import "reflect-metadata";
 import { buildSchema } from 'type-graphql';
-import { createConnection } from 'typeorm';
+import { createConnection, getConnection } from 'typeorm';
 import { v4 } from "uuid";
 import { __prod__ } from './constants';
 import { Exercise } from './entities/Exercise';
@@ -21,6 +21,7 @@ import { GroupMembers } from "./entities/GroupMembers";
 import { PersonalMessage } from "./entities/PersonalMessage";
 import { Program } from "./entities/Program";
 import { ProgramWorkouts } from './entities/ProgramWorkouts';
+import { SharedProgram } from './entities/SharedProgram';
 import { User } from './entities/User';
 import { UserFriends } from './entities/UserFriends';
 import { Workout } from './entities/Workout';
@@ -41,11 +42,11 @@ const main = async () => {
         type: "postgres",
         url: process.env.DATABASE_URL,
         logging: true,
-        // synchronize: true,
+        synchronize: true,
         migrations: [path.join(__dirname, "./migrations/*")],
-        entities: [User, Group, GroupMembers, PersonalMessage, Program, Workout, Exercise, ProgramWorkouts, UserFriends]
+        entities: [User, Group, GroupMembers, PersonalMessage, Program, Workout, Exercise, ProgramWorkouts, UserFriends, SharedProgram]
     });
-    connection.runMigrations();
+    // connection.runMigrations();
     const app = express();
 
     const RedisStore = connectRedis(session);

@@ -94,4 +94,16 @@ export class GroupResolver {
         // console.log("userLoader", userLoader)
         return userLoader.load(group.creatorId)
     };
+
+    @FieldResolver(() => [User])
+    async members(
+        @Arg("groupId", () => Int) groupId: number
+    ) {
+        const members = await getConnection().query(
+            `
+            SELECT * FROM public.user INNER JOIN public.group_members ON public.group_members."memberId" = public.user.id AND public.group_members."groupId" = ${groupId}
+            `
+        )
+        return members
+    }
 }

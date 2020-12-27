@@ -165,5 +165,7 @@ export class UserResolver {
                 })
                 .getOne()
         return searchResult
-    }
+    };
+
+
 }
