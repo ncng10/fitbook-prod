@@ -1,4 +1,4 @@
-import { Avatar, Box } from '@chakra-ui/react';
+import { Avatar, Box, Flex } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React from 'react'
 import { useLogoutMutation, useUserProfileQuery } from '../../generated/graphql';
@@ -15,14 +15,17 @@ const UserProfileCard: React.FC<UserProfileCardProps> = ({ }) => {
     return (
         <React.Fragment>
             <Box>
-                <Box>
-                    <Avatar src={`https://storage.googleapis.com/fitbook-production/${data?.userProfile?.profilePicture}`} />
-                </Box>
-                <Box onClick={async () => {
+                <Flex mt={5} ml={5} alignItems="center">
+                    <Avatar size="xl" src={`https://storage.googleapis.com/fitbook-production/${data?.userProfile?.profilePicture}`} />
+                    <Box ml={5}>
+                        <h3 style={{ fontSize: 25, fontWeight: 700 }}>{data?.userProfile.username}</h3>
+                    </Box>
+                </Flex>
+                {/* <Box onClick={async () => {
                     await logout();
                     apolloClient.resetStore();
                     router.push("/")
-                }}>Logout</Box>
+                }}>Logout</Box> */}
             </Box>
         </React.Fragment>
     );

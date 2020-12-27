@@ -3,6 +3,7 @@ import { Form, Formik } from 'formik';
 import React, { useState } from 'react';
 import { InputField } from '../components/InputField';
 import BottomNavigation from '../components/MobileViews/BottomNavigation';
+import PageHeaders from '../components/MobileViews/PageHeaders';
 import { NavBar } from '../components/NavBar';
 import SearchListCard from '../components/SearchListCard';
 import { useMeQuery, useSearchUsersQuery } from '../generated/graphql';
@@ -24,6 +25,7 @@ const Search: React.FC<SearchProps> = ({ }) => {
 
     return (
         <React.Fragment>
+            <PageHeaders>User Search</PageHeaders>
             <Formik
                 initialValues={{ input: "" }}
                 onSubmit={async (values) => {

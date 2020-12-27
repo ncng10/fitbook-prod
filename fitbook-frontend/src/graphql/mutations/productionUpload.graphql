@@ -1,3 +1,0 @@
-mutation ProductionUpload($photo: String!) {
-  productionUpload(photo:$photo)
-}

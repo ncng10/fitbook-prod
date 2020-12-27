@@ -3,10 +3,6 @@ query MyPrograms{
     programName
     programCategory
     id
-    creatorId
-    creator {
-      username
-      email
-    }
+    isShared
   }
 }

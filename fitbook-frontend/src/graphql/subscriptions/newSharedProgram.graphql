@@ -1,0 +1,8 @@
+subscription NewSharedProgram {
+  newSharedProgram{
+    sharedById
+    sharedToId
+    programId
+    id
+  }
+}

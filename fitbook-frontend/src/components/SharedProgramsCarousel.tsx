@@ -2,7 +2,7 @@ import { Box, useMediaQuery } from "@chakra-ui/react";
 import { useEmblaCarousel } from "embla-carousel/react";
 import NextLink from 'next/link';
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { useMyProgramsQuery } from "../generated/graphql";
+import { useMyProgramsQuery, useProgramsSharedWithMeQuery } from "../generated/graphql";
 import ProgramCard from "./MobileViews/ProgramCard";
 
 
@@ -123,7 +123,7 @@ const useInfiniteScroll = (embla, slides: any, hasMoreToLoad) => {
 
 const EmblaCarousel = () => {
     const [isLargerThan600] = useMediaQuery("(min-width:600px)");
-    const { data, loading } = useMyProgramsQuery();
+    const { data, loading } = useProgramsSharedWithMeQuery();
     const [hasMoreToLoad, setHasMoreToLoad] = useState(true);
     const [prevBtnEnabled, setPrevBtnEnabled] = useState(false);
     const [nextBtnEnabled, setNextBtnEnabled] = useState(false);
@@ -158,23 +158,23 @@ const EmblaCarousel = () => {
         <div className="embla">
             <div className="embla__viewport" ref={viewportRef}>
                 <div className="embla__container">
-                    {data?.myPrograms.map((program) => (
-                        <NextLink key={program.id} href="/workout/programs/[id]" as={`/workout/programs/${program.id}`}>
-                            <div className="embla__slide" key={program.id}>
-                                <div className="embla__slide__inner">
-                                    <div className="embla__slide" key={program.id}>
+                    {data?.programsSharedWithMe.map((program) => (
+                        <div className="embla__slide" key={program.id}>
+                            <div className="embla__slide__inner">
+                                <div className="embla__slide" key={program.id}>
+                                    <NextLink key={program.id} href="/workout/programs/[id]" as={`/workout/programs/${program.id}`}>
                                         <div className="embla__slide__inner">
                                             <ProgramCard
                                                 programName={program.programName}
+                                                creator={program.creator.username}
                                                 programCategory={program.programCategory}
                                                 isShared={program.isShared}
                                             />
-
                                         </div>
-                                    </div>
+                                    </NextLink>
                                 </div>
                             </div>
-                        </NextLink>
+                        </div>
                     ))}
                     {hasMoreToLoad && (
                         <div className="embla__slide embla__slide--loading">

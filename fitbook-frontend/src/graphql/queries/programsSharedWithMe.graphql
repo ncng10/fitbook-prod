@@ -1,0 +1,13 @@
+query ProgramsSharedWithMe {
+    programsSharedWithMe {
+        id
+        programName
+        programCategory
+        isShared
+        creator {
+        id
+        username
+        email
+        }
+    }
+}

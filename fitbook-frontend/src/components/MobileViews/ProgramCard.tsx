@@ -1,12 +1,17 @@
 import { Box } from '@chakra-ui/react';
 import React from 'react';
+import { RiGlobalLine, RiLock2Line } from 'react-icons/ri';
+import { useMeQuery } from '../../generated/graphql';
 
 interface ProgramCardProps {
-
+    programName: string;
+    creator?: string; //only programs shared with the user shows the creator. 
+    programCategory: string;
+    isShared: boolean;
 }
 
-const ProgramCard: React.FC<ProgramCardProps> = ({ }) => {
-
+const ProgramCard: React.FC<ProgramCardProps> = ({ programCategory, programName, creator, isShared }) => {
+    const { data } = useMeQuery();
 
     return (
         <React.Fragment>
@@ -17,38 +22,31 @@ const ProgramCard: React.FC<ProgramCardProps> = ({ }) => {
                 borderRadius="15px"
             >
                 <Box
-                    mt={5}
                     display="flex"
                     alignItems="center"
                     justifyContent="center"
                 >
-                    Category Here
+                    <Box>
+                        {!isShared ? <RiLock2Line /> : <RiGlobalLine />}
+                    </Box>
+                    {programCategory}
                 </Box>
 
                 <Box
-                    height={250}
-                    w={200}
+                    height={200}
+                    w={175}
                     display="flex"
                     alignItems="center"
                     justifyContent="center"
                     backgroundColor="#fff"
                     border="1px solid lightgray "
-                    borderRadius={5}
+                    borderRadius={10}
                 >
-                    Main Body Here
+                    <Box>
+                        <h2>{programName}</h2>
+                        {creator ? <h3>Shared by: {creator}</h3> : null}
+                    </Box>
                 </Box>
-                {/* <Box
-                    mt={3}
-                    height={160}
-                    borderRadius="15px"
-                    w={310}
-                    display="flex"
-                    alignItems="center"
-                    justifyContent="center"
-                    bgColor="#CCE3DE"
-                >
-                    Footer Description here
-                </Box> */}
             </Box>
         </React.Fragment>
     );
