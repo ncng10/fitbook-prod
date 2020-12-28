@@ -2,7 +2,7 @@ import { Box, Button, Flex, Text } from '@chakra-ui/react';
 import NextLink from "next/link";
 import React from 'react';
 import { NavBar } from '../../components/NavBar';
-import { useIsMemberQuery, useNewMessageSubscription } from '../../generated/graphql';
+import { useIsMemberQuery } from '../../generated/graphql';
 import { withApollo } from '../../utils/withApollo';
 interface groupsProps {
 

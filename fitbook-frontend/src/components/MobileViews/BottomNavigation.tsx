@@ -1,10 +1,10 @@
-import { Box, IconButton, PopoverTrigger, Popover, PopoverArrow, PopoverContent, PopoverCloseButton, PopoverHeader, PopoverBody, VStack } from "@chakra-ui/react";
-import React from 'react';
-import { RiAddLine, RiHome2Line, RiHome3Line, RiNotification2Line, RiProfileLine, RiSearchEyeLine } from 'react-icons/ri';
+import { Box, IconButton } from "@chakra-ui/react";
+import { Badge } from "@material-ui/core";
 import NextLink from "next/link";
 import { useRouter } from "next/router";
-import { Badge } from "@material-ui/core";
-import { useNewSharedProgramSubscription } from "../../generated/graphql";
+import React from 'react';
+import { RiHome3Line, RiNotification2Line, RiProfileLine, RiSearchEyeLine } from 'react-icons/ri';
+import { useNewFriendRequestSubscription, useNewSharedProgramSubscription, usePendingFriendsQuery, useUserProfileQuery } from "../../generated/graphql";
 import ProgramMenu from "../ProgramMenu";
 interface BottomNavigationProps {
 
@@ -13,6 +13,9 @@ interface BottomNavigationProps {
 const BottomNavigation: React.FC<BottomNavigationProps> = ({ }) => {
     const router = useRouter();
     const { data: sharedProgramSubscription } = useNewSharedProgramSubscription();
+    const { data } = useUserProfileQuery();
+    const { data: friendRequestSubscription } = useNewFriendRequestSubscription();
+    const { data: pendingFriendsData } = usePendingFriendsQuery();
     return (
         <React.Fragment>
             <Box
@@ -42,12 +45,15 @@ const BottomNavigation: React.FC<BottomNavigationProps> = ({ }) => {
                 </NextLink>
                 <ProgramMenu />
                 <NextLink href="/notifications">
-                    {sharedProgramSubscription ? <Badge color="secondary" variant="dot">
-                        <IconButton aria-label="" style={router.pathname === "/notifications" ?
-                            { fontSize: 25, width: "100%", backgroundColor: "#FFFFFF", outline: "none", color: "#86574d" }
-                            :
-                            { fontSize: 25, width: "100%", backgroundColor: "#FFFFFF", outline: "none" }} icon={<RiNotification2Line />} />
-                    </Badge> :
+                    {friendRequestSubscription?.newFriendRequest &&
+                        friendRequestSubscription?.newFriendRequest.userTwoIdentity === data?.userProfile.id
+                        ||
+                        pendingFriendsData?.pendingFriends.length >= 1 ? <Badge color="secondary" variant="dot">
+                            <IconButton aria-label="" style={router.pathname === "/notifications" ?
+                                { fontSize: 25, width: "100%", backgroundColor: "#FFFFFF", outline: "none", color: "#86574d" }
+                                :
+                                { fontSize: 25, width: "100%", backgroundColor: "#FFFFFF", outline: "none" }} icon={<RiNotification2Line />} />
+                        </Badge> :
                         <IconButton aria-label="" style={router.pathname === "/notifications" ?
                             { fontSize: 25, width: "100%", backgroundColor: "#FFFFFF", outline: "none", color: "#86574d" }
                             :

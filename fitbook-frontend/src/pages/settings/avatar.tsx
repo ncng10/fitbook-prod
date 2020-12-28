@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react';
+import React, { useCallback } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { NavBar } from '../../components/NavBar';
 import { useAddProfilePictureMutation } from '../../generated/graphql';

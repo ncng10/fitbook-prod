@@ -1,5 +1,5 @@
 import { Box } from '@chakra-ui/react';
-import React from 'react'
+import React from 'react';
 import BottomNavigation from '../components/MobileViews/BottomNavigation';
 import UserProfileCard from '../components/MobileViews/UserProfileCard';
 import ProgramsCarousel from '../components/ProgramsCarousel';
@@ -11,6 +11,7 @@ interface ProfileProps {
 }
 
 const Profile: React.FC<ProfileProps> = ({ }) => {
+
     return (
         <React.Fragment>
             <UserProfileCard />

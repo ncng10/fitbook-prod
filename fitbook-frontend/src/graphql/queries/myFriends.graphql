@@ -1,7 +1,8 @@
-query MyFriends{
-    myFriends{
+query MyFriends {
+      myFriends{
     userOneIdentity
     userTwoIdentity
     friendshipStatus
   }
+
 }

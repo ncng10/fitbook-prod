@@ -56,6 +56,9 @@ export class FriendRelationship {
         return pendingFriends
     };
 
+
+    //used for checking if the users are friends during a user search or when on the 
+    //profile of a friend. not used for listing friends in a list.
     @Query(() => [UserFriends])
     @UseMiddleware(isAuth)
     async myFriends(
@@ -76,13 +79,13 @@ export class FriendRelationship {
     @UseMiddleware(isAuth)
     async acceptFriendRequest(
         @Ctx() { req }: MyContext,
-        @Arg("userTwoIdentity", () => Int) userTwoIdentity: number,
+        @Arg("userOneIdentity", () => Int) userOneIdentity: number,
     ) {
         const acceptFriendRequest = await getConnection().query(
             `
             UPDATE public.user_friends
             SET "friendshipStatus" = 1
-            WHERE user_friends."userTwoIdentity" = ${req.session.userId} AND user_friends."userOneIdentity" = ${userTwoIdentity}
+            WHERE user_friends."userTwoIdentity" = ${req.session.userId} AND user_friends."userOneIdentity" = ${userOneIdentity}
             RETURNING *
             `
         )
@@ -92,8 +95,10 @@ export class FriendRelationship {
         return true
     };
 
+
+    //used for listing all of a user's friends.
     @Query(() => [User])
-    async friendslist1(
+    async friendsList(
         @Ctx() { req }: MyContext
     ) {
         const friendslist = await getConnection().query(
@@ -101,16 +106,18 @@ export class FriendRelationship {
             SELECT * FROM public.user
             INNER JOIN public.user_friends
             ON public.user.id = public.user_friends."userTwoIdentity"
-            AND public.user_friends."userOneIdentity" = ${req.session.userId} 
+            AND public.user_friends."userOneIdentity" = ${req.session.userId}
+            AND public.user_friends."friendshipStatus" = 1
             UNION 
             SELECT * FROM public.user
             INNER JOIN public.user_friends
             ON public.user.id = public.user_friends."userOneIdentity"
             AND public.user_friends."userTwoIdentity" = ${req.session.userId} 
+            AND public.user_friends."friendshipStatus" = 1
             `
-        )
+        );
         return friendslist
-    }
+    };
 
     @Subscription(() => UserFriends, {
         topics: "NEW_FRIEND_REQUEST"

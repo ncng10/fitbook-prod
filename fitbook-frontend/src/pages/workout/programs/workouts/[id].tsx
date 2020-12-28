@@ -1,12 +1,11 @@
-import { Box, IconButton } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 import React from 'react';
+import CreateExerciseForm from '../../../../components/CreateExerciseForm';
 import ExerciseCard from '../../../../components/ExerciseCard';
 import { NavBar } from '../../../../components/NavBar';
-import { useExercisesInAWorkoutQuery, useWorkoutQuery } from '../../../../generated/graphql';
+import { useExercisesInAWorkoutQuery } from '../../../../generated/graphql';
 import { useGetIntId } from '../../../../utils/useGetIntId';
 import { withApollo } from '../../../../utils/withApollo';
-import { RiMenuAddLine } from "react-icons/ri"
-import CreateExerciseForm from '../../../../components/CreateExerciseForm';
 
 interface WorkoutProps {
 

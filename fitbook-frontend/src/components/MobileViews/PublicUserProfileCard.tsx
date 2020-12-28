@@ -1,15 +1,11 @@
 import { Avatar, Box, Flex } from '@chakra-ui/react';
-import { useRouter } from 'next/router';
-import React from 'react'
-import { useLogoutMutation, useUserProfileQuery } from '../../generated/graphql';
-import { useApolloClient } from '@apollo/client';
+import React from 'react';
 interface UserProfileCardProps {
     profilePicture: string;
     username: string;
 }
-
+//profile card for every user except for the currently logged in user
 const UserProfileCard: React.FC<UserProfileCardProps> = ({ profilePicture, username }) => {
-
     return (
         <React.Fragment>
             <Box>

@@ -1,3 +1,3 @@
-mutation AcceptFriendRequest($userTwoIdentity: Int!) {
-  acceptFriendRequest(userTwoIdentity:$userTwoIdentity)
+mutation AcceptFriendRequest($userOneIdentity: Int!) {
+  acceptFriendRequest(userOneIdentity:$userOneIdentity)
 }

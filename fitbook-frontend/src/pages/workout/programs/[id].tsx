@@ -1,10 +1,8 @@
-import { Box, IconButton } from '@chakra-ui/react';
+import { Box } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
-import React from 'react'
-import { AiOutlineEye } from 'react-icons/ai';
+import React from 'react';
 import CreateWorkoutForm from '../../../components/CreateWorkoutForm';
 import BottomNavigation from '../../../components/MobileViews/BottomNavigation';
-import { NavBar } from '../../../components/NavBar';
 import WorkoutsList from '../../../components/WorkoutsList';
 import { useGetIntId } from '../../../utils/useGetIntId';
 import { withApollo } from '../../../utils/withApollo';

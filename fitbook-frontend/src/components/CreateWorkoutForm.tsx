@@ -1,8 +1,8 @@
-import { toast, VStack, Button, Box, Drawer, DrawerBody, DrawerCloseButton, DrawerContent, DrawerFooter, DrawerHeader, DrawerOverlay, IconButton, Stack, useDisclosure } from '@chakra-ui/react';
-import { Formik, Form } from 'formik';
-import React from 'react'
+import { Box, Button, Drawer, DrawerBody, DrawerCloseButton, DrawerContent, DrawerFooter, DrawerHeader, DrawerOverlay, IconButton, Stack, useDisclosure, VStack } from '@chakra-ui/react';
+import { Form, Formik } from 'formik';
+import React from 'react';
 import { RiMenuAddLine } from 'react-icons/ri';
-import { useCreateWorkoutMutation } from "../generated/graphql"
+import { useCreateWorkoutMutation } from "../generated/graphql";
 import { useGetIntId } from '../utils/useGetIntId';
 import { InputField } from './InputField';
 

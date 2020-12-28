@@ -1,17 +1,15 @@
 import { Avatar, Box, Flex } from '@chakra-ui/react';
-import { useRouter } from 'next/router';
-import React from 'react'
-import { useLogoutMutation, useUserProfileQuery } from '../../generated/graphql';
-import { useApolloClient } from '@apollo/client';
+import React from 'react';
+import NextLink from 'next/link';
+import { useLogoutMutation, useMyFriendsQuery, useUserProfileQuery } from '../../generated/graphql';
 interface UserProfileCardProps {
 
 }
-
+//used for the profile of the currently logged in user
 const UserProfileCard: React.FC<UserProfileCardProps> = ({ }) => {
     const { data } = useUserProfileQuery();
-    const router = useRouter();
     const [logout] = useLogoutMutation();
-    const apolloClient = useApolloClient();
+    const { data: myFriendsCountData } = useMyFriendsQuery();
     return (
         <React.Fragment>
             <Box>
@@ -19,6 +17,11 @@ const UserProfileCard: React.FC<UserProfileCardProps> = ({ }) => {
                     <Avatar size="xl" src={`https://storage.googleapis.com/fitbook-production/${data?.userProfile?.profilePicture}`} />
                     <Box ml={5}>
                         <h3 style={{ fontSize: 25, fontWeight: 700 }}>{data?.userProfile.username}</h3>
+                        <Box>
+                            <NextLink href="/friends/all">
+                                <Box>{myFriendsCountData?.myFriends.length} Friends</Box>
+                            </NextLink>
+                        </Box>
                     </Box>
                 </Flex>
                 {/* <Box onClick={async () => {

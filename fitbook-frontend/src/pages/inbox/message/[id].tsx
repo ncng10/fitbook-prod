@@ -1,6 +1,6 @@
 import { Box, Button, Flex, Text } from '@chakra-ui/react';
 import { Form, Formik } from 'formik';
-import React, { useEffect } from 'react';
+import React from 'react';
 import { InputField } from '../../../components/InputField';
 import { useMeQuery, useNewMessageSubscription, useSendPersonalMessageMutation, useViewPersonalMessagesQuery } from '../../../generated/graphql';
 import { useGetIntId } from '../../../utils/useGetIntId';

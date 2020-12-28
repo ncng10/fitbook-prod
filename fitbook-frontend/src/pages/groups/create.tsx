@@ -1,9 +1,9 @@
-import { Box, Button, FormControl, FormLabel, Stack, VStack } from '@chakra-ui/react';
-import { Field, Form, Formik } from 'formik'
+import { Box, Button } from '@chakra-ui/react';
+import { Form, Formik } from 'formik';
 import { useRouter } from 'next/router';
-import React from 'react'
+import React from 'react';
 import { InputField } from '../../components/InputField';
-import { useCreateGroupMutation } from '../../generated/graphql'
+import { useCreateGroupMutation } from '../../generated/graphql';
 import { withApollo } from '../../utils/withApollo';
 interface createProps {
 

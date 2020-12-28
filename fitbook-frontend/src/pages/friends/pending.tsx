@@ -1,7 +1,7 @@
 import { Box, Button } from '@chakra-ui/react';
-import React from 'react'
+import React from 'react';
 import { NavBar } from '../../components/NavBar';
-import { useAcceptFriendRequestMutation, useNewFriendRequestSubscription, usePendingFriendsQuery } from '../../generated/graphql';
+import { useAcceptFriendRequestMutation, usePendingFriendsQuery } from '../../generated/graphql';
 import { withApollo } from '../../utils/withApollo';
 
 interface PendingProps {
@@ -20,13 +20,15 @@ const Pending: React.FC<PendingProps> = ({ }) => {
                 Friend Requests:
                 {data?.pendingFriends.map((friendRequest) => (
                 <Box key={friendRequest.id}>
-                    <Box>{friendRequest.username}</Box>
+                    <Box>
+                        {friendRequest?.username} wants to add you.
+                    </Box>
                     <Box>
                         <Button
                             onClick={async () => {
                                 await acceptFriendRequest({
                                     variables: {
-                                        userTwoIdentity: friendRequest.id
+                                        userOneIdentity: friendRequest.id
                                     },
                                     update: (cache) => {
                                         cache.evict({ fieldName: "pendingFriends" })

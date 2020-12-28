@@ -2,7 +2,7 @@ import { Box, useMediaQuery } from "@chakra-ui/react";
 import { useEmblaCarousel } from "embla-carousel/react";
 import NextLink from 'next/link';
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { useMyProgramsQuery, useProgramsSharedWithMeQuery } from "../generated/graphql";
+import { useProgramsSharedWithMeQuery } from "../generated/graphql";
 import ProgramCard from "./MobileViews/ProgramCard";
 
 

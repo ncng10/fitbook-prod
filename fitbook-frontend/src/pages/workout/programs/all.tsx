@@ -1,11 +1,9 @@
-import WorkoutListTable from "../../../components/ProgramsListTable"
-import { Box, Spinner } from "@chakra-ui/react"
-import React from 'react'
-import { useMyProgramsQuery } from '../../../generated/graphql';
-import { withApollo } from '../../../utils/withApollo';
-import NextLink from "next/link"
+import { Box, Spinner } from "@chakra-ui/react";
+import React from 'react';
 import { NavBar } from '../../../components/NavBar';
 import ProgramsListTable from "../../../components/ProgramsListTable";
+import { useMyProgramsQuery } from '../../../generated/graphql';
+import { withApollo } from '../../../utils/withApollo';
 interface AllProps {
 
 }

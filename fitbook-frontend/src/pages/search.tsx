@@ -4,7 +4,6 @@ import React, { useState } from 'react';
 import { InputField } from '../components/InputField';
 import BottomNavigation from '../components/MobileViews/BottomNavigation';
 import PageHeaders from '../components/MobileViews/PageHeaders';
-import { NavBar } from '../components/NavBar';
 import SearchListCard from '../components/SearchListCard';
 import { useMeQuery, useSearchUsersQuery } from '../generated/graphql';
 import { withApollo } from '../utils/withApollo';

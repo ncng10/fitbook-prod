@@ -38,7 +38,7 @@ const PendingFriends: React.FC<PendingFriendsProps> = ({ }) => {
                                             onClick={async () => {
                                                 await acceptFriendRequest({
                                                     variables: {
-                                                        userTwoIdentity: friendRequest.id
+                                                        userOneIdentity: friendRequest.id
                                                     },
                                                     update: (cache) => {
                                                         cache.evict({ fieldName: "pendingFriends" })

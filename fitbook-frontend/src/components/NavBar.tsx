@@ -1,14 +1,11 @@
 import { useApolloClient } from '@apollo/client';
-import { Avatar, Box, Button, Menu, MenuButton, MenuDivider, MenuGroup, MenuItem, MenuList, Switch, Text, useColorMode, useMediaQuery, IconButton, useToast } from '@chakra-ui/react';
+import { Avatar, Box, Button, IconButton, Menu, MenuButton, MenuDivider, MenuGroup, MenuItem, MenuList, Text, useMediaQuery, useToast } from '@chakra-ui/react';
 import { Badge } from '@material-ui/core';
 import NextLink from "next/link";
 import { useRouter } from 'next/router';
-import React, { useEffect, useState } from 'react';
-import { AiOutlineUnorderedList } from 'react-icons/ai';
-import { RiUser2Fill, RiUser3Fill, RiUser5Fill, RiUser6Line, RiUserFill } from 'react-icons/ri';
+import React, { useState } from 'react';
+import { RiUser2Fill } from 'react-icons/ri';
 import { useLogoutMutation, useNewFriendRequestSubscription, usePendingFriendsQuery, useUserProfileQuery } from '../generated/graphql';
-import PendingFriends from './PendingFriends';
-import ProgramMenu from './ProgramMenu';
 interface NavBarProps {
 
 }

@@ -3,5 +3,6 @@ query PendingFriends {
    username
    email
    id
+   profilePicture
   }
 }

@@ -1,9 +1,7 @@
-import { Box, Button } from '@chakra-ui/react'
 import { useRouter } from 'next/router';
-import React, { useEffect } from 'react'
+import React, { useEffect } from 'react';
 import BottomNavigation from '../components/MobileViews/BottomNavigation';
 import PageHeaders from '../components/MobileViews/PageHeaders';
-import { NavBar } from '../components/NavBar'
 import { useUserProfileQuery } from '../generated/graphql';
 import { withApollo } from '../utils/withApollo';
 

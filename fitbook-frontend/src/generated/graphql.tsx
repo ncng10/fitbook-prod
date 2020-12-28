@@ -20,6 +20,7 @@ export type Query = {
   exercisesInAWorkout: Array<Exercise>;
   pendingFriends: Array<User>;
   myFriends: Array<UserFriends>;
+  friendsList: Array<User>;
   group: Group;
   groups: Array<Group>;
   isMember: Array<Group>;
@@ -208,7 +209,7 @@ export type MutationAddFriendArgs = {
 
 
 export type MutationAcceptFriendRequestArgs = {
-  userTwoIdentity: Scalars['Int'];
+  userOneIdentity: Scalars['Int'];
 };
 
 
@@ -350,7 +351,7 @@ export type RegularErrorFragment = (
 );
 
 export type AcceptFriendRequestMutationVariables = Exact<{
-  userTwoIdentity: Scalars['Int'];
+  userOneIdentity: Scalars['Int'];
 }>;
 
 
@@ -530,6 +531,17 @@ export type ExercisesInAWorkoutQuery = (
   )> }
 );
 
+export type FriendsListQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type FriendsListQuery = (
+  { __typename?: 'Query' }
+  & { friendsList: Array<(
+    { __typename?: 'User' }
+    & Pick<User, 'username' | 'email' | 'id'>
+  )> }
+);
+
 export type GroupQueryVariables = Exact<{
   id: Scalars['Int'];
 }>;
@@ -624,7 +636,7 @@ export type PendingFriendsQuery = (
   { __typename?: 'Query' }
   & { pendingFriends: Array<(
     { __typename?: 'User' }
-    & Pick<User, 'username' | 'email' | 'id'>
+    & Pick<User, 'username' | 'email' | 'id' | 'profilePicture'>
   )> }
 );
 
@@ -748,8 +760,8 @@ export const RegularErrorFragmentDoc = gql`
 }
     `;
 export const AcceptFriendRequestDocument = gql`
-    mutation AcceptFriendRequest($userTwoIdentity: Int!) {
-  acceptFriendRequest(userTwoIdentity: $userTwoIdentity)
+    mutation AcceptFriendRequest($userOneIdentity: Int!) {
+  acceptFriendRequest(userOneIdentity: $userOneIdentity)
 }
     `;
 export type AcceptFriendRequestMutationFn = Apollo.MutationFunction<AcceptFriendRequestMutation, AcceptFriendRequestMutationVariables>;
@@ -767,7 +779,7 @@ export type AcceptFriendRequestMutationFn = Apollo.MutationFunction<AcceptFriend
  * @example
  * const [acceptFriendRequestMutation, { data, loading, error }] = useAcceptFriendRequestMutation({
  *   variables: {
- *      userTwoIdentity: // value for 'userTwoIdentity'
+ *      userOneIdentity: // value for 'userOneIdentity'
  *   },
  * });
  */
@@ -1236,6 +1248,40 @@ export function useExercisesInAWorkoutLazyQuery(baseOptions?: Apollo.LazyQueryHo
 export type ExercisesInAWorkoutQueryHookResult = ReturnType<typeof useExercisesInAWorkoutQuery>;
 export type ExercisesInAWorkoutLazyQueryHookResult = ReturnType<typeof useExercisesInAWorkoutLazyQuery>;
 export type ExercisesInAWorkoutQueryResult = Apollo.QueryResult<ExercisesInAWorkoutQuery, ExercisesInAWorkoutQueryVariables>;
+export const FriendsListDocument = gql`
+    query FriendsList {
+  friendsList {
+    username
+    email
+    id
+  }
+}
+    `;
+
+/**
+ * __useFriendsListQuery__
+ *
+ * To run a query within a React component, call `useFriendsListQuery` and pass it any options that fit your needs.
+ * When your component renders, `useFriendsListQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useFriendsListQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useFriendsListQuery(baseOptions?: Apollo.QueryHookOptions<FriendsListQuery, FriendsListQueryVariables>) {
+        return Apollo.useQuery<FriendsListQuery, FriendsListQueryVariables>(FriendsListDocument, baseOptions);
+      }
+export function useFriendsListLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<FriendsListQuery, FriendsListQueryVariables>) {
+          return Apollo.useLazyQuery<FriendsListQuery, FriendsListQueryVariables>(FriendsListDocument, baseOptions);
+        }
+export type FriendsListQueryHookResult = ReturnType<typeof useFriendsListQuery>;
+export type FriendsListLazyQueryHookResult = ReturnType<typeof useFriendsListLazyQuery>;
+export type FriendsListQueryResult = Apollo.QueryResult<FriendsListQuery, FriendsListQueryVariables>;
 export const GroupDocument = gql`
     query Group($id: Int!) {
   group(id: $id) {
@@ -1490,6 +1536,7 @@ export const PendingFriendsDocument = gql`
     username
     email
     id
+    profilePicture
   }
 }
     `;
