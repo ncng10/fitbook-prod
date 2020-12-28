@@ -15,8 +15,8 @@ const ProgramMenu: React.FC<ProgramMenuProps> = ({ }) => {
     return (
         <React.Fragment>
             <IconButton
-                borderRadius={50}
                 onClick={onOpen}
+                style={{ fontSize: 25, width: "100%", backgroundColor: "#FFFFFF", outline: "none" }}
                 aria-label="home-button"
                 icon={<AiOutlinePlus fontSize={25} />}
 

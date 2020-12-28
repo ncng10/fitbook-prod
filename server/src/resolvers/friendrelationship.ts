@@ -1,5 +1,5 @@
 import { isAuth } from "../utils/middleware/isAuth";
-import { Arg, Ctx, Field, InputType, Int, Mutation, PubSub, PubSubEngine, Query, Resolver, Root, Subscription, UseMiddleware } from "type-graphql";
+import { Arg, Ctx, Field, FieldResolver, InputType, Int, Mutation, PubSub, PubSubEngine, Query, Resolver, Root, Subscription, UseMiddleware } from "type-graphql";
 import { getConnection } from "typeorm";
 import { User } from "../entities/User";
 import { UserFriends } from "../entities/UserFriends";
@@ -14,7 +14,7 @@ class AddFriendInput {
 }
 
 // friendship codes: [{0: pending}, {1: friends}, {2: rejected}, {3: blocked}]
-@Resolver(User)
+@Resolver(UserFriends)
 export class FriendRelationship {
     @Mutation(() => Boolean)
     @UseMiddleware(isAuth)
@@ -91,6 +91,46 @@ export class FriendRelationship {
         }
         return true
     };
+
+    @Query(() => [User])
+    async friendslist1(
+        @Ctx() { req }: MyContext
+    ) {
+        const friendslist = await getConnection().query(
+            `
+            SELECT * FROM public.user
+            INNER JOIN public.user_friends
+            ON public.user.id = public.user_friends."userTwoIdentity"
+            AND public.user_friends."userOneIdentity" = ${req.session.userId} 
+            UNION 
+            SELECT * FROM public.user
+            INNER JOIN public.user_friends
+            ON public.user.id = public.user_friends."userOneIdentity"
+            AND public.user_friends."userTwoIdentity" = ${req.session.userId} 
+            `
+        )
+        return friendslist
+    }
+
+    @FieldResolver(() => [User])
+    async friends(
+        @Ctx() { req }: MyContext
+    ) {
+        const friends = await getConnection().query(
+            `
+            SELECT * FROM public.user 
+            INNER JOIN public.user_friends
+            ON
+            public.user.id = public.user_friends."userTwoIdentity" 
+            OR
+            public.user.id = public.user_friends."userOneIdentity"
+            WHERE
+            public.user.id = ${req.session.userId} 
+ 
+            `
+        );
+        return friends
+    }
 
 
     @Subscription(() => UserFriends, {

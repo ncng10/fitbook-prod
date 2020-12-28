@@ -5,6 +5,7 @@ import NextLink from "next/link";
 import { useRouter } from "next/router";
 import { Badge } from "@material-ui/core";
 import { useNewSharedProgramSubscription } from "../../generated/graphql";
+import ProgramMenu from "../ProgramMenu";
 interface BottomNavigationProps {
 
 }
@@ -39,28 +40,7 @@ const BottomNavigation: React.FC<BottomNavigationProps> = ({ }) => {
                             :
                             { fontSize: 25, width: "100%", backgroundColor: "#FFFFFF", outline: "none" }} icon={<RiSearchEyeLine />} />
                 </NextLink>
-                <Popover>
-                    <PopoverTrigger>
-
-                        <IconButton aria-label="" style={{ fontSize: 25, width: "100%", backgroundColor: "#FFFFFF", outline: "none" }} icon={<RiAddLine />} />
-                    </PopoverTrigger>
-                    <PopoverContent>
-                        <PopoverArrow />
-                        <PopoverCloseButton />
-                        <PopoverHeader
-                            display="flex"
-                            alignItems="center"
-                            justifyContent="center"
-                        >What do you want to add?</PopoverHeader>
-                        <PopoverBody>
-                            <VStack>
-                                <Box>Program</Box>
-                                <Box>Workout</Box>
-                                <Box>Exercise</Box>
-                            </VStack>
-                        </PopoverBody>
-                    </PopoverContent>
-                </Popover>
+                <ProgramMenu />
                 <NextLink href="/notifications">
                     {sharedProgramSubscription ? <Badge color="secondary" variant="dot">
                         <IconButton aria-label="" style={router.pathname === "/notifications" ?

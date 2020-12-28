@@ -595,6 +595,17 @@ export type MeQuery = (
   ) }
 );
 
+export type MyFriendsQueryVariables = Exact<{ [key: string]: never; }>;
+
+
+export type MyFriendsQuery = (
+  { __typename?: 'Query' }
+  & { myFriends: Array<(
+    { __typename?: 'UserFriends' }
+    & Pick<UserFriends, 'userOneIdentity' | 'userTwoIdentity' | 'friendshipStatus'>
+  )> }
+);
+
 export type MyProgramsQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -1404,6 +1415,40 @@ export function useMeLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<MeQuery
 export type MeQueryHookResult = ReturnType<typeof useMeQuery>;
 export type MeLazyQueryHookResult = ReturnType<typeof useMeLazyQuery>;
 export type MeQueryResult = Apollo.QueryResult<MeQuery, MeQueryVariables>;
+export const MyFriendsDocument = gql`
+    query MyFriends {
+  myFriends {
+    userOneIdentity
+    userTwoIdentity
+    friendshipStatus
+  }
+}
+    `;
+
+/**
+ * __useMyFriendsQuery__
+ *
+ * To run a query within a React component, call `useMyFriendsQuery` and pass it any options that fit your needs.
+ * When your component renders, `useMyFriendsQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useMyFriendsQuery({
+ *   variables: {
+ *   },
+ * });
+ */
+export function useMyFriendsQuery(baseOptions?: Apollo.QueryHookOptions<MyFriendsQuery, MyFriendsQueryVariables>) {
+        return Apollo.useQuery<MyFriendsQuery, MyFriendsQueryVariables>(MyFriendsDocument, baseOptions);
+      }
+export function useMyFriendsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<MyFriendsQuery, MyFriendsQueryVariables>) {
+          return Apollo.useLazyQuery<MyFriendsQuery, MyFriendsQueryVariables>(MyFriendsDocument, baseOptions);
+        }
+export type MyFriendsQueryHookResult = ReturnType<typeof useMyFriendsQuery>;
+export type MyFriendsLazyQueryHookResult = ReturnType<typeof useMyFriendsLazyQuery>;
+export type MyFriendsQueryResult = Apollo.QueryResult<MyFriendsQuery, MyFriendsQueryVariables>;
 export const MyProgramsDocument = gql`
     query MyPrograms {
   myPrograms {
