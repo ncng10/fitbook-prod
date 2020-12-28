@@ -11,11 +11,14 @@ const All: React.FC<AllProps> = ({ }) => {
 
     const { data: friendsListData } = useFriendsListQuery();
 
+
+    //not using [...new Set(arr)]
     const unique = (value, index, self) => {
         return self.indexOf(value) === index
     }
 
     const uniqueUser = friendsListData?.friendsList.filter(unique)
+
 
     return (
         <React.Fragment>

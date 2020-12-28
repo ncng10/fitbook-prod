@@ -1,7 +1,7 @@
 import { Avatar, Box, Flex } from '@chakra-ui/react';
 import React from 'react';
 import NextLink from 'next/link';
-import { useLogoutMutation, useMyFriendsQuery, useUserProfileQuery } from '../../generated/graphql';
+import { useFriendsListQuery, useLogoutMutation, useMyFriendsQuery, useUserProfileQuery } from '../../generated/graphql';
 interface UserProfileCardProps {
 
 }
@@ -9,7 +9,18 @@ interface UserProfileCardProps {
 const UserProfileCard: React.FC<UserProfileCardProps> = ({ }) => {
     const { data } = useUserProfileQuery();
     const [logout] = useLogoutMutation();
-    const { data: myFriendsCountData } = useMyFriendsQuery();
+    const { data: friendsListData } = useFriendsListQuery();
+
+
+    //not using [...new Set(arr)]
+    const unique = (value, index, self) => {
+        return self.indexOf(value) === index
+    }
+
+    const uniqueUser = friendsListData?.friendsList.filter(unique)
+
+
+
     return (
         <React.Fragment>
             <Box>
@@ -19,7 +30,7 @@ const UserProfileCard: React.FC<UserProfileCardProps> = ({ }) => {
                         <h3 style={{ fontSize: 25, fontWeight: 700 }}>{data?.userProfile.username}</h3>
                         <Box>
                             <NextLink href="/friends/all">
-                                <Box>{myFriendsCountData?.myFriends.length} Friends</Box>
+                                <Box>{uniqueUser?.length} Friends</Box>
                             </NextLink>
                         </Box>
                     </Box>
