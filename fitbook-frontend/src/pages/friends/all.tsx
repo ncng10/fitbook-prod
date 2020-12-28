@@ -2,7 +2,7 @@ import { Box } from '@chakra-ui/react';
 import React from 'react';
 import { useFriendsListQuery } from '../../generated/graphql';
 import { withApollo } from '../../utils/withApollo';
-
+import NextLink from "next/link";
 interface AllProps {
 
 }
@@ -11,15 +11,21 @@ const All: React.FC<AllProps> = ({ }) => {
 
     const { data: friendsListData } = useFriendsListQuery();
 
+    const unique = (value, index, self) => {
+        return self.indexOf(value) === index
+    }
+
+    const uniqueUser = friendsListData?.friendsList.filter(unique)
+
     return (
         <React.Fragment>
             My friends:
             <Box>
-                {friendsListData?.friendsList.map((friend) => {
+                {uniqueUser?.map((friend) => {
                     return (
-                        <Box>
+                        <NextLink key={friend.id} href="/users/[username]" as={`/users/${friend.username}`}>
                             <Box>{friend.username}</Box>
-                        </Box>
+                        </NextLink>
                     )
                 })}
             </Box>

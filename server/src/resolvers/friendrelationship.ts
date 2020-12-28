@@ -108,7 +108,7 @@ export class FriendRelationship {
             ON public.user.id = public.user_friends."userTwoIdentity"
             AND public.user_friends."userOneIdentity" = ${req.session.userId}
             AND public.user_friends."friendshipStatus" = 1
-            UNION 
+            UNION
             SELECT * FROM public.user
             INNER JOIN public.user_friends
             ON public.user.id = public.user_friends."userOneIdentity"
