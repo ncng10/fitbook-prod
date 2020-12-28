@@ -1,0 +1,16 @@
+query Program ($input: Int!) {
+  program(input:$input) {
+    id
+    creator {
+      username
+      id
+    }
+  	programName
+    programCategory
+    isShared
+    sharedWith(input:$input) {
+      username
+      id
+    }
+  }
+}

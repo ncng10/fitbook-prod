@@ -4,7 +4,7 @@ import React, { useState } from 'react';
 import { InputField } from '../components/InputField';
 import BottomNavigation from '../components/MobileViews/BottomNavigation';
 import PageHeaders from '../components/MobileViews/PageHeaders';
-import SearchListCard from '../components/SearchListCard';
+import SearchListCard from '../components/MobileViews/SearchListCard';
 import { useMeQuery, useSearchUsersQuery } from '../generated/graphql';
 import { withApollo } from '../utils/withApollo';
 interface SearchProps {

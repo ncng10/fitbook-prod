@@ -2,8 +2,8 @@ import { Box } from '@chakra-ui/react';
 import React from 'react';
 import BottomNavigation from '../components/MobileViews/BottomNavigation';
 import UserProfileCard from '../components/MobileViews/UserProfileCard';
-import ProgramsCarousel from '../components/ProgramsCarousel';
-import SharedProgramsCarousel from '../components/SharedProgramsCarousel';
+import ProgramsCarousel from '../components/fitness/ProgramsCarousel';
+import SharedProgramsCarousel from '../components/fitness/SharedProgramsCarousel';
 import { withApollo } from '../utils/withApollo';
 
 interface ProfileProps {

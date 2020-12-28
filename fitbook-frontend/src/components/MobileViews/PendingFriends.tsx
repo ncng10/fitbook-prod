@@ -1,7 +1,7 @@
 import { Box, Button, Drawer, DrawerBody, DrawerCloseButton, DrawerContent, DrawerFooter, DrawerHeader, DrawerOverlay, IconButton, Input, useDisclosure, useToast } from '@chakra-ui/react';
 import React from 'react';
 import { RiUser2Fill } from 'react-icons/ri';
-import { useAcceptFriendRequestMutation, useNewFriendRequestSubscription, usePendingFriendsQuery } from '../generated/graphql';
+import { useAcceptFriendRequestMutation, useNewFriendRequestSubscription, usePendingFriendsQuery } from '../../generated/graphql';
 
 interface PendingFriendsProps {
 }

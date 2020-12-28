@@ -1,7 +1,7 @@
 import { Button, Drawer, DrawerBody, DrawerCloseButton, DrawerContent, DrawerFooter, DrawerHeader, DrawerOverlay, IconButton, Stack, useDisclosure } from '@chakra-ui/react';
 import React from 'react';
 import { AiOutlinePlus } from 'react-icons/ai';
-import CreateProgramForm from './CreateProgramForm';
+import CreateProgramForm from './forms/CreateProgramForm';
 
 interface ProgramMenuProps {
 

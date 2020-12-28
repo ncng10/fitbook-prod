@@ -1,7 +1,7 @@
 import { Box } from '@chakra-ui/react';
 import React from 'react';
-import CreateExerciseForm from '../../../../components/CreateExerciseForm';
-import ExerciseCard from '../../../../components/ExerciseCard';
+import CreateExerciseForm from '../../../../components/fitness/CreateExerciseForm';
+import ExerciseCard from '../../../../components/fitness/ExerciseCard';
 import { NavBar } from '../../../../components/NavBar';
 import { useExercisesInAWorkoutQuery } from '../../../../generated/graphql';
 import { useGetIntId } from '../../../../utils/useGetIntId';

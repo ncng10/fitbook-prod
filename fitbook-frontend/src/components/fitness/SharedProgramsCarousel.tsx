@@ -2,8 +2,8 @@ import { Box, useMediaQuery } from "@chakra-ui/react";
 import { useEmblaCarousel } from "embla-carousel/react";
 import NextLink from 'next/link';
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { useProgramsSharedWithMeQuery } from "../generated/graphql";
-import ProgramCard from "./MobileViews/ProgramCard";
+import { useProgramsSharedWithMeQuery } from "../../generated/graphql";
+import ProgramCard from "./ProgramCard";
 
 
 const PrevButton = ({ enabled, onClick }) => (

@@ -4,9 +4,9 @@ import { Button } from '@material-ui/core'
 import { Form, Formik } from 'formik'
 import React from 'react'
 import { RiMenuAddLine } from 'react-icons/ri'
-import { useAddExerciseToWorkoutMutation } from '../generated/graphql'
-import { useGetIntId } from '../utils/useGetIntId'
-import { InputField } from './InputField'
+import { useAddExerciseToWorkoutMutation } from '../../generated/graphql'
+import { useGetIntId } from '../../utils/useGetIntId'
+import { InputField } from '../InputField'
 
 interface CreateExerciseFormProps {
 
@@ -67,6 +67,7 @@ const CreateExerciseForm: React.FC<CreateExerciseFormProps> = ({ }) => {
 
                                         }}
                                         onSubmit={async (values) => {
+                                            console.log(values)
                                             await addExercise({
                                                 variables: { input: values },
                                                 update: (cache) => {

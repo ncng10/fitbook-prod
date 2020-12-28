@@ -1,0 +1,3 @@
+mutation ShareProgram($input:ShareProgramInput!) {
+  shareProgram(input:$input)
+}

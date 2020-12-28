@@ -507,6 +507,16 @@ export type SendPersonalMessageMutation = (
   & Pick<Mutation, 'sendPersonalMessage'>
 );
 
+export type ShareProgramMutationVariables = Exact<{
+  input: ShareProgramInput;
+}>;
+
+
+export type ShareProgramMutation = (
+  { __typename?: 'Mutation' }
+  & Pick<Mutation, 'shareProgram'>
+);
+
 export type UserProfileQueryVariables = Exact<{ [key: string]: never; }>;
 
 
@@ -638,6 +648,26 @@ export type PendingFriendsQuery = (
     { __typename?: 'User' }
     & Pick<User, 'username' | 'email' | 'id' | 'profilePicture'>
   )> }
+);
+
+export type ProgramQueryVariables = Exact<{
+  input: Scalars['Int'];
+}>;
+
+
+export type ProgramQuery = (
+  { __typename?: 'Query' }
+  & { program: (
+    { __typename?: 'Program' }
+    & Pick<Program, 'id' | 'programName' | 'programCategory' | 'isShared'>
+    & { creator: (
+      { __typename?: 'User' }
+      & Pick<User, 'username' | 'id'>
+    ), sharedWith: Array<(
+      { __typename?: 'User' }
+      & Pick<User, 'username' | 'id'>
+    )> }
+  ) }
 );
 
 export type ProgramsSharedWithMeQueryVariables = Exact<{ [key: string]: never; }>;
@@ -1172,6 +1202,36 @@ export function useSendPersonalMessageMutation(baseOptions?: Apollo.MutationHook
 export type SendPersonalMessageMutationHookResult = ReturnType<typeof useSendPersonalMessageMutation>;
 export type SendPersonalMessageMutationResult = Apollo.MutationResult<SendPersonalMessageMutation>;
 export type SendPersonalMessageMutationOptions = Apollo.BaseMutationOptions<SendPersonalMessageMutation, SendPersonalMessageMutationVariables>;
+export const ShareProgramDocument = gql`
+    mutation ShareProgram($input: ShareProgramInput!) {
+  shareProgram(input: $input)
+}
+    `;
+export type ShareProgramMutationFn = Apollo.MutationFunction<ShareProgramMutation, ShareProgramMutationVariables>;
+
+/**
+ * __useShareProgramMutation__
+ *
+ * To run a mutation, you first call `useShareProgramMutation` within a React component and pass it any options that fit your needs.
+ * When your component renders, `useShareProgramMutation` returns a tuple that includes:
+ * - A mutate function that you can call at any time to execute the mutation
+ * - An object with fields that represent the current status of the mutation's execution
+ *
+ * @param baseOptions options that will be passed into the mutation, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options-2;
+ *
+ * @example
+ * const [shareProgramMutation, { data, loading, error }] = useShareProgramMutation({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useShareProgramMutation(baseOptions?: Apollo.MutationHookOptions<ShareProgramMutation, ShareProgramMutationVariables>) {
+        return Apollo.useMutation<ShareProgramMutation, ShareProgramMutationVariables>(ShareProgramDocument, baseOptions);
+      }
+export type ShareProgramMutationHookResult = ReturnType<typeof useShareProgramMutation>;
+export type ShareProgramMutationResult = Apollo.MutationResult<ShareProgramMutation>;
+export type ShareProgramMutationOptions = Apollo.BaseMutationOptions<ShareProgramMutation, ShareProgramMutationVariables>;
 export const UserProfileDocument = gql`
     query UserProfile {
   userProfile {
@@ -1565,6 +1625,50 @@ export function usePendingFriendsLazyQuery(baseOptions?: Apollo.LazyQueryHookOpt
 export type PendingFriendsQueryHookResult = ReturnType<typeof usePendingFriendsQuery>;
 export type PendingFriendsLazyQueryHookResult = ReturnType<typeof usePendingFriendsLazyQuery>;
 export type PendingFriendsQueryResult = Apollo.QueryResult<PendingFriendsQuery, PendingFriendsQueryVariables>;
+export const ProgramDocument = gql`
+    query Program($input: Int!) {
+  program(input: $input) {
+    id
+    creator {
+      username
+      id
+    }
+    programName
+    programCategory
+    isShared
+    sharedWith(input: $input) {
+      username
+      id
+    }
+  }
+}
+    `;
+
+/**
+ * __useProgramQuery__
+ *
+ * To run a query within a React component, call `useProgramQuery` and pass it any options that fit your needs.
+ * When your component renders, `useProgramQuery` returns an object from Apollo Client that contains loading, error, and data properties
+ * you can use to render your UI.
+ *
+ * @param baseOptions options that will be passed into the query, supported options are listed on: https://www.apollographql.com/docs/react/api/react-hooks/#options;
+ *
+ * @example
+ * const { data, loading, error } = useProgramQuery({
+ *   variables: {
+ *      input: // value for 'input'
+ *   },
+ * });
+ */
+export function useProgramQuery(baseOptions: Apollo.QueryHookOptions<ProgramQuery, ProgramQueryVariables>) {
+        return Apollo.useQuery<ProgramQuery, ProgramQueryVariables>(ProgramDocument, baseOptions);
+      }
+export function useProgramLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<ProgramQuery, ProgramQueryVariables>) {
+          return Apollo.useLazyQuery<ProgramQuery, ProgramQueryVariables>(ProgramDocument, baseOptions);
+        }
+export type ProgramQueryHookResult = ReturnType<typeof useProgramQuery>;
+export type ProgramLazyQueryHookResult = ReturnType<typeof useProgramLazyQuery>;
+export type ProgramQueryResult = Apollo.QueryResult<ProgramQuery, ProgramQueryVariables>;
 export const ProgramsSharedWithMeDocument = gql`
     query ProgramsSharedWithMe {
   programsSharedWithMe {

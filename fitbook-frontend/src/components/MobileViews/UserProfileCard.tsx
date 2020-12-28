@@ -15,11 +15,8 @@ const UserProfileCard: React.FC<UserProfileCardProps> = ({ }) => {
     //not using [...new Set(arr)]
     const unique = (value, index, self) => {
         return self.indexOf(value) === index
-    }
-
-    const uniqueUser = friendsListData?.friendsList.filter(unique)
-
-
+    };
+    const uniqueUser = friendsListData?.friendsList.filter(unique);
 
     return (
         <React.Fragment>

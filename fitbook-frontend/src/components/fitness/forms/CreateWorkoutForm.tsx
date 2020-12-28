@@ -2,9 +2,9 @@ import { Box, Button, Drawer, DrawerBody, DrawerCloseButton, DrawerContent, Draw
 import { Form, Formik } from 'formik';
 import React from 'react';
 import { RiMenuAddLine } from 'react-icons/ri';
-import { useCreateWorkoutMutation } from "../generated/graphql";
-import { useGetIntId } from '../utils/useGetIntId';
-import { InputField } from './InputField';
+import { useCreateWorkoutMutation } from "../../../generated/graphql";
+import { useGetIntId } from '../../../utils/useGetIntId';
+import { InputField } from '../../InputField';
 
 interface CreateWorkoutFormProps {
 

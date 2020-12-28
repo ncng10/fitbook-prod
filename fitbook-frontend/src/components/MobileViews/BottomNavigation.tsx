@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 import React from 'react';
 import { RiHome3Line, RiNotification2Line, RiProfileLine, RiSearchEyeLine } from 'react-icons/ri';
 import { useNewFriendRequestSubscription, useNewSharedProgramSubscription, usePendingFriendsQuery, useUserProfileQuery } from "../../generated/graphql";
-import ProgramMenu from "../ProgramMenu";
+import ProgramMenu from "../fitness/ProgramMenu";
 interface BottomNavigationProps {
 
 }

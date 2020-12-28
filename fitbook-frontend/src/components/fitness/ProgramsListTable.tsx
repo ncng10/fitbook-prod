@@ -2,8 +2,8 @@ import { Box, useMediaQuery } from '@chakra-ui/react';
 import { makeStyles } from '@material-ui/core/styles';
 import { useEmblaCarousel } from 'embla-carousel/react';
 import React, { useEffect } from 'react';
-import { useMyProgramsQuery } from '../generated/graphql';
-import ProgramsCarousel from './ProgramsCarousel';
+import { useMyProgramsQuery } from '../../generated/graphql';
+import ProgramsCarousel from '../fitness/ProgramsCarousel';
 import ProgramMenu from './ProgramMenu';
 const useStyles = makeStyles({
     table: {

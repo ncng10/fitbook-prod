@@ -1,8 +1,8 @@
 import { Button, useToast, VStack } from '@chakra-ui/react';
 import { Form, Formik } from 'formik';
 import React from 'react';
-import { useCreateProgramMutation } from '../generated/graphql';
-import { InputField } from './InputField';
+import { useCreateProgramMutation } from '../../../generated/graphql';
+import { InputField } from '../../InputField';
 
 interface CreateProgramFormProps {
 

@@ -1,7 +1,7 @@
 import { Box, Spinner } from "@chakra-ui/react";
 import React from 'react';
 import { NavBar } from '../../../components/NavBar';
-import ProgramsListTable from "../../../components/ProgramsListTable";
+import ProgramsListTable from "../../../components/fitness/ProgramsListTable";
 import { useMyProgramsQuery } from '../../../generated/graphql';
 import { withApollo } from '../../../utils/withApollo';
 interface AllProps {
