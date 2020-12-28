@@ -112,27 +112,6 @@ export class FriendRelationship {
         return friendslist
     }
 
-    @FieldResolver(() => [User])
-    async friends(
-        @Ctx() { req }: MyContext
-    ) {
-        const friends = await getConnection().query(
-            `
-            SELECT * FROM public.user 
-            INNER JOIN public.user_friends
-            ON
-            public.user.id = public.user_friends."userTwoIdentity" 
-            OR
-            public.user.id = public.user_friends."userOneIdentity"
-            WHERE
-            public.user.id = ${req.session.userId} 
- 
-            `
-        );
-        return friends
-    }
-
-
     @Subscription(() => UserFriends, {
         topics: "NEW_FRIEND_REQUEST"
     })
