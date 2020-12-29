@@ -24,8 +24,10 @@ const BottomNavigation: React.FC<BottomNavigationProps> = ({ }) => {
                 flexDir="row"
                 alignItems="center"
                 justifyContent="space-between"
+                boxShadow="  0px -1px 4px lightgray"
                 position="fixed"
-                bottom={2}
+                height="3.5rem"
+                bottom={0}
             >
                 <NextLink href="/dashboard">
                     <IconButton

@@ -50,6 +50,7 @@ export class ProgramResolver {
         const programs = await getConnection().query(
             `
            SELECT * FROM public.program WHERE public.program."creatorId" = ${req.session.userId}
+           ORDER BY public.program."createdAt" DESC
             `
         );
         return programs

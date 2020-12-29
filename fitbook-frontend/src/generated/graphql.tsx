@@ -642,7 +642,7 @@ export type MyProgramsQuery = (
   { __typename?: 'Query' }
   & { myPrograms: Array<(
     { __typename?: 'Program' }
-    & Pick<Program, 'programName' | 'programCategory' | 'id' | 'isShared'>
+    & Pick<Program, 'programName' | 'programCategory' | 'id' | 'isShared' | 'createdAt' | 'updatedAt'>
   )> }
 );
 
@@ -1570,6 +1570,8 @@ export const MyProgramsDocument = gql`
     programCategory
     id
     isShared
+    createdAt
+    updatedAt
   }
 }
     `;

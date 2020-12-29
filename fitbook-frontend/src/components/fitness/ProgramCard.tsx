@@ -1,7 +1,6 @@
 import { Box } from '@chakra-ui/react';
 import React from 'react';
 import { RiGlobalLine, RiLock2Line } from 'react-icons/ri';
-import { useMeQuery } from '../../generated/graphql';
 
 interface ProgramCardProps {
     programName: string;
@@ -11,8 +10,6 @@ interface ProgramCardProps {
 }
 
 const ProgramCard: React.FC<ProgramCardProps> = ({ programCategory, programName, creator, isShared }) => {
-    const { data } = useMeQuery();
-
     return (
         <React.Fragment>
             <Box
@@ -29,17 +26,16 @@ const ProgramCard: React.FC<ProgramCardProps> = ({ programCategory, programName,
                     <Box>
                         {!isShared ? <RiLock2Line /> : <RiGlobalLine />}
                     </Box>
-                    {programCategory}
+                    {programCategory ? programCategory : "Uncategorized"}
                 </Box>
 
                 <Box
-                    height={250}
+                    height={100}
                     w={225}
                     display="flex"
                     alignItems="center"
                     justifyContent="center"
-                    backgroundColor="#fff"
-                    border="1px solid lightgray "
+                    backgroundColor="#fafafa"
                     borderRadius={10}
                 >
                     <Box>

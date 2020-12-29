@@ -5,11 +5,18 @@ import PageHeaders from '../components/MobileViews/PageHeaders';
 import UserAvatarUpload from '../components/MobileViews/UserAvatarUpload'
 import { withApollo } from '../utils/withApollo';
 import NextLink from "next/link";
+import { useApolloClient } from '@apollo/client';
+import { useRouter } from 'next/router';
+import { useLogoutMutation } from '../generated/graphql';
 interface SettingsProps {
 
 }
 
 const Settings: React.FC<SettingsProps> = ({ }) => {
+    const apolloClient = useApolloClient();
+    const router = useRouter();
+    const [logout] = useLogoutMutation();
+
     return (
         <React.Fragment>
             <Box width="100%" display="flex" justifyContent="flex-start">
@@ -21,6 +28,11 @@ const Settings: React.FC<SettingsProps> = ({ }) => {
                 User Settings
                 </PageHeaders>
             <UserAvatarUpload />
+            <Box onClick={async () => {
+                await logout();
+                apolloClient.resetStore();
+                router.push("/")
+            }}>Logout</Box>
         </React.Fragment>
     );
 }
