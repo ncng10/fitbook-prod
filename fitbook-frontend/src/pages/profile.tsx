@@ -30,7 +30,7 @@ const Profile: React.FC<ProfileProps> = ({ }) => {
                     <BNMUI style={{ marginTop: 10, width: "100%" }}>
                         <Box cursor="pointer" display="flex" justifyContent="center" alignItems="center" flexDir="column" fontSize={25} backgroundColor="#FFFFFF" borderBottom="1px solid lightgray" width="100%" color="#86574d" aria-label="friend-requests" >
                             <RiUserLine />
-                            <Box fontSize={15}>My Programs</Box>
+                            <Box fontSize={12}>My Programs</Box>
                         </Box>
                         <Box cursor="pointer" display="flex" justifyContent="center" alignItems="center" onClick={() => setMyPrograms(false)} fontSize={25} backgroundColor="#FFFFFF" width="100%" aria-label="shared-programs" >
                             <RiGlobalLine />
@@ -43,7 +43,7 @@ const Profile: React.FC<ProfileProps> = ({ }) => {
                         </Box>
                         <Box cursor="pointer" display="flex" justifyContent="center" flexDir="column" alignItems="center" fontSize={25} backgroundColor="#FFFFFF" borderBottom="1px solid lightgray" width="100%" aria-label="shared-programs" color="#86574d" >
                             <RiGlobalLine />
-                            <Box fontSize={15}>Shared to Me</Box>
+                            <Box fontSize={12}>Shared With Me</Box>
                         </Box>
                     </BNMUI>
                 }
