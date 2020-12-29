@@ -1,8 +1,7 @@
-query MyFriends {
-      myFriends{
-    userOneIdentity
+query MyFriends($input: Int!) {
+  myFriends(input:$input) {
     userTwoIdentity
+    userOneIdentity
     friendshipStatus
   }
-
 }

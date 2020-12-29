@@ -5,7 +5,7 @@ import { InputField } from '../components/InputField';
 import BottomNavigation from '../components/MobileViews/BottomNavigation';
 import PageHeaders from '../components/MobileViews/PageHeaders';
 import SearchListCard from '../components/MobileViews/SearchListCard';
-import { useMeQuery, useSearchUsersQuery } from '../generated/graphql';
+import { useMeQuery, useMyFriendsQuery, useSearchUsersQuery } from '../generated/graphql';
 import { withApollo } from '../utils/withApollo';
 interface SearchProps {
 
@@ -13,7 +13,7 @@ interface SearchProps {
 
 const Search: React.FC<SearchProps> = ({ }) => {
 
-    const [search, setSearch] = useState('')
+    const [search, setSearch] = useState('');
     const { data: meData } = useMeQuery();
     const { data, loading } = useSearchUsersQuery({
         variables: {
@@ -39,6 +39,7 @@ const Search: React.FC<SearchProps> = ({ }) => {
                     <Button type="submit">Search</Button>
                 </Form>
             </Formik>
+
             {data?.searchUsers && data?.searchUsers.id !== meData?.me.id ?
                 <SearchListCard
                     username={data?.searchUsers.username}

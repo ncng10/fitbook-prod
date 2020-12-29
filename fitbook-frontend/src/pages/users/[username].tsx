@@ -26,6 +26,7 @@ const PublicUserProfile: React.FC<PublicUserProfileProps> = ({ }) => {
                 <PublicUserProfileCard
                     profilePicture={data?.publicUserProfile.profilePicture}
                     username={data?.publicUserProfile.username}
+                    id={data?.publicUserProfile.id}
                 />
             </Box>
             <BottomNavigation />

@@ -1,7 +1,7 @@
 import { Avatar, Box, IconButton } from '@chakra-ui/react';
 import React from 'react'
 import { RiUserAddFill } from 'react-icons/ri';
-import { useAddFriendMutation } from '../../generated/graphql';
+import { useAddFriendMutation, useMyFriendsQuery } from '../../generated/graphql';
 import NextLink from 'next/link';
 
 interface SearchListCardProps {

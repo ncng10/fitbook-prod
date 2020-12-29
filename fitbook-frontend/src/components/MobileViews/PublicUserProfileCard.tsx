@@ -1,11 +1,33 @@
-import { Avatar, Box, Flex } from '@chakra-ui/react';
+import { Avatar, Box, Flex, IconButton } from '@chakra-ui/react';
 import React from 'react';
+import { RiFileAddLine } from 'react-icons/ri';
+import { useMyFriendsQuery } from '../../generated/graphql';
 interface UserProfileCardProps {
     profilePicture: string;
     username: string;
+    id: number;
 }
 //profile card for every user except for the currently logged in user
-const UserProfileCard: React.FC<UserProfileCardProps> = ({ profilePicture, username }) => {
+const UserProfileCard: React.FC<UserProfileCardProps> = ({ profilePicture, username, id }) => {
+    const { data: friendCodeData } = useMyFriendsQuery({
+        variables: {
+            input: id
+        }
+    });
+    let body;
+    const status = friendCodeData?.myFriends.map(friend => friend.friendshipStatus)
+    if (status?.[0] === undefined) {
+        body =
+            <Box>
+                <Box>Not Friends</Box>
+                <IconButton aria-label="add-friend-button" icon={<RiFileAddLine />} />
+            </Box>
+
+    } else if (status?.[0] === 1 || status?.[1] === 1) {
+        body = <Box>Friends</Box>
+    };
+
+    console.log(status?.[0])
     return (
         <React.Fragment>
             <Box>
@@ -15,11 +37,7 @@ const UserProfileCard: React.FC<UserProfileCardProps> = ({ profilePicture, usern
                         <h3 style={{ fontSize: 25, fontWeight: 700 }}>{username}</h3>
                     </Box>
                 </Flex>
-                {/* <Box onClick={async () => {
-                    await logout();
-                    apolloClient.resetStore();
-                    router.push("/")
-                }}>Logout</Box> */}
+                {body}
             </Box>
         </React.Fragment>
     );

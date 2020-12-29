@@ -45,6 +45,11 @@ export type QueryExercisesInAWorkoutArgs = {
 };
 
 
+export type QueryMyFriendsArgs = {
+  input: Scalars['Int'];
+};
+
+
 export type QueryGroupArgs = {
   id: Scalars['Int'];
 };
@@ -617,14 +622,16 @@ export type MeQuery = (
   ) }
 );
 
-export type MyFriendsQueryVariables = Exact<{ [key: string]: never; }>;
+export type MyFriendsQueryVariables = Exact<{
+  input: Scalars['Int'];
+}>;
 
 
 export type MyFriendsQuery = (
   { __typename?: 'Query' }
   & { myFriends: Array<(
     { __typename?: 'UserFriends' }
-    & Pick<UserFriends, 'userOneIdentity' | 'userTwoIdentity' | 'friendshipStatus'>
+    & Pick<UserFriends, 'userTwoIdentity' | 'userOneIdentity' | 'friendshipStatus'>
   )> }
 );
 
@@ -694,7 +701,7 @@ export type PublicUserProfileQuery = (
   { __typename?: 'Query' }
   & { publicUserProfile: (
     { __typename?: 'User' }
-    & Pick<User, 'username' | 'profilePicture'>
+    & Pick<User, 'username' | 'profilePicture' | 'id'>
   ) }
 );
 
@@ -1522,10 +1529,10 @@ export type MeQueryHookResult = ReturnType<typeof useMeQuery>;
 export type MeLazyQueryHookResult = ReturnType<typeof useMeLazyQuery>;
 export type MeQueryResult = Apollo.QueryResult<MeQuery, MeQueryVariables>;
 export const MyFriendsDocument = gql`
-    query MyFriends {
-  myFriends {
-    userOneIdentity
+    query MyFriends($input: Int!) {
+  myFriends(input: $input) {
     userTwoIdentity
+    userOneIdentity
     friendshipStatus
   }
 }
@@ -1543,10 +1550,11 @@ export const MyFriendsDocument = gql`
  * @example
  * const { data, loading, error } = useMyFriendsQuery({
  *   variables: {
+ *      input: // value for 'input'
  *   },
  * });
  */
-export function useMyFriendsQuery(baseOptions?: Apollo.QueryHookOptions<MyFriendsQuery, MyFriendsQueryVariables>) {
+export function useMyFriendsQuery(baseOptions: Apollo.QueryHookOptions<MyFriendsQuery, MyFriendsQueryVariables>) {
         return Apollo.useQuery<MyFriendsQuery, MyFriendsQueryVariables>(MyFriendsDocument, baseOptions);
       }
 export function useMyFriendsLazyQuery(baseOptions?: Apollo.LazyQueryHookOptions<MyFriendsQuery, MyFriendsQueryVariables>) {
@@ -1714,6 +1722,7 @@ export const PublicUserProfileDocument = gql`
   publicUserProfile(input: $input) {
     username
     profilePicture
+    id
   }
 }
     `;

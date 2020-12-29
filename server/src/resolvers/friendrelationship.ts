@@ -62,14 +62,15 @@ export class FriendRelationship {
     @Query(() => [UserFriends])
     @UseMiddleware(isAuth)
     async myFriends(
-        @Ctx() { req }: MyContext
+        @Ctx() { req }: MyContext,
+        @Arg("input", () => Int) otherUserId: number
     ) {
         const friendsList = await getConnection().query(
             `
             SELECT * FROM public.user_friends
-            WHERE user_friends."userOneIdentity"= ${req.session.userId} AND user_friends."friendshipStatus" = 1
+            WHERE public.user_friends."userOneIdentity" = ${req.session.userId} AND public.user_friends."userTwoIdentity" = ${otherUserId}
             OR 
-            user_friends."userTwoIdentity" = ${req.session.userId} AND user_friends."friendshipStatus" = 1
+            public.user_friends."userTwoIdentity" = ${req.session.userId} AND public.user_friends."userOneIdentity" = ${otherUserId}
             `
         )
         return friendsList
