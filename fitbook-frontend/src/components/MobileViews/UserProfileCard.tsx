@@ -1,4 +1,4 @@
-import { Avatar, Box, Flex } from '@chakra-ui/react';
+import { Avatar, Box, Button, Flex } from '@chakra-ui/react';
 import React from 'react';
 import NextLink from 'next/link';
 import { useFriendsListQuery, useLogoutMutation, useMyFriendsQuery, useUserProfileQuery } from '../../generated/graphql';
@@ -33,6 +33,9 @@ const UserProfileCard: React.FC<UserProfileCardProps> = ({ }) => {
                                 <Box>{uniqueUser?.length} Friends</Box>
                             </NextLink>
                         </Box>
+                        <NextLink href="/settings">
+                            <Button>Settings</Button>
+                        </NextLink>
                     </Box>
                 </Flex>
                 <Box onClick={async () => {

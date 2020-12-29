@@ -27,5 +27,6 @@ const Profile: React.FC<ProfileProps> = ({ }) => {
             <BottomNavigation />
         </React.Fragment>
     );
-}
+};
+
 export default withApollo({ ssr: true })(Profile)
