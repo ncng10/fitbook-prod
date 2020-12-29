@@ -1,10 +1,10 @@
 import { Box } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
-import React, { useEffect } from 'react';
+import React from 'react';
 import CreateWorkoutForm from '../../../components/fitness/forms/CreateWorkoutForm';
-import BottomNavigation from '../../../components/MobileViews/BottomNavigation';
 import ShareProgramPopover from '../../../components/fitness/ShareProgramPopover';
 import WorkoutsList from '../../../components/fitness/WorkoutsList';
+import BottomNavigation from '../../../components/MobileViews/BottomNavigation';
 import { useMeQuery, useProgramQuery } from '../../../generated/graphql';
 import { useGetIntId } from '../../../utils/useGetIntId';
 import { withApollo } from '../../../utils/withApollo';
@@ -40,9 +40,9 @@ const Program: React.FC<ProgramProps> = ({ }) => {
             <Box>
                 <Box>Your workouts:</Box>
                 <Box>
-                    <ShareProgramPopover intId={intId} />
-                Shared With:
-                {sharedWithData?.program.sharedWith.map((sharedWithUser) => (
+                    {sharedWithData?.program.creator.username === meData?.me.username ? <ShareProgramPopover intId={intId} /> : ""}
+                        Shared With:
+                        {sharedWithData?.program.sharedWith.map((sharedWithUser) => (
                         <p>{sharedWithUser.username}</p>
                     ))}
                 </Box>
@@ -50,6 +50,8 @@ const Program: React.FC<ProgramProps> = ({ }) => {
                 <CreateWorkoutForm />
             </Box>
         </Box>
+    } else {
+        <Box>Error....</Box>
     }
 
     return (

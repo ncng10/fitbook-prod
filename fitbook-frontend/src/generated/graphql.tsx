@@ -553,7 +553,7 @@ export type FriendsListQuery = (
   { __typename?: 'Query' }
   & { friendsList: Array<(
     { __typename?: 'User' }
-    & Pick<User, 'username' | 'email' | 'id'>
+    & Pick<User, 'username' | 'email' | 'id' | 'profilePicture'>
   )> }
 );
 
@@ -1321,6 +1321,7 @@ export const FriendsListDocument = gql`
     username
     email
     id
+    profilePicture
   }
 }
     `;

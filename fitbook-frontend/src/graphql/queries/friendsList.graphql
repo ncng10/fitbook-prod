@@ -3,5 +3,6 @@ query FriendsList{
     username
     email
     id
+    profilePicture
   }
 }

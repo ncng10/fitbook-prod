@@ -28,6 +28,7 @@ const BottomNavigation: React.FC<BottomNavigationProps> = ({ }) => {
                 position="fixed"
                 height="3.5rem"
                 bottom={0}
+                backgroundColor="#FFFFFF"
             >
                 <NextLink href="/dashboard">
                     <IconButton

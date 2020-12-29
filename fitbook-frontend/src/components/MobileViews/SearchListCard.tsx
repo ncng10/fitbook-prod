@@ -15,11 +15,12 @@ const SearchListCard: React.FC<SearchListCardProps> = ({ username, profilePictur
         <React.Fragment>
             <Box
                 display="flex"
+                height={75}
                 flexDirection="row"
                 justifyContent="space-between"
                 alignItems="center"
                 width="100%"
-                mt={5}
+                mt={2}
             >
                 <Box
                     display="flex"
@@ -31,7 +32,7 @@ const SearchListCard: React.FC<SearchListCardProps> = ({ username, profilePictur
                     <NextLink href="/users/[username]" as={`/users/${username}`}>
 
                         <Avatar
-                            size="xl"
+                            size="lg"
                             src={`https://storage.googleapis.com/fitbook-production/${profilePicture}`}
                         />
 
