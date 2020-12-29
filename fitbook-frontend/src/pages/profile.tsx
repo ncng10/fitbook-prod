@@ -6,8 +6,9 @@ import ProgramsCarousel from '../components/fitness/ProgramsCarousel';
 import SharedProgramsCarousel from '../components/fitness/SharedProgramsCarousel';
 import { withApollo } from '../utils/withApollo';
 import { BottomNavigation as BNMUI } from "@material-ui/core";
-import { RiLock2Line, RiGlobalLine, RiUserLine } from 'react-icons/ri';
-
+import { RiLock2Line, RiGlobalLine, RiUserLine, RiSettings2Line } from 'react-icons/ri';
+import PageHeaders from '../components/MobileViews/PageHeaders';
+import NextLink from "next/link";
 interface ProfileProps {
 
 }
@@ -18,6 +19,11 @@ const Profile: React.FC<ProfileProps> = ({ }) => {
 
     return (
         <React.Fragment>
+            <Flex width="100%" justifyContent="flex-end">
+                <NextLink href="/settings">
+                    <IconButton mr={2} fontSize={35} mt={2} bgColor="#FFFFFF" aria-label="user-settings-button" icon={<RiSettings2Line />} />
+                </NextLink>
+            </Flex>
             <UserProfileCard />
             <Box mt={5}>
                 {myPrograms ?

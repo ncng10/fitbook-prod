@@ -23,14 +23,11 @@ const UserProfileCard: React.FC<UserProfileCardProps> = ({ }) => {
     return (
         <React.Fragment>
             <Box>
-                <Flex mt={5} ml={5} alignItems="center">
+                <Flex ml={5} alignItems="center">
                     <Avatar size="xl" src={`https://storage.googleapis.com/fitbook-production/${data?.userProfile?.profilePicture}`} />
                     <Box ml={5}>
                         <Flex alignItems="center" justifyContent="center" flexDir="row">
                             <h3 style={{ fontSize: 25, fontWeight: 700 }}>{data?.userProfile.username}</h3>
-                            <NextLink href="/settings">
-                                <IconButton fontSize={25} mt=".35rem" bgColor="#FFFFFF" aria-label="user-settings-button" icon={<RiSettings2Line />} />
-                            </NextLink>
                         </Flex>
                         <Box>
                             <NextLink href="/friends/all">
