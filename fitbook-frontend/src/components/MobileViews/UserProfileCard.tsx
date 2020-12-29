@@ -2,6 +2,8 @@ import { Avatar, Box, Flex } from '@chakra-ui/react';
 import React from 'react';
 import NextLink from 'next/link';
 import { useFriendsListQuery, useLogoutMutation, useMyFriendsQuery, useUserProfileQuery } from '../../generated/graphql';
+import { useApolloClient } from '@apollo/client';
+import { useRouter } from 'next/router';
 interface UserProfileCardProps {
 
 }
@@ -10,7 +12,8 @@ const UserProfileCard: React.FC<UserProfileCardProps> = ({ }) => {
     const { data } = useUserProfileQuery();
     const [logout] = useLogoutMutation();
     const { data: friendsListData } = useFriendsListQuery();
-
+    const apolloClient = useApolloClient();
+    const router = useRouter();
 
     //not using [...new Set(arr)]
     const unique = (value, index, self) => {
@@ -32,11 +35,11 @@ const UserProfileCard: React.FC<UserProfileCardProps> = ({ }) => {
                         </Box>
                     </Box>
                 </Flex>
-                {/* <Box onClick={async () => {
+                <Box onClick={async () => {
                     await logout();
                     apolloClient.resetStore();
                     router.push("/")
-                }}>Logout</Box> */}
+                }}>Logout</Box>
             </Box>
         </React.Fragment>
     );

@@ -11,9 +11,6 @@ interface SearchListCardProps {
 }
 
 const SearchListCard: React.FC<SearchListCardProps> = ({ username, profilePicture, id }) => {
-
-    const [addFriend] = useAddFriendMutation();
-
     return (
         <React.Fragment>
             <Box
@@ -40,26 +37,6 @@ const SearchListCard: React.FC<SearchListCardProps> = ({ username, profilePictur
 
                     </NextLink>
                     <p style={{ fontSize: 25, marginLeft: 15 }}>{username}</p>
-                </Box>
-                <Box>
-                    <IconButton
-                        fontSize={25}
-                        w={50}
-                        h={50}
-                        mr={5}
-                        icon={<RiUserAddFill />}
-                        aria-label="add-friend-button"
-                        onClick={async () => {
-                            addFriend({
-                                variables: {
-                                    input: {
-                                        friendshipStatus: 0,
-                                        userTwoIdentity: id
-                                    }
-                                }
-                            })
-                        }}
-                    />
                 </Box>
             </Box>
         </React.Fragment>
