@@ -33,8 +33,8 @@ const ProgramCard: React.FC<ProgramCardProps> = ({ programCategory, programName,
                 </Box>
 
                 <Box
-                    height={200}
-                    w={175}
+                    height={250}
+                    w={225}
                     display="flex"
                     alignItems="center"
                     justifyContent="center"
