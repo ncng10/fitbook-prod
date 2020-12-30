@@ -48,7 +48,7 @@ const CreateWorkoutForm: React.FC<CreateWorkoutFormProps> = ({ }) => {
                         <DrawerContent>
                             <DrawerCloseButton />
                             <DrawerHeader borderBottomWidth="1px">
-                                Add An Exercise
+                                Add A Workout
         </DrawerHeader>
 
                             <DrawerBody>

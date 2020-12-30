@@ -26,13 +26,14 @@ const CreateProgramForm: React.FC<CreateProgramFormProps> = ({ }) => {
                         },
                     })
                     if (!errors) {
+                        alert('submitted')
                         toast({
                             position: "top-right",
                             title: "Program created.",
                             description: `Successfully added a program, titled: '${values.programName}'.`,
                             status: "success",
                             duration: 6000,
-                            isClosable: true,
+                            isClosable: true
                         });
                     }
                 }}
@@ -43,6 +44,7 @@ const CreateProgramForm: React.FC<CreateProgramFormProps> = ({ }) => {
                             label="Program Name"
                             name="programName"
                             placeholder="Program Name"
+
                         />
                         <InputField
                             label="Program Category"

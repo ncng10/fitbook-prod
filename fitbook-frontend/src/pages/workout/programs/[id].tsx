@@ -55,6 +55,12 @@ const Program: React.FC<ProgramProps> = ({ }) => {
 
     return (
         <React.Fragment>
+            <PageHeaders>
+                <Box display="flex" flexDir="column" alignItems="center">
+                    <Box>{sharedWithData?.program.programName}</Box>
+                    <p style={{ fontSize: 15 }}>{sharedWithData?.program.programCategory}</p>
+                </Box>
+            </PageHeaders>
             {body}
             <BottomNavigation />
         </React.Fragment>
