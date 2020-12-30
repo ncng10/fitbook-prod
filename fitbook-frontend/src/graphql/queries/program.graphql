@@ -11,6 +11,7 @@ query Program ($input: Int!) {
     sharedWith(input:$input) {
       username
       id
+      profilePicture
     }
   }
 }

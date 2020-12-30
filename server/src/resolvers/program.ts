@@ -99,7 +99,7 @@ export class ProgramResolver {
     ) {
         const sharedWith = await getConnection().query(
             `   
-            SELECT DISTINCT public.shared_program."sharedToId",public.shared_program."sharedById", public.user.id, public.user.username, public.user.email, public.shared_program."programId"
+            SELECT DISTINCT public.shared_program."sharedToId",public.shared_program."sharedById", public.user.id,public.user."profilePicture", public.user.username, public.user.email, public.shared_program."programId"
             FROM public.shared_program
             INNER JOIN  public.user
             ON

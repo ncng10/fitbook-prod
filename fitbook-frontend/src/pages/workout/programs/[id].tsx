@@ -1,10 +1,10 @@
-import { Box } from '@chakra-ui/react';
-import { useRouter } from 'next/router';
+import { Box, Flex } from '@chakra-ui/react';
 import React from 'react';
 import CreateWorkoutForm from '../../../components/fitness/forms/CreateWorkoutForm';
-import ShareProgramPopover from '../../../components/fitness/ShareProgramPopover';
+import ShareProgramModal from '../../../components/fitness/ShareProgramModal';
 import WorkoutsList from '../../../components/fitness/WorkoutsList';
 import BottomNavigation from '../../../components/MobileViews/BottomNavigation';
+import PageHeaders from '../../../components/MobileViews/PageHeaders';
 import { useMeQuery, useProgramQuery } from '../../../generated/graphql';
 import { useGetIntId } from '../../../utils/useGetIntId';
 import { withApollo } from '../../../utils/withApollo';
@@ -15,7 +15,6 @@ interface ProgramProps {
 
 const Program: React.FC<ProgramProps> = ({ }) => {
     const intId = useGetIntId();
-    const router = useRouter();
     const { data: meData } = useMeQuery();
     const { data: sharedWithData } = useProgramQuery({
         skip: intId === -1,
@@ -27,7 +26,6 @@ const Program: React.FC<ProgramProps> = ({ }) => {
     //checks to see if the currently logged in user is included in the sharedWith array. if length = 0, it is not shared with the user
     //if length = 1 it is shared with the user
     const validSharedUserLength = sharedWithData?.program.sharedWith.filter(x => x.username === meData?.me.username).length;
-
     let body;
     //in order to not be authorized, the user is not included in the sharedWith array (length = 0) and the creator of the program is not them (username !== creator)
     if (validSharedUserLength === 0 && sharedWithData?.program.creator.username !== meData?.me.username) {
@@ -35,21 +33,22 @@ const Program: React.FC<ProgramProps> = ({ }) => {
 
         //if the user meets one of the two conditions, they are authorized.
     } else if (sharedWithData?.program.creator.username === meData?.me.username || validSharedUserLength === 1) {
-        body = <Box>
-            Program number {intId}
+        body =
             <Box>
-                <Box>Your workouts:</Box>
+                {sharedWithData?.program.creator.username === meData?.me.username ?
+                    <Flex justifyContent="flex-end">
+                        <Box mr={3} mt={3}>
+                            <ShareProgramModal intId={intId} />
+                        </Box>
+                    </Flex>
+                    : ""}
                 <Box>
-                    {sharedWithData?.program.creator.username === meData?.me.username ? <ShareProgramPopover intId={intId} /> : ""}
-                        Shared With:
-                        {sharedWithData?.program.sharedWith.map((sharedWithUser) => (
-                        <p>{sharedWithUser.username}</p>
-                    ))}
                 </Box>
                 <WorkoutsList />
                 <CreateWorkoutForm />
             </Box>
-        </Box>
+
+
     } else {
         <Box>Error....</Box>
     }

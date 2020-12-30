@@ -672,7 +672,7 @@ export type ProgramQuery = (
       & Pick<User, 'username' | 'id'>
     ), sharedWith: Array<(
       { __typename?: 'User' }
-      & Pick<User, 'username' | 'id'>
+      & Pick<User, 'username' | 'id' | 'profilePicture'>
     )> }
   ) }
 );
@@ -1650,6 +1650,7 @@ export const ProgramDocument = gql`
     sharedWith(input: $input) {
       username
       id
+      profilePicture
     }
   }
 }

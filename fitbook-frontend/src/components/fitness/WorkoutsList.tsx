@@ -3,6 +3,8 @@ import NextLink from "next/link";
 import React from 'react';
 import { useWorkoutsQuery } from '../../generated/graphql';
 import { useGetIntId } from '../../utils/useGetIntId';
+import WorkoutCard from './WorkoutCard';
+import WorkoutsCarousel from './WorkoutsCarousel';
 interface WorkoutsListProps {
 
 }
@@ -19,25 +21,16 @@ const WorkoutsList: React.FC<WorkoutsListProps> = ({ }) => {
     });
 
     let body;
-    if (!data) {
+    if (data?.workouts.length > 0) {
         body =
             <Box>
-                Couldn't load workouts for some reason.
-        </Box>
-    } else if (!data?.workouts) {
-        body =
-            <Box>
-                No workouts in this program... try adding some.
-        </Box>
+                <WorkoutsCarousel />
+            </Box>
     } else {
         body =
             <Box>
-                {data?.workouts.map((workout) => (
-                    <NextLink key={workout.id} href="/workout/programs/workouts/[id]" as={`/workout/programs/workouts/${workout.id}`}>
-                        <Box>{workout.workoutName}</Box>
-                    </NextLink>
-                ))}
-            </Box>
+                No workouts, try adding one :-D
+        </Box>
     };
 
     return (
