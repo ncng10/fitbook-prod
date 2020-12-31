@@ -23,6 +23,7 @@ class ShareProgramInput {
     @Field()
     programId: number;
 };
+
 @Resolver(Program)
 export class ProgramResolver {
 
@@ -44,8 +45,8 @@ export class ProgramResolver {
         await getConnection().query(
             `
             INSERT INTO public.dashboard_feed
-            ("notificationKey", "creatorId", "user")
-            VALUES(0, ${req.session.userId}, '${currentUser?.username}')
+            ("notificationKey", "creatorId", "user", "createdAt", "timeStamp")
+            VALUES(0, ${req.session.userId}, '${currentUser?.username}','${new Date(Date.now()).toLocaleDateString()}', '${new Date(Date.now()).toLocaleTimeString()}')
             RETURNING *
             `
         )
@@ -79,6 +80,13 @@ export class ProgramResolver {
         return userLoader.load(program.creatorId)
     };
 
+
+    @FieldResolver(() => DashboardFeed)
+    creatorOfFeeditem(@Root() dashboardFeed: DashboardFeed, @Ctx() { userLoader }: MyContext) {
+        return userLoader.load(dashboardFeed.creatorId)
+    };
+
+
     @Mutation(() => Boolean)
     async shareProgram(
         @Arg("input") input: ShareProgramInput,
@@ -90,7 +98,7 @@ export class ProgramResolver {
             UPDATE public.program
             SET "isShared" = true 
             WHERE public.program.id = ${input.programId};
-            `
+        `
         )
         const shareProgram = await SharedProgram.create({
             sharedById: req.session.userId,
@@ -108,15 +116,15 @@ export class ProgramResolver {
         @Arg("input", () => Int) programId: number,
     ) {
         const sharedWith = await getConnection().query(
-            `   
-            SELECT DISTINCT public.shared_program."sharedToId",public.shared_program."sharedById", public.user.id,public.user."profilePicture", public.user.username, public.user.email, public.shared_program."programId"
-            FROM public.shared_program
-            INNER JOIN  public.user
-            ON
-            public.user.id = public.shared_program."sharedToId"
-            WHERE
-            public.shared_program."programId" = ${programId}
             `
+        SELECT DISTINCT public.shared_program."sharedToId", public.shared_program."sharedById", public.user.id, public.user."profilePicture", public.user.username, public.user.email, public.shared_program."programId"
+        FROM public.shared_program
+        INNER JOIN  public.user
+        ON
+        public.user.id = public.shared_program."sharedToId"
+        WHERE
+        public.shared_program."programId" = ${programId}
+        `
         )
         return sharedWith
     };
@@ -127,13 +135,13 @@ export class ProgramResolver {
     ) {
         const programsSharedWithMe = await getConnection().query(
             `
-            SELECT * FROM public.shared_program 
-            INNER JOIN public.program
-            ON
-            public.program.id = public.shared_program."programId"
-            WHERE
-            public.shared_program."sharedToId" = ${req.session.userId}
-            `
+        SELECT * FROM public.shared_program
+        INNER JOIN public.program
+        ON
+        public.program.id = public.shared_program."programId"
+        WHERE
+        public.shared_program."sharedToId" = ${req.session.userId}
+        `
         )
         return programsSharedWithMe
     }
@@ -146,14 +154,14 @@ export class ProgramResolver {
     ) {
         const programSharedWithMe = await getConnection().query(
             `
-            SELECT * FROM public.shared_program 
-            INNER JOIN public.program
-            ON
-            public.program.id = public.shared_program."programId"
-            WHERE
-            public.shared_program."sharedToId" = ${req.session.userId}
-            AND public.program.id = ${programId}
-            `
+        SELECT * FROM public.shared_program
+        INNER JOIN public.program
+        ON
+        public.program.id = public.shared_program."programId"
+        WHERE
+        public.shared_program."sharedToId" = ${req.session.userId}
+        AND public.program.id = ${programId}
+        `
         )
         return programSharedWithMe
     };
@@ -174,12 +182,12 @@ export class ProgramResolver {
     ) {
         const workouts = await getConnection().query(
             `
-            SELECT * FROM public.program
-            INNER JOIN public.workout
-            ON
-            PUBLIC.program.id = public.workout."programIdentity"
-            WHERE public.program.id = ${programId}
-            `
+        SELECT * FROM public.program
+        INNER JOIN public.workout
+        ON
+        PUBLIC.program.id = public.workout."programIdentity"
+        WHERE public.program.id = ${programId}
+        `
         )
         return workouts
     };
@@ -190,9 +198,9 @@ export class ProgramResolver {
     ) {
         const personalFeedItems = await getConnection().query(
             `
-            SELECT * FROM public.dashboard_feed
-            WHERE public.dashboard_feed."creatorId" = ${req.session.userId}
-            ORDER BY public.dashboard_feed.id DESC
+        SELECT * FROM public.dashboard_feed
+        WHERE public.dashboard_feed."creatorId" = ${req.session.userId}
+        ORDER BY public.dashboard_feed.id DESC
             `
         )
         return personalFeedItems
@@ -204,9 +212,9 @@ export class ProgramResolver {
     ) {
         const friendsFeedItems = await getConnection().query(
             `
-            SELECT * FROM public.dashboard_feed
-            WHERE public.dashboard_feed."creatorId" != ${req.session.userId}
-            ORDER BY public.dashboard_feed.id DESC
+        SELECT * FROM public.dashboard_feed
+        WHERE public.dashboard_feed."creatorId" != ${req.session.userId}
+        ORDER BY public.dashboard_feed.id DESC
             `
         )
         return friendsFeedItems

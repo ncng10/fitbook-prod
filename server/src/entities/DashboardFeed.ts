@@ -1,5 +1,5 @@
 import { Field, ObjectType } from "type-graphql";
-import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { BaseEntity, Column, CreateDateColumn, Entity, PrimaryGeneratedColumn } from "typeorm";
 
 @ObjectType()
 @Entity()
@@ -20,5 +20,13 @@ export class DashboardFeed extends BaseEntity {
     @Field()
     @Column()
     user: string;
+
+    @Field()
+    @Column()
+    createdAt: string;
+
+    @Field()
+    @Column()
+    timeStamp: string;
 }
 

@@ -4,5 +4,7 @@ query FriendsFeedItems {
     notificationKey
     creatorId
     user
+    createdAt
+    timeStamp
   }
 }
