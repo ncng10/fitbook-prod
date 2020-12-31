@@ -1,0 +1,8 @@
+query FriendsFeedItems {
+  friendsFeedItems{
+    id
+    notificationKey
+    creatorId
+    user
+  }
+}

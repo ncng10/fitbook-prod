@@ -37,7 +37,7 @@ const Register: React.FC<registerProps> = ({ }) => {
                                 query: MeDocument,
                                 data: {
                                     __typename: "Query",
-                                    me: data?.register.user
+                                    me: data?.register.user as any
                                 },
                             });
                         },

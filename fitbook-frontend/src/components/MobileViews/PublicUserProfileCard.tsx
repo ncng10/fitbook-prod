@@ -3,14 +3,15 @@ import React from 'react';
 import { RiFileAddLine, RiUserAddFill } from 'react-icons/ri';
 import { useAddFriendMutation, useMyFriendsQuery } from '../../generated/graphql';
 interface UserProfileCardProps {
-    profilePicture: string;
-    username: string;
+    profilePicture: string | undefined;
+    username: string | undefined;
     id: number;
 }
 //profile card for every user except for the currently logged in user
 const UserProfileCard: React.FC<UserProfileCardProps> = ({ profilePicture, username, id }) => {
     const [addFriend] = useAddFriendMutation();
     const { data: friendCodeData, loading } = useMyFriendsQuery({
+        skip: id === -1,
         variables: {
             input: id
         }

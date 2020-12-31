@@ -23,10 +23,10 @@ const CreateProgramForm: React.FC<CreateProgramFormProps> = ({ }) => {
                         },
                         update: (cache) => {
                             cache.evict({ fieldName: "myPrograms" });
+                            cache.evict({ fieldName: "feedItems" });
                         },
                     })
                     if (!errors) {
-                        alert('submitted')
                         toast({
                             position: "top-right",
                             title: "Program created.",

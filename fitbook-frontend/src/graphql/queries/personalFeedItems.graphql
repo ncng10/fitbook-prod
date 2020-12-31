@@ -1,0 +1,8 @@
+query PersonalFeedItems {
+  personalFeedItems {
+    notificationKey
+    user
+    id
+    creatorId
+  }
+}

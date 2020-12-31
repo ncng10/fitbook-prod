@@ -6,6 +6,7 @@ import { Program } from "../entities/Program";
 import { User } from "../entities/User";
 import { Workout } from "../entities/Workout";
 import { SharedProgram } from "../entities/SharedProgram";
+import { DashboardFeed } from "../entities/DashboardFeed";
 
 @InputType()
 class ProgramInput {
@@ -25,12 +26,13 @@ class ShareProgramInput {
 @Resolver(Program)
 export class ProgramResolver {
 
-    @Mutation(() => [Program])
+    @Mutation(() => [Program, DashboardFeed])
     @UseMiddleware(isAuth)
     async createProgram(
         @Arg("input") input: ProgramInput,
         @Ctx() { req }: MyContext
     ): Promise<Program[]> {
+        const currentUser = await User.findOne(req.session.userId)
         const createProgram = await getConnection().query(
             `
            INSERT INTO public.program 
@@ -38,6 +40,14 @@ export class ProgramResolver {
            VALUES('${input.programName}', '${input.programCategory}', '${req.session.userId}')
            RETURNING *
            `
+        );
+        await getConnection().query(
+            `
+            INSERT INTO public.dashboard_feed
+            ("notificationKey", "creatorId", "user")
+            VALUES(0, ${req.session.userId}, '${currentUser?.username}')
+            RETURNING *
+            `
         )
         return createProgram
     };
@@ -172,5 +182,33 @@ export class ProgramResolver {
             `
         )
         return workouts
+    };
+
+    @Query(() => [DashboardFeed])
+    async personalFeedItems(
+        @Ctx() { req }: MyContext
+    ) {
+        const personalFeedItems = await getConnection().query(
+            `
+            SELECT * FROM public.dashboard_feed
+            WHERE public.dashboard_feed."creatorId" = ${req.session.userId}
+            ORDER BY public.dashboard_feed.id DESC
+            `
+        )
+        return personalFeedItems
+    };
+
+    @Query(() => [DashboardFeed])
+    async friendsFeedItems(
+        @Ctx() { req }: MyContext
+    ) {
+        const friendsFeedItems = await getConnection().query(
+            `
+            SELECT * FROM public.dashboard_feed
+            WHERE public.dashboard_feed."creatorId" != ${req.session.userId}
+            ORDER BY public.dashboard_feed.id DESC
+            `
+        )
+        return friendsFeedItems
     }
 }

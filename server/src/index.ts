@@ -15,6 +15,7 @@ import { buildSchema } from 'type-graphql';
 import { createConnection } from 'typeorm';
 import { v4 } from "uuid";
 import { __prod__ } from './constants';
+import { DashboardFeed } from './entities/DashboardFeed';
 import { Exercise } from './entities/Exercise';
 import { Group } from "./entities/Group";
 import { GroupMembers } from "./entities/GroupMembers";
@@ -44,7 +45,7 @@ const main = async () => {
         logging: true,
         synchronize: true,
         migrations: [path.join(__dirname, "./migrations/*")],
-        entities: [User, Group, GroupMembers, PersonalMessage, Program, Workout, Exercise, ProgramWorkouts, UserFriends, SharedProgram]
+        entities: [User, Group, GroupMembers, PersonalMessage, Program, Workout, Exercise, ProgramWorkouts, UserFriends, SharedProgram, DashboardFeed]
     });
     // connection.runMigrations();
     const app = express();
