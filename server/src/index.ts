@@ -26,6 +26,7 @@ import { SharedProgram } from './entities/SharedProgram';
 import { User } from './entities/User';
 import { UserFriends } from './entities/UserFriends';
 import { Workout } from './entities/Workout';
+import { DashboardFeedResolver } from './resolvers/dashboardfeed';
 import { ExerciseResolver } from './resolvers/exercise';
 import { FriendRelationship } from './resolvers/friendrelationship';
 import { GroupResolver } from "./resolvers/group";
@@ -106,7 +107,8 @@ const main = async () => {
                     WorkoutResolver,
                     ProfilePictureResolver,
                     ExerciseResolver,
-                    FriendRelationship
+                    FriendRelationship,
+                    DashboardFeedResolver
                 ],
             validate: false,
             pubSub: pubsub,

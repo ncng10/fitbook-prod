@@ -1,9 +1,9 @@
-import { isAuth } from "../utils/middleware/isAuth";
-import { Arg, Ctx, Field, FieldResolver, InputType, Int, Mutation, PubSub, PubSubEngine, Query, Resolver, Root, Subscription, UseMiddleware } from "type-graphql";
+import { Arg, Ctx, Field, InputType, Int, Mutation, PubSub, PubSubEngine, Query, Resolver, Root, Subscription, UseMiddleware } from "type-graphql";
 import { getConnection } from "typeorm";
 import { User } from "../entities/User";
 import { UserFriends } from "../entities/UserFriends";
 import { MyContext } from "../types";
+import { isAuth } from "../utils/middleware/isAuth";
 
 @InputType()
 class AddFriendInput {
@@ -28,14 +28,6 @@ export class FriendRelationship {
             userOneIdentity: req.session.userId,
             userTwoIdentity: input.userTwoIdentity
         }).save()
-        // const requests = await getConnection().query(
-        //     `
-        //     SELECT * FROM public.user_friends
-        //    INNER JOIN public.user ON public.user_friends."userOneIdentity" = public.user.id
-        //    WHERE public.user_friends."userTwoIdentity" = ${req.session.userId}
-        //    AND public.user_friends."friendshipStatus" = 0
-        //     `
-        // )
         await pubSub.publish("NEW_FRIEND_REQUEST", addFriend)
         return true
     };

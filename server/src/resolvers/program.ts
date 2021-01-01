@@ -80,13 +80,6 @@ export class ProgramResolver {
         return userLoader.load(program.creatorId)
     };
 
-
-    @FieldResolver(() => DashboardFeed)
-    creatorOfFeeditem(@Root() dashboardFeed: DashboardFeed, @Ctx() { userLoader }: MyContext) {
-        return userLoader.load(dashboardFeed.creatorId)
-    };
-
-
     @Mutation(() => Boolean)
     async shareProgram(
         @Arg("input") input: ShareProgramInput,
@@ -187,36 +180,8 @@ export class ProgramResolver {
         ON
         PUBLIC.program.id = public.workout."programIdentity"
         WHERE public.program.id = ${programId}
-        `
+            `
         )
         return workouts
     };
-
-    @Query(() => [DashboardFeed])
-    async personalFeedItems(
-        @Ctx() { req }: MyContext
-    ) {
-        const personalFeedItems = await getConnection().query(
-            `
-        SELECT * FROM public.dashboard_feed
-        WHERE public.dashboard_feed."creatorId" = ${req.session.userId}
-        ORDER BY public.dashboard_feed.id DESC
-            `
-        )
-        return personalFeedItems
-    };
-
-    @Query(() => [DashboardFeed])
-    async friendsFeedItems(
-        @Ctx() { req }: MyContext
-    ) {
-        const friendsFeedItems = await getConnection().query(
-            `
-        SELECT * FROM public.dashboard_feed
-        WHERE public.dashboard_feed."creatorId" != ${req.session.userId}
-        ORDER BY public.dashboard_feed.id DESC
-            `
-        )
-        return friendsFeedItems
-    }
 }

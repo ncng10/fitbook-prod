@@ -1,4 +1,5 @@
-import { Field, ObjectType } from "type-graphql";
+import { MyContext } from "../types";
+import { Ctx, Field, FieldResolver, ObjectType, Root } from "type-graphql";
 import { BaseEntity, Column, CreateDateColumn, Entity, PrimaryGeneratedColumn } from "typeorm";
 
 @ObjectType()

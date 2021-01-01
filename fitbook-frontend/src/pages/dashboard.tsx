@@ -7,6 +7,7 @@ import { withApollo } from '../utils/withApollo';
 import { BottomNavigation as BNMUI } from "@material-ui/core";
 import { Box, IconButton } from '@chakra-ui/react';
 import { RiGlobalLine, RiUserLine } from 'react-icons/ri';
+import Feed from '../components/MobileViews/Feed';
 
 interface dashboardProps {
 
@@ -15,14 +16,12 @@ interface dashboardProps {
 const Dashboard: React.FC<dashboardProps> = ({ }) => {
     const { data } = useUserProfileQuery();
     const [personalFeedActive, setPersonalFeedActive] = useState(true);
-    const { data: globalFeedData } = useFriendsFeedItemsQuery();
     const router = useRouter();
     useEffect(() => {
         if (!data?.userProfile) {
             router.push("/login")
         }
     });
-    const { data: feedItemsData } = usePersonalFeedItemsQuery();
     return (
         <React.Fragment>
             <PageHeaders>Dashboard</PageHeaders>
@@ -36,28 +35,7 @@ const Dashboard: React.FC<dashboardProps> = ({ }) => {
                     <IconButton fontSize={25} backgroundColor="#FFFFFF" width="100%" aria-label="shared-programs" color="#86574d" icon={<RiGlobalLine />} />
                 </BNMUI>
             }
-            {personalFeedActive ?
-                <Box>
-                    your feed:
-                    {feedItemsData?.personalFeedItems.map((feedItem) => (
-                    feedItem.notificationKey === 0 ?
-                        <Box bgColor="#fafafa">
-                            <Box>You created a program.</Box>
-                            <p>{feedItem.createdAt}</p> <p>{feedItem.timeStamp}</p>
-                        </Box>
-                        :
-                        ""
-                ))}
-                </Box> :
-                <Box>
-                    global feed:
-                    {globalFeedData?.friendsFeedItems.map((globalFeedItem) => (
-                    globalFeedItem.notificationKey === 0 ?
-                        <p>{globalFeedItem.user} created a program</p> : ""
-                ))}
-                </Box>
-            }
-
+            <Feed personalFeedActive={personalFeedActive} />
             <BottomNavigation />
         </React.Fragment>);
 }
