@@ -6,7 +6,6 @@ import { Program } from "../entities/Program";
 import { User } from "../entities/User";
 import { Workout } from "../entities/Workout";
 import { SharedProgram } from "../entities/SharedProgram";
-import { DashboardFeed } from "../entities/DashboardFeed";
 
 @InputType()
 class ProgramInput {
@@ -27,13 +26,12 @@ class ShareProgramInput {
 @Resolver(Program)
 export class ProgramResolver {
 
-    @Mutation(() => [Program, DashboardFeed])
+    @Mutation(() => [Program])
     @UseMiddleware(isAuth)
     async createProgram(
         @Arg("input") input: ProgramInput,
         @Ctx() { req }: MyContext
     ): Promise<Program[]> {
-        const currentUser = await User.findOne(req.session.userId)
         const createProgram = await getConnection().query(
             `
            INSERT INTO public.program 
@@ -42,14 +40,6 @@ export class ProgramResolver {
            RETURNING *
            `
         );
-        await getConnection().query(
-            `
-            INSERT INTO public.dashboard_feed
-            ("notificationKey", "creatorId", "user", "createdAt", "timeStamp")
-            VALUES(0, ${req.session.userId}, '${currentUser?.username}','${new Date(Date.now()).toLocaleDateString()}', '${new Date(Date.now()).toLocaleTimeString()}')
-            RETURNING *
-            `
-        )
         return createProgram
     };
 
