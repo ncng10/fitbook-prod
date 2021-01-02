@@ -7,7 +7,7 @@ import { withApollo } from '../utils/withApollo';
 import { BottomNavigation as BNMUI } from "@material-ui/core";
 import { Box, IconButton } from '@chakra-ui/react';
 import { RiGlobalLine, RiUserLine } from 'react-icons/ri';
-import Feed from '../components/MobileViews/Feed';
+
 
 interface dashboardProps {
 
@@ -35,7 +35,6 @@ const Dashboard: React.FC<dashboardProps> = ({ }) => {
                     <IconButton fontSize={25} backgroundColor="#FFFFFF" width="100%" aria-label="shared-programs" color="#86574d" icon={<RiGlobalLine />} />
                 </BNMUI>
             }
-            <Feed personalFeedActive={personalFeedActive} />
             <BottomNavigation />
         </React.Fragment>);
 }

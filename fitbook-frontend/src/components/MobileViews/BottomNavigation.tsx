@@ -30,14 +30,14 @@ const BottomNavigation: React.FC<BottomNavigationProps> = ({ }) => {
                 bottom={0}
                 backgroundColor="#FFFFFF"
             >
-                <NextLink href="/dashboard">
+                {/* <NextLink href="/dashboard">
                     <IconButton
                         aria-label=""
                         style={router.pathname === "/dashboard" ?
                             { fontSize: 25, width: "100%", backgroundColor: "#FFFFFF", outline: "none", color: "#86574d" }
                             :
                             { fontSize: 25, width: "100%", backgroundColor: "#FFFFFF", outline: "none" }} icon={<RiHome3Line />} />
-                </NextLink>
+                </NextLink> */}
                 <NextLink href="/search">
                     <IconButton
                         aria-label=""

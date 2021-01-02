@@ -4,7 +4,6 @@ query PersonalFeedItems {
     user
     id
     creatorId
-    createdAt
-    timeStamp
+    date
   }
 }

@@ -12,9 +12,10 @@ import Redis from 'ioredis';
 import path from 'path';
 import "reflect-metadata";
 import { buildSchema } from 'type-graphql';
-import { createConnection, getConnection } from 'typeorm';
+import { createConnection } from 'typeorm';
 import { v4 } from "uuid";
 import { __prod__ } from './constants';
+import { DashboardFeed } from './entities/DashboardFeed';
 import { Exercise } from './entities/Exercise';
 import { Group } from "./entities/Group";
 import { GroupMembers } from "./entities/GroupMembers";
@@ -25,6 +26,7 @@ import { SharedProgram } from './entities/SharedProgram';
 import { User } from './entities/User';
 import { UserFriends } from './entities/UserFriends';
 import { Workout } from './entities/Workout';
+import { DashboardFeedResolver } from './resolvers/dashboardfeed';
 import { ExerciseResolver } from './resolvers/exercise';
 import { FriendRelationship } from './resolvers/friendrelationship';
 import { GroupResolver } from "./resolvers/group";
@@ -44,7 +46,7 @@ const main = async () => {
         logging: true,
         synchronize: true,
         migrations: [path.join(__dirname, "./migrations/*")],
-        entities: [User, Group, GroupMembers, PersonalMessage, Program, Workout, Exercise, ProgramWorkouts, UserFriends, SharedProgram]
+        entities: [User, Group, GroupMembers, PersonalMessage, Program, Workout, Exercise, ProgramWorkouts, UserFriends, SharedProgram, DashboardFeed]
     });
     // connection.runMigrations();
     const app = express();
@@ -65,6 +67,8 @@ const main = async () => {
             origin: __prod__ ? "https://fitbookit.com" : "http://localhost:3000"
         }
     ));
+
+
 
     app.use(
         session({
@@ -104,6 +108,7 @@ const main = async () => {
                     ProfilePictureResolver,
                     ExerciseResolver,
                     FriendRelationship,
+                    DashboardFeedResolver
                 ],
             validate: false,
             pubSub: pubsub,

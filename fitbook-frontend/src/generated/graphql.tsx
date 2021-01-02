@@ -11,12 +11,16 @@ export type Scalars = {
   Boolean: boolean;
   Int: number;
   Float: number;
+  /** The javascript `Date` as string. Type represents date and time as the ISO Date string. */
+  DateTime: any;
   /** The `Upload` scalar type represents a file upload. */
   Upload: any;
 };
 
 export type Query = {
   __typename?: 'Query';
+  personalFeedItems: Array<DashboardFeed>;
+  friendsFeedItems: Array<DashboardFeed>;
   exercisesInAWorkout: Array<Exercise>;
   pendingFriends: Array<User>;
   myFriends: Array<UserFriends>;
@@ -30,8 +34,6 @@ export type Query = {
   program: Program;
   programsSharedWithMe: Array<Program>;
   programSharedWithMe: Array<Program>;
-  personalFeedItems: Array<DashboardFeed>;
-  friendsFeedItems: Array<DashboardFeed>;
   hello: Scalars['String'];
   me: User;
   userProfile: User;
@@ -90,6 +92,16 @@ export type QueryWorkoutsArgs = {
 export type QueryWorkoutArgs = {
   workoutId: Scalars['Int'];
 };
+
+export type DashboardFeed = {
+  __typename?: 'DashboardFeed';
+  id: Scalars['Float'];
+  notificationKey: Scalars['Float'];
+  creatorId: Scalars['Float'];
+  user: Scalars['String'];
+  date: Scalars['DateTime'];
+};
+
 
 export type Exercise = {
   __typename?: 'Exercise';
@@ -173,7 +185,6 @@ export type Program = {
   isShared: Scalars['Boolean'];
   createdAt: Scalars['String'];
   updatedAt: Scalars['String'];
-  creatorOfFeeditem: DashboardFeed;
   sharedWith: Array<User>;
   workoutsInAProgram: Array<Workout>;
 };
@@ -186,16 +197,6 @@ export type ProgramSharedWithArgs = {
 
 export type ProgramWorkoutsInAProgramArgs = {
   input: Scalars['Int'];
-};
-
-export type DashboardFeed = {
-  __typename?: 'DashboardFeed';
-  id: Scalars['Float'];
-  notificationKey: Scalars['Float'];
-  creatorId: Scalars['Float'];
-  user: Scalars['String'];
-  createdAt: Scalars['String'];
-  timeStamp: Scalars['String'];
 };
 
 export type Mutation = {
@@ -566,7 +567,7 @@ export type FriendsFeedItemsQuery = (
   { __typename?: 'Query' }
   & { friendsFeedItems: Array<(
     { __typename?: 'DashboardFeed' }
-    & Pick<DashboardFeed, 'id' | 'notificationKey' | 'creatorId' | 'user' | 'createdAt' | 'timeStamp'>
+    & Pick<DashboardFeed, 'id' | 'notificationKey' | 'creatorId' | 'user' | 'date'>
   )> }
 );
 
@@ -688,7 +689,7 @@ export type PersonalFeedItemsQuery = (
   { __typename?: 'Query' }
   & { personalFeedItems: Array<(
     { __typename?: 'DashboardFeed' }
-    & Pick<DashboardFeed, 'notificationKey' | 'user' | 'id' | 'creatorId' | 'createdAt' | 'timeStamp'>
+    & Pick<DashboardFeed, 'notificationKey' | 'user' | 'id' | 'creatorId' | 'date'>
   )> }
 );
 
@@ -1357,8 +1358,7 @@ export const FriendsFeedItemsDocument = gql`
     notificationKey
     creatorId
     user
-    createdAt
-    timeStamp
+    date
   }
 }
     `;
@@ -1715,8 +1715,7 @@ export const PersonalFeedItemsDocument = gql`
     user
     id
     creatorId
-    createdAt
-    timeStamp
+    date
   }
 }
     `;
