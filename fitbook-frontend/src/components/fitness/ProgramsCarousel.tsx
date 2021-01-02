@@ -165,11 +165,11 @@ const EmblaCarousel = () => {
                                     <div className="embla__slide">
                                         <div className="embla__slide__inner">
                                             <ProgramCard
+                                                creator={program.creator.username}
                                                 programName={program.programName}
                                                 programCategory={program.programCategory}
                                                 isShared={program.isShared}
                                             />
-
                                         </div>
                                     </div>
                                 </div>

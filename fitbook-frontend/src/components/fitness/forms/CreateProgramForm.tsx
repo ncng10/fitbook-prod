@@ -44,7 +44,7 @@ const CreateProgramForm: React.FC<CreateProgramFormProps> = ({ }) => {
                             label="Program Name"
                             name="programName"
                             placeholder="Program Name"
-
+                            required={true}
                         />
                         <InputField
                             label="Program Category"

@@ -6,5 +6,9 @@ query MyPrograms{
     isShared
     createdAt
     updatedAt
+    creator {
+      username
+      id
+    }
   }
 }

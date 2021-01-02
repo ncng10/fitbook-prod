@@ -1,12 +1,12 @@
+import { IconButton } from '@chakra-ui/react';
+import { BottomNavigation as BNMUI } from "@material-ui/core";
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
+import { RiGlobalLine, RiUserLine } from 'react-icons/ri';
 import BottomNavigation from '../components/MobileViews/BottomNavigation';
 import PageHeaders from '../components/MobileViews/PageHeaders';
-import { usePersonalFeedItemsQuery, useUserProfileQuery, useFriendsFeedItemsQuery } from '../generated/graphql';
+import { useUserProfileQuery } from '../generated/graphql';
 import { withApollo } from '../utils/withApollo';
-import { BottomNavigation as BNMUI } from "@material-ui/core";
-import { Box, IconButton } from '@chakra-ui/react';
-import { RiGlobalLine, RiUserLine } from 'react-icons/ri';
 
 
 interface dashboardProps {

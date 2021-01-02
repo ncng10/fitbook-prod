@@ -1,9 +1,9 @@
-query FriendsFeedItems {
-  friendsFeedItems{
-    id
-    notificationKey
-    creatorId
-    user
-    date
-  }
-}
+# query FriendsFeedItems {
+#   friendsFeedItems{
+#     id
+#     notificationKey
+#     creatorId
+#     user
+#     date
+#   }
+# }
