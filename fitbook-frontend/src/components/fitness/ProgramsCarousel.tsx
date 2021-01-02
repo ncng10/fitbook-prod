@@ -155,7 +155,7 @@ const EmblaCarousel = () => {
     }, [embla, onSelect]);
 
     return (
-        <div className="embla">
+        <div style={{ marginTop: -15 }} className="embla">
             <div className="embla__viewport" ref={viewportRef}>
                 <div className="embla__container">
                     {data?.myPrograms.map((program) => (
