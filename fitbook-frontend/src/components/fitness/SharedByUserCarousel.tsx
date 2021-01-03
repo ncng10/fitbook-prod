@@ -2,7 +2,7 @@ import { Box, useMediaQuery } from "@chakra-ui/react";
 import { useEmblaCarousel } from "embla-carousel/react";
 import NextLink from 'next/link';
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { useProgramsSharedWithMeQuery } from "../../generated/graphql";
+import { useMyProgramsQuery, useProgramsSharedWithMeBySpecificUserQuery } from "../../generated/graphql";
 import ProgramCard from "./ProgramCard";
 
 
@@ -121,10 +121,14 @@ const useInfiniteScroll = (embla, slides: any, hasMoreToLoad) => {
     return loadingMore;
 };
 
-
-const EmblaCarousel = ({ }) => {
+const EmblaCarousel = (props) => {
+    const { sharedById } = props;
     const [isLargerThan600] = useMediaQuery("(min-width:600px)");
-    const { data, loading } = useProgramsSharedWithMeQuery();
+    const { data, loading } = useProgramsSharedWithMeBySpecificUserQuery({
+        variables: {
+            input: sharedById
+        }
+    });
     const [hasMoreToLoad, setHasMoreToLoad] = useState(true);
     const [prevBtnEnabled, setPrevBtnEnabled] = useState(false);
     const [nextBtnEnabled, setNextBtnEnabled] = useState(false);
@@ -154,28 +158,28 @@ const EmblaCarousel = ({ }) => {
         embla.on("reInit", onSelect);
         onSelect();
     }, [embla, onSelect]);
-
+    console.log(data?.programsSharedWithMeBySpecificUser)
     return (
-        <div className="embla">
+        <div style={{ marginTop: -15 }} className="embla">
             <div className="embla__viewport" ref={viewportRef}>
                 <div className="embla__container">
-                    {data?.programsSharedWithMe.map((program) => (
-                        <div className="embla__slide" key={program.id}>
-                            <div className="embla__slide__inner">
-                                <div className="embla__slide" key={program.id}>
-                                    <NextLink key={program.id} href="/workout/programs/[id]" as={`/workout/programs/${program.id}`}>
+                    {data?.programsSharedWithMeBySpecificUser.map((program) => (
+                        <NextLink key={program.id} href="/workout/programs/[id]" as={`/workout/programs/${program.id}`}>
+                            <div className="embla__slide" key={program.id}>
+                                <div className="embla__slide__inner">
+                                    <div className="embla__slide">
                                         <div className="embla__slide__inner">
                                             <ProgramCard
-                                                programName={program.programName}
                                                 creator={program.creator.username}
+                                                programName={program.programName}
                                                 programCategory={program.programCategory}
                                                 isShared={program.isShared}
                                             />
                                         </div>
-                                    </NextLink>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        </NextLink>
                     ))}
                     {hasMoreToLoad && (
                         <div className="embla__slide embla__slide--loading">

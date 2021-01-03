@@ -139,6 +139,26 @@ export class ProgramResolver {
         return programsSharedWithMe
     }
 
+
+    @Query(() => [Program])
+    async programsSharedWithMeBySpecificUser(
+        @Ctx() { req }: MyContext,
+        @Arg("input", () => Int) sharedById: number
+    ) {
+        const programsSharedWithMeBySpecificUser = await getConnection().query(
+            `
+        SELECT * FROM public.shared_program
+        INNER JOIN public.program
+        ON
+        public.program.id = public.shared_program."programId"
+        WHERE
+        public.shared_program."sharedToId" = ${req.session.userId}
+        AND public.shared_program."sharedById" = ${sharedById}
+        `
+        )
+        return programsSharedWithMeBySpecificUser
+    }
+
     //individual program shared with me
     @Query(() => [Program])
     async programSharedWithMe(

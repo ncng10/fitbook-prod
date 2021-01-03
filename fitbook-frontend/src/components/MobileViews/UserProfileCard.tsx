@@ -29,7 +29,9 @@ const UserProfileCard: React.FC<UserProfileCardProps> = ({ }) => {
                         <h3 style={{ fontSize: 36, marginTop: 15, color: "#3C3D66" }}>{data?.userProfile.username}</h3>
                     </Box>
                     <Flex mt={5} width="100%" flexDir="row" alignItems="center" justifyContent="space-evenly">
-                        <Button bgColor="#3C3D66" color="#DADDE9" w={140} h="40px" borderRadius={25}>{uniqueUser?.length} {uniqueUser?.length === 1 ? "Friend" : "Friends"}</Button>
+                        <NextLink href="/friends/all">
+                            <Button bgColor="#3C3D66" color="#DADDE9" w={140} h="40px" borderRadius={25}>{uniqueUser?.length} {uniqueUser?.length === 1 ? "Friend" : "Friends"}</Button>
+                        </NextLink>
                         <Button bgColor="#FFFFFF" color="#3C3D66" border="1px solid #3C3D66" w={140} h="40px" borderRadius={25}>Messages</Button>
                     </Flex>
                 </Flex>

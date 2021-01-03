@@ -1,6 +1,7 @@
-import { Avatar, Box, Button, Flex, IconButton } from '@chakra-ui/react';
+import { ChevronLeftIcon } from '@chakra-ui/icons';
+import { Avatar, Box, Button, Flex } from '@chakra-ui/react';
+import NextLink from 'next/link';
 import React from 'react';
-import { RiFileAddLine, RiUserAddFill } from 'react-icons/ri';
 import { useAddFriendMutation, useMyFriendsQuery } from '../../generated/graphql';
 interface UserProfileCardProps {
     profilePicture: string | undefined;
@@ -57,6 +58,9 @@ const UserProfileCard: React.FC<UserProfileCardProps> = ({ profilePicture, usern
 
     return (
         <React.Fragment>
+            <NextLink href="/search">
+                <Flex fontSize={50}><ChevronLeftIcon /></Flex>
+            </NextLink>
             <Box>
                 <Flex mt={5} alignItems="center" flexDir="column">
                     <Avatar size="xl" src={`https://storage.googleapis.com/fitbook-production/${profilePicture}`} />

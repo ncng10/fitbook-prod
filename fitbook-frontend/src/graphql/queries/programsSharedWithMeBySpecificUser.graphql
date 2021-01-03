@@ -1,0 +1,13 @@
+query ProgramsSharedWithMeBySpecificUser($input: Int!) {
+    programsSharedWithMeBySpecificUser(input:$input) {
+        id
+        programName
+        programCategory
+        isShared
+        creator {
+        id
+        username
+        email
+        }
+    }
+}

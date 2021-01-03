@@ -1,6 +1,8 @@
 import { Box } from '@chakra-ui/react';
 import { useRouter } from 'next/router';
 import React, { useEffect } from 'react'
+import SharedByUserCarousel from '../../components/fitness/SharedByUserCarousel';
+import SharedProgramsCarousel from '../../components/fitness/SharedProgramsCarousel';
 import BottomNavigation from '../../components/MobileViews/BottomNavigation';
 import PublicUserProfileCard from '../../components/MobileViews/PublicUserProfileCard';
 import { useMeQuery, usePublicUserProfileQuery } from '../../generated/graphql';
@@ -34,6 +36,7 @@ const PublicUserProfile: React.FC<PublicUserProfileProps> = ({ }) => {
                     id={data?.publicUserProfile.id}
                 />
             </Box>
+            <SharedByUserCarousel sharedById={data?.publicUserProfile.id} />
             <BottomNavigation />
         </React.Fragment>
     );
