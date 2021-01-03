@@ -22,7 +22,7 @@ const UserProfileCard: React.FC<UserProfileCardProps> = ({ }) => {
 
     return (
         <React.Fragment>
-            <Box mt={-10} width="100%">
+            <Box mt={-20} width="100%">
                 <Flex alignItems="center" flexDir="column">
                     <Avatar size="xl" src={`https://storage.googleapis.com/fitbook-production/${data?.userProfile?.profilePicture}`} />
                     <Box>

@@ -27,8 +27,8 @@ const ProgramCard: React.FC<ProgramCardProps> = ({ programCategory, programName,
                 >
                 </Box>
                 <Box
-                    height={210}
-                    w={260}
+                    height={200}
+                    w={250}
                     display="flex"
                     alignItems="center"
                     flexDir="column"
@@ -45,7 +45,7 @@ const ProgramCard: React.FC<ProgramCardProps> = ({ programCategory, programName,
                     <Box ml={3} mt={5} flexWrap="wrap" display="flex" alignItems="center" justifyContent="center" h="100%">
                         <Box fontSize={28} fontWeight={650}>{programName}</Box>
                     </Box>
-                    <Box ml={7} display="flex" alignItems="center" justifyContent="flex-start" width="100%" h="100%">
+                    <Box ml={7} mt={5} display="flex" alignItems="center" justifyContent="flex-start" width="100%" h="100%">
                         {creator !== data?.userProfile.username ? <h3>Shared by: {creator}</h3> : creator}
                     </Box>
                 </Box>

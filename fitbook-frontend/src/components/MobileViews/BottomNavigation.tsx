@@ -42,36 +42,33 @@ const BottomNavigation: React.FC<BottomNavigationProps> = ({ }) => {
                     <IconButton
                         aria-label=""
                         style={router.pathname === "/search" ?
-                            { fontSize: 25, width: "100%", backgroundColor: "#FFFFFF", outline: "none", color: "#86574d" }
+                            { fontSize: 30, width: "100%", backgroundColor: "#FFFFFF", outline: "none", color: "#86574d" }
                             :
-                            { fontSize: 25, width: "100%", backgroundColor: "#FFFFFF", outline: "none" }} icon={<RiSearchEyeLine />} />
+                            { fontSize: 30, width: "100%", backgroundColor: "#FFFFFF", outline: "none" }} icon={<RiSearchEyeLine />} />
                 </NextLink>
                 <ProgramMenu />
                 <NextLink href="/notifications">
                     {friendRequestSubscription?.newFriendRequest &&
                         friendRequestSubscription?.newFriendRequest.userTwoIdentity === data?.userProfile.id
                         ||
-                        pendingFriendsData?.pendingFriends.length >= 1 ? <Badge color="secondary" variant="dot">
-                            <IconButton aria-label="" style={router.pathname === "/notifications" ?
-                                { fontSize: 25, width: "100%", backgroundColor: "#FFFFFF", outline: "none", color: "#86574d" }
-                                :
-                                { fontSize: 25, width: "100%", backgroundColor: "#FFFFFF", outline: "none" }} icon={<RiNotification2Line />} />
-                        </Badge> :
+                        pendingFriendsData?.pendingFriends.length >= 1 ?
                         <IconButton aria-label="" style={router.pathname === "/notifications" ?
-                            { fontSize: 25, width: "100%", backgroundColor: "#FFFFFF", outline: "none", color: "#86574d" }
+                            { fontSize: 30, width: "100%", backgroundColor: "#FFFFFF", outline: "none", color: "red" }
                             :
-                            { fontSize: 25, width: "100%", backgroundColor: "#FFFFFF", outline: "none" }} icon={<RiNotification2Line />} />
+                            { fontSize: 30, width: "100%", backgroundColor: "#FFFFFF", outline: "none", color: "red" }} icon={<RiNotification2Line />} />
+                        :
+                        <IconButton aria-label="" style={router.pathname === "/notifications" ?
+                            { fontSize: 30, width: "100%", backgroundColor: "#FFFFFF", outline: "none", color: "#86574d" }
+                            :
+                            { fontSize: 30, width: "100%", backgroundColor: "#FFFFFF", outline: "none" }} icon={<RiNotification2Line />} />
                     }
                 </NextLink>
                 <NextLink href="/profile">
                     <IconButton aria-label="" style={router.pathname === "/profile" ?
-                        { fontSize: 25, width: "100%", backgroundColor: "#FFFFFF", outline: "none", color: "#86574d" }
+                        { fontSize: 30, width: "100%", backgroundColor: "#FFFFFF", outline: "none", color: "#86574d" }
                         :
-                        { fontSize: 25, width: "100%", backgroundColor: "#FFFFFF", outline: "none" }} icon={<RiProfileLine />} />
+                        { fontSize: 30, width: "100%", backgroundColor: "#FFFFFF", outline: "none" }} icon={<RiProfileLine />} />
                 </NextLink>
-            </Box>
-            <Box>
-
             </Box>
         </React.Fragment>
     );

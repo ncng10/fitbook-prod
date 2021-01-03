@@ -22,7 +22,6 @@
     "framer-motion": "^2.9.5",
     "graphql": "^15.4.0",
     "graphql-tag": "^2.11.0",
-    "moment": "^2.29.1",
     "next": "10.0.3",
     "next-apollo": "^5.0.4",
     "react": "17.0.1",

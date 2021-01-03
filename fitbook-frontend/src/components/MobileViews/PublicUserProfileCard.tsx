@@ -1,4 +1,4 @@
-import { Avatar, Box, Flex, IconButton } from '@chakra-ui/react';
+import { Avatar, Box, Button, Flex, IconButton } from '@chakra-ui/react';
 import React from 'react';
 import { RiFileAddLine, RiUserAddFill } from 'react-icons/ri';
 import { useAddFriendMutation, useMyFriendsQuery } from '../../generated/graphql';
@@ -27,14 +27,7 @@ const UserProfileCard: React.FC<UserProfileCardProps> = ({ profilePicture, usern
     else if (status?.[0] === undefined) {
         body =
             <Box>
-                <Box>Not Friends</Box>
-                <IconButton
-                    fontSize={25}
-                    w={50}
-                    h={50}
-                    mr={5}
-                    icon={<RiUserAddFill />}
-                    aria-label="add-friend-button"
+                <Button
                     onClick={async () => {
                         addFriend({
                             variables: {
@@ -48,29 +41,33 @@ const UserProfileCard: React.FC<UserProfileCardProps> = ({ profilePicture, usern
                             }
                         })
                     }}
-                />
+                    bgColor="#3C3D66" color="#DADDE9" w={140} h="40px" borderRadius={25}>
+                    Add as Friend
+                    </Button>
             </Box>
-
         //if one of them have a status of 1, it means they are friends. mutation of adding a friend only updates it for one user.
     } else if (status?.[0] === 1 || status?.[1] === 1) {
-        body = <Box>Friends</Box>
+        body = <Button bgColor="#3C3D66" color="#DADDE9" w={140} h="40px" borderRadius={25}>Friends</Button>
 
         //in order for a pending friend request to happen, both of the friendship codes must be 1.
     } else if (status?.[0] === 0) {
         body =
-            <Box>Pending friend request...</Box>
+            <Button bgColor="#3C3D66" color="#DADDE9" w={140} h="40px" borderRadius={25}>Pending...</Button>
     }
 
     return (
         <React.Fragment>
             <Box>
-                <Flex mt={5} ml={5} alignItems="center">
+                <Flex mt={5} alignItems="center" flexDir="column">
                     <Avatar size="xl" src={`https://storage.googleapis.com/fitbook-production/${profilePicture}`} />
-                    <Box ml={5}>
-                        <h3 style={{ fontSize: 25, fontWeight: 700 }}>{username}</h3>
+                    <Box>
+                        <h3 style={{ fontSize: 36, marginTop: 15, color: "#3C3D66" }}>{username}</h3>
                     </Box>
                 </Flex>
-                {body}
+                <Flex mt={5} width="100%" flexDir="row" alignItems="center" justifyContent="space-evenly">
+                    {body}
+                    <Button bgColor="#FFFFFF" color="#3C3D66" border="1px solid #3C3D66" w={140} h="40px" borderRadius={25}>Message</Button>
+                </Flex>
             </Box>
         </React.Fragment>
     );

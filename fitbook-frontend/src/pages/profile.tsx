@@ -35,7 +35,7 @@ const Profile: React.FC<ProfileProps> = ({ }) => {
             <Box >
                 {myPrograms ?
                     <Box>
-                        <BNMUI style={{ width: "100%", display: "flex", justifyContent: "flex-start" }}>
+                        <BNMUI style={{ width: "100%", display: "flex", justifyContent: "flex-start", marginTop: -30 }}>
                             <Box ml={5} cursor="pointer" display="flex" flexDir="column" fontSize={25} backgroundColor="#FFFFFF" color="#3C3D66" aria-label="friend-requests" >
                                 <Box fontSize={16} fontWeight={800} fontStyle="bold">Created by You</Box>
                             </Box>
@@ -47,7 +47,7 @@ const Profile: React.FC<ProfileProps> = ({ }) => {
                     </Box>
                     :
                     <Box>
-                        <BNMUI style={{ width: "100%", display: "flex", justifyContent: "flex-start" }}>
+                        <BNMUI style={{ width: "100%", display: "flex", justifyContent: "flex-start", marginTop: -30 }}>
                             <Box ml={5} onClick={() => setMyPrograms(true)} cursor="pointer" display="flex" flexDir="column" fontSize={25} backgroundColor="#FFFFFF" color="#3C3D66" aria-label="friend-requests" >
                                 <Box fontSize={16} fontWeight={800} opacity={.5} fontStyle="bold">Created by You</Box>
                             </Box>
