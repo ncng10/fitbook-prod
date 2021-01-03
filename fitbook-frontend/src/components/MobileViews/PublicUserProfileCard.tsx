@@ -59,7 +59,7 @@ const UserProfileCard: React.FC<UserProfileCardProps> = ({ profilePicture, usern
     return (
         <React.Fragment>
             <NextLink href="/search">
-                <Flex fontSize={50}><ChevronLeftIcon /></Flex>
+                <Flex fontSize={50} mt={2} ><ChevronLeftIcon /></Flex>
             </NextLink>
             <Box>
                 <Flex mt={5} alignItems="center" flexDir="column">

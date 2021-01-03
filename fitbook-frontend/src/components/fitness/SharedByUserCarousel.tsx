@@ -160,7 +160,7 @@ const EmblaCarousel = (props) => {
     }, [embla, onSelect]);
     console.log(data?.programsSharedWithMeBySpecificUser)
     return (
-        <div style={{ marginTop: -15 }} className="embla">
+        <div className="embla">
             <div className="embla__viewport" ref={viewportRef}>
                 <div className="embla__container">
                     {data?.programsSharedWithMeBySpecificUser.map((program) => (

@@ -36,7 +36,12 @@ const PublicUserProfile: React.FC<PublicUserProfileProps> = ({ }) => {
                     id={data?.publicUserProfile.id}
                 />
             </Box>
-            <SharedByUserCarousel sharedById={data?.publicUserProfile.id} />
+            <Box>
+                <Box mt={75} cursor="pointer" display="flex" fontSize={25} backgroundColor="#FFFFFF" aria-label="shared-programs" >
+                    <Box ml={5} fontSize={16} fontWeight={800} fontStyle="bold">Shared With You</Box>
+                </Box>
+                <SharedByUserCarousel sharedById={data?.publicUserProfile.id} />
+            </Box>
             <BottomNavigation />
         </React.Fragment>
     );
