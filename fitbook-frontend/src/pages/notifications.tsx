@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import { RiFileList2Line, RiUserFollowLine } from 'react-icons/ri';
 import BottomNavigation from '../components/MobileViews/BottomNavigation';
 import FriendRequests from '../components/MobileViews/FriendRequests';
+import NewProgramShare from '../components/MobileViews/NewProgramShare';
 import PageHeaders from '../components/MobileViews/PageHeaders';
 import { withApollo } from '../utils/withApollo';
 
@@ -29,7 +30,7 @@ const Notifications: React.FC<NotificationsProps> = ({ }) => {
             }
             {friendRequestTabActive ?
                 <FriendRequests />
-                : ""}
+                : <NewProgramShare />}
             <BottomNavigation />
         </React.Fragment>
     );
