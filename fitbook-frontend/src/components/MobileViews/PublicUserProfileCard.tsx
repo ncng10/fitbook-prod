@@ -70,7 +70,9 @@ const UserProfileCard: React.FC<UserProfileCardProps> = ({ profilePicture, usern
                 </Flex>
                 <Flex mt={5} width="100%" flexDir="row" alignItems="center" justifyContent="space-evenly">
                     {body}
-                    <Button bgColor="#FFFFFF" color="#3C3D66" border="1px solid #3C3D66" w={140} h="40px" borderRadius={25}>Message</Button>
+                    <NextLink href="/inbox/message/[id]" as={`/inbox/message/${id}`}>
+                        <Button bgColor="#FFFFFF" color="#3C3D66" border="1px solid #3C3D66" w={140} h="40px" borderRadius={25}>Message</Button>
+                    </NextLink>
                 </Flex>
             </Box>
         </React.Fragment>

@@ -5,6 +5,7 @@ import NextLink from "next/link"
 import { withApollo } from '../../utils/withApollo';
 import { NavBar } from '../../components/NavBar';
 import BottomNavigation from '../../components/MobileViews/BottomNavigation';
+import { Button } from '@material-ui/core';
 interface messagesProps {
 
 }
@@ -26,6 +27,9 @@ const Messages: React.FC<messagesProps> = ({ }) => {
                         </Box>
                     </NextLink>
                 ))}
+            </Box>
+            <Box>
+                <Button>New Message</Button>
             </Box>
             <BottomNavigation />
         </React.Fragment>
