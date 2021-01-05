@@ -14,6 +14,10 @@ export class PersonalMessage extends BaseEntity {
 
     @Field()
     @Column({ nullable: true })
+    recipient: string;
+
+    @Field()
+    @Column({ nullable: true })
     senderId: number;
 
     @Field()

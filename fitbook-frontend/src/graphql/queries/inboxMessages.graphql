@@ -2,5 +2,7 @@ query InboxMessages {
     inboxMessages {
         sender
         senderId
+        recipient
+        recipientId
     }
 }

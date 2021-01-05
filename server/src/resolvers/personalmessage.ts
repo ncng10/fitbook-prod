@@ -38,12 +38,14 @@ export class PersonalMessageResolver {
         @PubSub() pubSub: PubSubEngine,
         @Ctx() { req }: MyContext
     ) {
-        const user = await User.findOne(req.session.userId)
+        const user = await User.findOne(req.session.userId);
+        const otherUser = await User.findOne(recipientId)
         const personalMessage = await PersonalMessage.create({
             text: input.text,
             recipientId: recipientId,
             senderId: req.session.userId,
-            sender: user?.username
+            sender: user?.username,
+            recipient: otherUser?.username
         }).save()
         await pubSub.publish("MESSAGES", personalMessage)
         return true
@@ -56,9 +58,13 @@ export class PersonalMessageResolver {
     ) {
         const inbox = await getConnection().query(
             `
-            SELECT DISTINCT sender, "senderId" FROM public.personal_message WHERE public.personal_message."recipientId" = ${req.session.userId}
+            SELECT DISTINCT sender, "senderId", "recipientId",recipient FROM public.personal_message WHERE public.personal_message."recipientId" = ${req.session.userId} 
+            UNION
+            SELECT DISTINCT sender, "senderId", "recipientId",recipient FROM public.personal_message WHERE public.personal_message."senderId" = ${req.session.userId} 
+            AND public.personal_message."recipientId" !=${req.session.userId}
             `
         );
+        console.log(inbox)
         return inbox
     };
 
@@ -73,7 +79,8 @@ export class PersonalMessageResolver {
             sender: personalMessage.sender,
             text: personalMessage.text,
             senderId: personalMessage.senderId,
-            recipientId: personalMessage.recipientId
+            recipientId: personalMessage.recipientId,
+            recipient: personalMessage.recipient
         }
     };
 

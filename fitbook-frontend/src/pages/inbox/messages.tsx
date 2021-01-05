@@ -1,6 +1,6 @@
 import { Box } from '@chakra-ui/react';
 import React from 'react'
-import { useInboxMessagesQuery } from '../../generated/graphql';
+import { useInboxMessagesQuery, useMeQuery } from '../../generated/graphql';
 import NextLink from "next/link"
 import { withApollo } from '../../utils/withApollo';
 import { NavBar } from '../../components/NavBar';
@@ -12,6 +12,7 @@ interface messagesProps {
 
 const Messages: React.FC<messagesProps> = ({ }) => {
     const { data } = useInboxMessagesQuery();
+    const { data: meData } = useMeQuery();
     return (
         <React.Fragment>
             <Box >
@@ -23,7 +24,8 @@ const Messages: React.FC<messagesProps> = ({ }) => {
                             w={400}
                             h={100}
                             mt={5}
-                        >{message.sender}
+                        >
+                            {message.sender === meData?.me?.username ? message?.recipient : message?.sender}
                         </Box>
                     </NextLink>
                 ))}

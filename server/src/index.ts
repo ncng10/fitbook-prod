@@ -12,7 +12,7 @@ import Redis from 'ioredis';
 import path from 'path';
 import "reflect-metadata";
 import { buildSchema } from 'type-graphql';
-import { createConnection } from 'typeorm';
+import { createConnection, getConnection } from 'typeorm';
 import { v4 } from "uuid";
 import { __prod__ } from './constants';
 import { DashboardFeed } from './entities/DashboardFeed';
@@ -58,7 +58,6 @@ const main = async () => {
         port: 6379,
         retryStrategy: times => Math.max(times * 100, 3000),
     };
-
     app.set("trust proxy", 1);
 
     app.use(cors(
