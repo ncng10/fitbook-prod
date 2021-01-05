@@ -19,6 +19,7 @@ const UserProfileCard: React.FC<UserProfileCardProps> = ({ }) => {
         return self.indexOf(value) === index
     };
     const uniqueUser = friendsListData?.friendsList.filter(unique);
+
     return (
         <React.Fragment>
             <Box mt={-20} width="100%">

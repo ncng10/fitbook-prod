@@ -1,8 +1,8 @@
 import { Box, Button, Flex, Text } from '@chakra-ui/react';
 import { Form, Formik } from 'formik';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { InputField } from '../../../components/InputField';
-import { useMeQuery, useNewMessageSubscription, useSendPersonalMessageMutation, useViewPersonalMessagesQuery } from '../../../generated/graphql';
+import { NewMessageDocument, useMeQuery, useNewMessageSubscription, useSendPersonalMessageMutation, useViewPersonalMessagesQuery } from '../../../generated/graphql';
 import { useGetIntId } from '../../../utils/useGetIntId';
 import { withApollo } from '../../../utils/withApollo';
 import Messages from "../messages";
@@ -15,16 +15,19 @@ const Message: React.FC<MessageProps> = ({ }) => {
     const { data: meData } = useMeQuery();
     const [sendMessage] = useSendPersonalMessageMutation();
 
-    const { data, refetch } = useViewPersonalMessagesQuery({
+    const { data, subscribeToMore, previousData, refetch } = useViewPersonalMessagesQuery({
         skip: intId === -1,
         variables: {
             input: intId,
-        }
+        },
+        fetchPolicy: "network-only"
     });
     const { data: newMessage, loading, error } = useNewMessageSubscription();
-    if (newMessage?.newMessage.text) {
-        refetch
-    }
+    useEffect(() => {
+        refetch({
+            input: intId
+        })
+    }, [newMessage])
     return (
         <React.Fragment>
             <Box >
@@ -47,7 +50,6 @@ const Message: React.FC<MessageProps> = ({ }) => {
 
                     ))}
                 </Box>
-                {newMessage?.newMessage.text}
                 <Box>
                     <Formik
                         initialValues={{ text: "" }}
