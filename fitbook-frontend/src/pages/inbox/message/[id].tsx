@@ -1,6 +1,6 @@
 import { Box, Button, Flex, Text } from '@chakra-ui/react';
 import { Form, Formik } from 'formik';
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { InputField } from '../../../components/InputField';
 import { useMeQuery, useNewMessageSubscription, useSendPersonalMessageMutation, useViewPersonalMessagesQuery } from '../../../generated/graphql';
 import { useGetIntId } from '../../../utils/useGetIntId';
@@ -13,8 +13,8 @@ const Message: React.FC<MessageProps> = ({ }) => {
     const intId = useGetIntId();
     const { data: meData } = useMeQuery();
     const [sendMessage] = useSendPersonalMessageMutation();
-
-    const { data, subscribeToMore, previousData, refetch } = useViewPersonalMessagesQuery({
+    const lastMessage = useRef(null);
+    const { data, refetch } = useViewPersonalMessagesQuery({
         skip: intId === -1,
         variables: {
             input: intId,
@@ -27,29 +27,35 @@ const Message: React.FC<MessageProps> = ({ }) => {
             input: intId
         })
     }, [newMessage]);
-
+    const scrollToRef = (ref) => ref?.current.scrollIntoView();
+    useEffect(() => {
+        scrollToRef(lastMessage)
+    }, [newMessage, data])
     return (
         <React.Fragment>
             <Box h={700} overflowX="scroll" >
                 <Box display="flex" width="100%" flexDir="column" overflow="scroll" overflowX="hidden">
-                    {data?.viewPersonalMessages.map((m) => (
-                        m.senderId === meData?.me.id
-                            ?
-                            <Box alignSelf="flex-end"  >
-                                <Box mt={2} mr={3} borderRadius="30px" alignSelf="flex-end" padding="1rem" width="10rem" bg='blue.500'>
-                                    <Text color="white">{m.text}</Text>
+                    {data?.viewPersonalMessages.map((m) => {
+                        return (
+                            m.senderId === meData?.me.id
+                                ?
+                                <Box alignSelf="flex-end"  >
+                                    <Box mt={2} mr={3} borderRadius="30px" alignSelf="flex-end" padding="1rem" width="10rem" bg='blue.500'>
+                                        <Text color="white">{m.text}</Text>
+                                    </Box>
+                                    <Box>{new Date(parseInt(m.createdAt)).toLocaleString()}</Box>
                                 </Box>
-                                <Box>{new Date(parseInt(m.createdAt)).toLocaleString()}</Box>
-                            </Box>
-                            :
-                            <Box >
-                                <Box mt={2} ml={3} borderRadius="30px" padding="1rem" width="10rem" bg='purple.500'>
-                                    <Text color="white">{m.text}</Text>
+                                :
+                                <Box >
+                                    <Box mt={2} ml={3} borderRadius="30px" padding="1rem" width="10rem" bg='purple.500'>
+                                        <Text color="white">{m.text}</Text>
+                                    </Box>
                                 </Box>
-                            </Box>
 
-                    ))}
+                        )
+                    })}
                 </Box>
+                <div ref={lastMessage}></div>
             </Box>
             <Box>
                 <Formik
