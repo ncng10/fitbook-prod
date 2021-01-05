@@ -34,7 +34,7 @@ const BottomNavigation: React.FC<BottomNavigationProps> = ({ }) => {
                     <IconButton
                         aria-label=""
                         style={router.pathname === "/dashboard" ?
-                            { fontSize: 25, width: "100%", backgroundColor: "#FFFFFF", outline: "none", color: "#86574d" }
+                            { fontSize: 25, width: "100%", backgroundColor: "#FFFFFF", outline: "none", color: "#3C3D66" }
                             :
                             { fontSize: 25, width: "100%", backgroundColor: "#FFFFFF", outline: "none" }} icon={<RiHome3Line />} />
                 </NextLink> */}
@@ -42,7 +42,7 @@ const BottomNavigation: React.FC<BottomNavigationProps> = ({ }) => {
                     <IconButton
                         aria-label=""
                         style={router.pathname === "/search" ?
-                            { fontSize: 30, width: "100%", backgroundColor: "#FFFFFF", outline: "none", color: "#86574d" }
+                            { fontSize: 30, width: "100%", backgroundColor: "#FFFFFF", outline: "none", color: "#3C3D66" }
                             :
                             { fontSize: 30, width: "100%", backgroundColor: "#FFFFFF", outline: "none" }} icon={<RiSearchEyeLine />} />
                 </NextLink>
@@ -58,14 +58,14 @@ const BottomNavigation: React.FC<BottomNavigationProps> = ({ }) => {
                             { fontSize: 30, width: "100%", backgroundColor: "#FFFFFF", outline: "none", color: "red" }} icon={<RiNotification2Line />} />
                         :
                         <IconButton aria-label="" style={router.pathname === "/notifications" ?
-                            { fontSize: 30, width: "100%", backgroundColor: "#FFFFFF", outline: "none", color: "#86574d" }
+                            { fontSize: 30, width: "100%", backgroundColor: "#FFFFFF", outline: "none", color: "#3C3D66" }
                             :
                             { fontSize: 30, width: "100%", backgroundColor: "#FFFFFF", outline: "none" }} icon={<RiNotification2Line />} />
                     }
                 </NextLink>
                 <NextLink href="/profile">
                     <IconButton aria-label="" style={router.pathname === "/profile" ?
-                        { fontSize: 30, width: "100%", backgroundColor: "#FFFFFF", outline: "none", color: "#86574d" }
+                        { fontSize: 30, width: "100%", backgroundColor: "#FFFFFF", outline: "none", color: "#3C3D66" }
                         :
                         { fontSize: 30, width: "100%", backgroundColor: "#FFFFFF", outline: "none" }} icon={<RiProfileLine />} />
                 </NextLink>

@@ -19,13 +19,13 @@ const Notifications: React.FC<NotificationsProps> = ({ }) => {
         <React.Fragment>
             <PageHeaders>Notifications</PageHeaders>
             {friendRequestTabActive ? <BNMUI style={{ marginTop: 10 }}>
-                <IconButton fontSize={25} backgroundColor="#FFFFFF" width="100%" color="#86574d" aria-label="friend-requests" icon={<RiUserFollowLine />} />
+                <IconButton fontSize={25} backgroundColor="#FFFFFF" width="100%" color="#3C3D66" aria-label="friend-requests" icon={<RiUserFollowLine />} />
                 <IconButton onClick={() => setFriendRequestTabActive(false)} fontSize={25} backgroundColor="#FFFFFF" width="100%" aria-label="shared-programs" icon={<RiFileList2Line />} />
             </BNMUI>
                 :
                 <BNMUI style={{ marginTop: 10 }}>
                     <IconButton onClick={() => setFriendRequestTabActive(true)} fontSize={25} backgroundColor="#FFFFFF" width="100%" aria-label="friend-requests" icon={<RiUserFollowLine />} />
-                    <IconButton fontSize={25} backgroundColor="#FFFFFF" width="100%" aria-label="shared-programs" color="#86574d" icon={<RiFileList2Line />} />
+                    <IconButton fontSize={25} backgroundColor="#FFFFFF" width="100%" aria-label="shared-programs" color="#3C3D66" icon={<RiFileList2Line />} />
                 </BNMUI>
             }
             {friendRequestTabActive ?

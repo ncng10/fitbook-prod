@@ -19,7 +19,6 @@ const UserProfileCard: React.FC<UserProfileCardProps> = ({ }) => {
         return self.indexOf(value) === index
     };
     const uniqueUser = friendsListData?.friendsList.filter(unique);
-
     return (
         <React.Fragment>
             <Box mt={-20} width="100%">
@@ -32,7 +31,11 @@ const UserProfileCard: React.FC<UserProfileCardProps> = ({ }) => {
                         <NextLink href="/friends/all">
                             <Button bgColor="#3C3D66" color="#DADDE9" w={140} h="40px" borderRadius={25}>{uniqueUser?.length} {uniqueUser?.length === 1 ? "Friend" : "Friends"}</Button>
                         </NextLink>
-                        <Button bgColor="#FFFFFF" color="#3C3D66" border="1px solid #3C3D66" w={140} h="40px" borderRadius={25}>Messages</Button>
+                        <NextLink href="/inbox/messages">
+                            <Button bgColor="#FFFFFF" color="#3C3D66" border="1px solid #3C3D66" w={140} h="40px" borderRadius={25}>
+                                Messages
+                        </Button>
+                        </NextLink>
                     </Flex>
                 </Flex>
             </Box>

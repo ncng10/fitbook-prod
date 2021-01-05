@@ -26,13 +26,13 @@ const Dashboard: React.FC<dashboardProps> = ({ }) => {
         <React.Fragment>
             <PageHeaders>Dashboard</PageHeaders>
             {personalFeedActive ? <BNMUI style={{ marginTop: 10 }}>
-                <IconButton fontSize={25} backgroundColor="#FFFFFF" width="100%" color="#86574d" aria-label="friend-requests" icon={<RiUserLine />} />
+                <IconButton fontSize={25} backgroundColor="#FFFFFF" width="100%" color="#3C3D66" aria-label="friend-requests" icon={<RiUserLine />} />
                 <IconButton onClick={() => setPersonalFeedActive(false)} fontSize={25} backgroundColor="#FFFFFF" width="100%" aria-label="shared-programs" icon={<RiGlobalLine />} />
             </BNMUI>
                 :
                 <BNMUI style={{ marginTop: 10 }}>
                     <IconButton onClick={() => setPersonalFeedActive(true)} fontSize={25} backgroundColor="#FFFFFF" width="100%" aria-label="friend-requests" icon={<RiUserLine />} />
-                    <IconButton fontSize={25} backgroundColor="#FFFFFF" width="100%" aria-label="shared-programs" color="#86574d" icon={<RiGlobalLine />} />
+                    <IconButton fontSize={25} backgroundColor="#FFFFFF" width="100%" aria-label="shared-programs" color="#3C3D66" icon={<RiGlobalLine />} />
                 </BNMUI>
             }
             <BottomNavigation />

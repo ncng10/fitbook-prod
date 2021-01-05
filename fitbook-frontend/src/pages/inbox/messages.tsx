@@ -4,6 +4,7 @@ import { useInboxMessagesQuery } from '../../generated/graphql';
 import NextLink from "next/link"
 import { withApollo } from '../../utils/withApollo';
 import { NavBar } from '../../components/NavBar';
+import BottomNavigation from '../../components/MobileViews/BottomNavigation';
 interface messagesProps {
 
 }
@@ -12,7 +13,6 @@ const Messages: React.FC<messagesProps> = ({ }) => {
     const { data } = useInboxMessagesQuery();
     return (
         <React.Fragment>
-            <NavBar />
             <Box >
                 {data?.inboxMessages.map((message) => (
                     <NextLink href="/inbox/message/[id]" as={`/inbox/message/${message.senderId}`}>
@@ -27,6 +27,7 @@ const Messages: React.FC<messagesProps> = ({ }) => {
                     </NextLink>
                 ))}
             </Box>
+            <BottomNavigation />
         </React.Fragment>
     );
 }
