@@ -17,7 +17,7 @@ const Messages: React.FC<messagesProps> = ({ }) => {
         <React.Fragment>
             <Box >
                 {data?.inboxMessages.map((message) => (
-                    <NextLink href="/inbox/message/[id]" as={`/inbox/message/${message.senderId}`}>
+                    <NextLink href="/inbox/message/[id]" as={`/inbox/message/${message.senderId === meData?.me.id ? message.recipientId : message.senderId}`}>
                         <Box
                             ml="3rem"
                             bgColor="gray.500"
@@ -25,7 +25,7 @@ const Messages: React.FC<messagesProps> = ({ }) => {
                             h={100}
                             mt={5}
                         >
-                            {message.sender === meData?.me?.username ? message?.recipient : message?.sender}
+                            {message.senderId === meData?.me.id ? message.recipient : message.sender}
                         </Box>
                     </NextLink>
                 ))}

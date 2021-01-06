@@ -33,7 +33,7 @@ const Message: React.FC<MessageProps> = ({ }) => {
     }, [newMessage, data])
     return (
         <React.Fragment>
-            <Box>{ }</Box>
+            <Box></Box>
             <Box h="70vh" overflowX="scroll" >
                 <Box display="flex" width="100%" flexDir="column" overflow="scroll" overflowX="hidden">
                     {data?.viewPersonalMessages.map((m) => {
