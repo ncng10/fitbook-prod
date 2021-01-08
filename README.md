@@ -1,3 +1,7 @@
+IF VIEWING WEBSITE:
+Use mobile phone/mobile view via chrome dev tools to maximize UI/UX.
+
+
 Repo for my current project, Fitbook (a fitness workout sharing application).
 
 Features that I'm working on:
