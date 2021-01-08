@@ -1,8 +1,8 @@
-import { Box, Button, Flex, Text } from '@chakra-ui/react';
+import { Avatar, Box, Button, Flex, Text } from '@chakra-ui/react';
 import { Form, Formik } from 'formik';
 import React, { useEffect, useRef } from 'react';
 import { InputField } from '../../../components/InputField';
-import { useMeQuery, useNewMessageSubscription, usePublicUserProfileQuery, useSendPersonalMessageMutation, useViewPersonalMessagesQuery } from '../../../generated/graphql';
+import { useMeQuery, useNewMessageSubscription, usePublicUserProfileQuery, useSendPersonalMessageMutation, useUserProfileQuery, useViewPersonalMessagesQuery, useWhoIAmMessagingQuery } from '../../../generated/graphql';
 import { useGetIntId } from '../../../utils/useGetIntId';
 import { withApollo } from '../../../utils/withApollo';
 interface MessageProps {
@@ -13,6 +13,11 @@ const Message: React.FC<MessageProps> = ({ }) => {
     const intId = useGetIntId();
     const { data: meData } = useMeQuery();
     const [sendMessage] = useSendPersonalMessageMutation();
+    const { data: whoIAmMessagingData } = useWhoIAmMessagingQuery({
+        variables: {
+            userId: intId
+        }
+    })
     const lastMessage = useRef(null);
     const { data, refetch } = useViewPersonalMessagesQuery({
         skip: intId === -1,
@@ -21,6 +26,7 @@ const Message: React.FC<MessageProps> = ({ }) => {
         },
         fetchPolicy: "network-only"
     });
+
     const { data: newMessage, loading, error } = useNewMessageSubscription();
     useEffect(() => {
         refetch({
@@ -33,7 +39,12 @@ const Message: React.FC<MessageProps> = ({ }) => {
     }, [newMessage, data])
     return (
         <React.Fragment>
-            <Box></Box>
+            <Box width="100%" display="flex" alignItems="center" justifyContent="center" bgColor="#FFFFFF" height="50px">
+                <Box >
+                    <Avatar src={`https://storage.googleapis.com/fitbook-production/${whoIAmMessagingData?.whoIAmMessaging.profilePicture}`} />
+                </Box>
+                <Box ml={2} > {whoIAmMessagingData?.whoIAmMessaging.username}</Box>
+            </Box>
             <Box h="70vh" overflowX="scroll" >
                 <Box display="flex" width="100%" flexDir="column" overflow="scroll" overflowX="hidden">
                     {data?.viewPersonalMessages.map((m) => {
@@ -41,15 +52,18 @@ const Message: React.FC<MessageProps> = ({ }) => {
                             m.senderId === meData?.me.id
                                 ?
                                 <Box alignSelf="flex-end"  >
-                                    <Box mt={2} mr={3} borderRadius="15px" alignSelf="flex-end" padding="1rem" width="10rem" bg='blue.500'>
+                                    <Box mr={3} mt={2} borderRadius="15px" alignSelf="flex-end" padding="1rem" width="10rem" bg='blue.500'>
                                         <Text color="white">{m.text}</Text>
                                     </Box>
-                                    <Box>{new Date(parseInt(m.createdAt)).toLocaleString()}</Box>
+                                    <Box width="100%" display="flex" flexDir="row" alignItems="center" justifyContent="center">
+                                        <Box>  {new Date(parseInt(m.createdAt)).toLocaleString()}</Box>
+                                    </Box>
                                 </Box>
                                 :
                                 <Box >
                                     <Box mt={2} ml={3} borderRadius="15px" padding="1rem" width="10rem" bg='purple.500'>
                                         <Text color="white">{m.text}</Text>
+
                                     </Box>
                                     <Box ml={3}>{new Date(parseInt(m.createdAt)).toLocaleString()}</Box>
                                 </Box>
@@ -59,7 +73,7 @@ const Message: React.FC<MessageProps> = ({ }) => {
                 </Box>
                 <div ref={lastMessage}></div>
             </Box>
-            <Box w="100%" display="flex" alignItems="center" justifyContent="center" h="30vh">
+            <Box w="100%" display="flex" alignItems="center" justifyContent="center" h="25vh">
                 <Formik
                     initialValues={{ text: "" }}
                     onSubmit={async (values, { resetForm }) => {

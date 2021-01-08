@@ -20,7 +20,7 @@ const Search: React.FC<SearchProps> = ({ }) => {
         variables: {
             input: search
         }
-    })
+    });
     console.log(data)
     return (
         <React.Fragment>
@@ -33,6 +33,7 @@ const Search: React.FC<SearchProps> = ({ }) => {
                 >
                     <Form>
                         <InputField
+
                             width={325}
                             style={{ border: '1px solid #3C3D66', borderRadius: 10 }}
                             name="input"

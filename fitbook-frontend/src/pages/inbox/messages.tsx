@@ -16,19 +16,20 @@ const Messages: React.FC<messagesProps> = ({ }) => {
     return (
         <React.Fragment>
             <Box >
+                Messages won't show until the recipient replies.
                 {data?.inboxMessages.map((message) => (
-                    <NextLink href="/inbox/message/[id]" as={`/inbox/message/${message.senderId === meData?.me.id ? message.recipientId : message.senderId}`}>
-                        <Box
-                            ml="3rem"
-                            bgColor="gray.500"
-                            w={400}
-                            h={100}
-                            mt={5}
-                        >
-                            {message.senderId === meData?.me.id ? message.recipient : message.sender}
-                        </Box>
-                    </NextLink>
-                ))}
+                <NextLink href="/inbox/message/[id]" as={`/inbox/message/${message.senderId === meData?.me.id ? message.recipientId : message.senderId}`}>
+                    <Box
+                        ml="3rem"
+                        bgColor="gray.500"
+                        w={400}
+                        h={100}
+                        mt={5}
+                    >
+                        {message.senderId === meData?.me.id ? message.recipient : message.sender}
+                    </Box>
+                </NextLink>
+            ))}
             </Box>
             <Box>
                 <Button>New Message</Button>

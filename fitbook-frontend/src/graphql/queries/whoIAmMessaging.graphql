@@ -1,0 +1,6 @@
+query WhoIAmMessaging($userId:Int!) {
+    whoIAmMessaging(userId:$userId) {
+        username
+        profilePicture
+    }
+}

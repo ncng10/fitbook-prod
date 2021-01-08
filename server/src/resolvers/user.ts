@@ -1,5 +1,5 @@
 import argon2 from 'argon2';
-import { Arg, Ctx, Field, Mutation, ObjectType, Query, Resolver } from "type-graphql";
+import { Arg, Ctx, Field, Int, Mutation, ObjectType, Query, Resolver } from "type-graphql";
 import { getConnection } from "typeorm";
 import { User } from '../entities/User';
 import { MyContext } from '../types';
@@ -178,4 +178,13 @@ export class UserResolver {
         return userprofile
     }
 
+    @Query(() => User)
+    async whoIAmMessaging(
+        @Arg("userId", () => Int) userId: number
+    ) {
+        const user = User.findOne({
+            id: userId
+        });
+        return user
+    }
 }

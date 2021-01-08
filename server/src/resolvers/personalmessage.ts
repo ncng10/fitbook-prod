@@ -1,6 +1,6 @@
 import { MyContext } from "../types";
 import { isAuth } from "../utils/middleware/isAuth";
-import { Arg, Ctx, Field, InputType, Int, Mutation, Query, Resolver, Root, Subscription, PubSub, PubSubEngine, UseMiddleware } from "type-graphql";
+import { Arg, Ctx, Field, InputType, Int, Mutation, Query, Resolver, Root, Subscription, PubSub, PubSubEngine, UseMiddleware, FieldResolver } from "type-graphql";
 import { getConnection } from "typeorm";
 import { PersonalMessage } from "../entities/PersonalMessage";
 import { User } from "../entities/User";
@@ -39,7 +39,7 @@ export class PersonalMessageResolver {
         @Ctx() { req }: MyContext
     ) {
         const user = await User.findOne(req.session.userId);
-        const otherUser = await User.findOne(recipientId)
+        const otherUser = await User.findOne(recipientId);
         const personalMessage = await PersonalMessage.create({
             text: input.text,
             recipientId: recipientId,
@@ -58,13 +58,11 @@ export class PersonalMessageResolver {
     ) {
         const inbox = await getConnection().query(
             `
-            SELECT DISTINCT sender, "senderId", "recipientId",recipient FROM public.personal_message WHERE public.personal_message."recipientId" = ${req.session.userId} 
-            UNION
-            SELECT DISTINCT sender, "senderId", "recipientId",recipient FROM public.personal_message WHERE public.personal_message."senderId" = ${req.session.userId} 
-            AND public.personal_message."recipientId" !=${req.session.userId}
+            SELECT DISTINCT sender, "senderId", "recipientId",recipient FROM public.personal_message
+            WHERE 
+            public.personal_message."recipientId" = ${req.session.userId} AND personal_message."senderId" != ${req.session.userId}
             `
         );
-        console.log(inbox)
         return inbox
     };
 
