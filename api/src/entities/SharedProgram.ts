@@ -1,6 +1,6 @@
 import { Field, ObjectType } from "type-graphql";
 import { BaseEntity, Column, Entity, Index, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
-import { User } from "../entities/User";
+import { User } from "./User";
 @ObjectType()
 @Entity()
 @Index(["programId", "sharedToId"], { unique: true })
