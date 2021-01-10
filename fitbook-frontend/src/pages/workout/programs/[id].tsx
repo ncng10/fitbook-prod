@@ -1,5 +1,6 @@
-import { Box, Flex } from '@chakra-ui/react';
-import React from 'react';
+import { Box, Flex, Switch } from '@chakra-ui/react';
+import React, { useContext, useState } from 'react';
+import { MyContext } from "react-dom"
 import CreateWorkoutForm from '../../../components/fitness/forms/CreateWorkoutForm';
 import ShareProgramModal from '../../../components/fitness/ShareProgramModal';
 import WorkoutsList from '../../../components/fitness/WorkoutsList';
@@ -14,6 +15,7 @@ interface ProgramProps {
 }
 
 const Program: React.FC<ProgramProps> = ({ }) => {
+    const [detailsShowing, setDetailsShowing] = useState(false)
     const intId = useGetIntId();
     const { data: meData } = useMeQuery();
     const { data: sharedWithData } = useProgramQuery({
@@ -22,6 +24,8 @@ const Program: React.FC<ProgramProps> = ({ }) => {
             input: intId
         }
     });
+
+
 
     //checks to see if the currently logged in user is included in the sharedWith array. if length = 0, it is not shared with the user
     //if length = 1 it is shared with the user
@@ -44,7 +48,7 @@ const Program: React.FC<ProgramProps> = ({ }) => {
                     : ""}
                 <Box>
                 </Box>
-                <WorkoutsList />
+                <WorkoutsList detailsShowing={detailsShowing} />
                 <CreateWorkoutForm />
             </Box>
 
@@ -58,9 +62,12 @@ const Program: React.FC<ProgramProps> = ({ }) => {
             <PageHeaders>
                 <Box display="flex" flexDir="column" alignItems="center">
                     <Box>{sharedWithData?.program.programName}</Box>
-                    <p style={{ fontSize: 15 }}>{sharedWithData?.program.programCategory}</p>
+                    <p style={{ fontSize: 15 }}>
+                        {sharedWithData?.program.programCategory === "" ? "Uncategorized" : sharedWithData?.program.programCategory}
+                    </p>
                 </Box>
             </PageHeaders>
+            <Switch onChange={detailsShowing === false ? () => setDetailsShowing(true) : () => setDetailsShowing(false)} />
             {body}
             <BottomNavigation />
         </React.Fragment>

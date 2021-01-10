@@ -21,9 +21,9 @@ const CreateWorkoutForm: React.FC<CreateWorkoutFormProps> = ({ }) => {
         <React.Fragment>
             <Box>
                 <IconButton
-                    // position="fixed"
-                    // bottom={45}
-                    // right={25}
+                    position="fixed"
+                    bottom={75}
+                    right={25}
                     height={55}
                     width={55}
                     borderRadius={30}

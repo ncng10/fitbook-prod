@@ -123,7 +123,7 @@ const useInfiniteScroll = (embla, slides: any, hasMoreToLoad) => {
     return loadingMore;
 };
 
-const EmblaCarousel = () => {
+const EmblaCarousel = (props) => {
     const [isLargerThan600] = useMediaQuery("(min-width:600px)");
     const intId = useGetIntId();
     const { data, loading, error } = useWorkoutsQuery({
@@ -161,7 +161,7 @@ const EmblaCarousel = () => {
         embla.on("reInit", onSelect);
         onSelect();
     }, [embla, onSelect]);
-
+    const { detailsShowing } = props;
     return (
         <div className="embla">
             <div className="embla__viewport" ref={viewportRef}>
@@ -176,6 +176,8 @@ const EmblaCarousel = () => {
                                                 workoutName={workout.workoutName}
                                                 workoutCategory={workout.workoutCategory}
                                                 isShared={workout.isShared}
+                                                workoutDate={workout.workoutDate}
+                                                detailsShowing={detailsShowing}
                                             />
 
                                         </div>

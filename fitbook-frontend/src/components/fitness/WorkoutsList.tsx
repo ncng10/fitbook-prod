@@ -6,10 +6,10 @@ import { useGetIntId } from '../../utils/useGetIntId';
 import WorkoutCard from './WorkoutCard';
 import WorkoutsCarousel from './WorkoutsCarousel';
 interface WorkoutsListProps {
-
+    detailsShowing?: boolean;
 }
 
-const WorkoutsList: React.FC<WorkoutsListProps> = ({ }) => {
+const WorkoutsList: React.FC<WorkoutsListProps> = ({ detailsShowing }) => {
 
     const intId = useGetIntId();
 
@@ -24,7 +24,7 @@ const WorkoutsList: React.FC<WorkoutsListProps> = ({ }) => {
     if (data?.workouts.length > 0) {
         body =
             <Box>
-                <WorkoutsCarousel />
+                <WorkoutsCarousel detailsShowing={detailsShowing} />
             </Box>
     } else {
         body =

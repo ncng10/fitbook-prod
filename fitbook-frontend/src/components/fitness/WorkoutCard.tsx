@@ -1,14 +1,16 @@
-import { Box } from '@chakra-ui/react';
+import { Box, Flex } from '@chakra-ui/react';
 import React from 'react'
-import { RiLock2Line, RiGlobalLine } from 'react-icons/ri';
+import { RiLock2Line, RiGlobalLine, RiGroupLine, RiLockLine } from 'react-icons/ri';
 
 interface WorkoutCardProps {
     workoutName: string;
     workoutCategory: string;
-    isShared?: boolean
+    isShared?: boolean;
+    workoutDate?: string;
+    detailsShowing?: boolean;
 }
 
-const WorkoutCard: React.FC<WorkoutCardProps> = ({ workoutName, workoutCategory, isShared }) => {
+const WorkoutCard: React.FC<WorkoutCardProps> = ({ workoutName, workoutCategory, isShared, workoutDate, detailsShowing }) => {
     return (
         <React.Fragment>
             <Box
@@ -17,30 +19,46 @@ const WorkoutCard: React.FC<WorkoutCardProps> = ({ workoutName, workoutCategory,
                 flexDirection="column"
                 borderRadius="15px"
             >
-                <Box
-                    display="flex"
-                    alignItems="center"
-                    justifyContent="center"
-                >
-                    <Box>
-                        {workoutCategory}
+                <Flex direction="column">
+                    <Box
+                        display="flex"
+                        alignItems="center"
+                        justifyContent="center"
+                    >
                     </Box>
-
-                </Box>
-
-                <Box
-                    height={205}
-                    w={265}
-                    display="flex"
-                    alignItems="center"
-                    justifyContent="center"
-                    backgroundColor="#fafafa"
-                    borderRadius={10}
-                >
-                    <Box>
-                        {workoutName}
+                    <Box
+                        height={200}
+                        w={250}
+                        display="flex"
+                        alignItems="center"
+                        flexDir="column"
+                        backgroundColor="#3C3D66"
+                        borderRadius={10}
+                        color="#DADDE9"
+                    >
+                        <Flex alignItems="center" flexDir="row" mt={3} justifyContent="space-between" width="100%">
+                            <Box h="100%" ml={3}>{workoutCategory ? workoutCategory : "Uncategorized"}</Box>
+                            <Box mr={3}>
+                                {isShared ? <RiGroupLine /> : <RiLockLine />}
+                            </Box>
+                        </Flex>
+                        <Box flexWrap="wrap" display="flex" alignItems="center" flexDir="column" justifyContent="center" h="100%">
+                            <Box fontSize={28} fontWeight={650}>{workoutName}</Box>
+                            <Box fontSize={16} fontWeight={650}>{workoutDate}</Box>
+                        </Box>
                     </Box>
-                </Box>
+                    {!detailsShowing ? null : <Box
+                        height={125}
+                        w={250}
+                        mt=".55rem"
+                        display="flex"
+                        alignItems="center"
+                        flexDir="column"
+                        backgroundColor="#3C3D66"
+                        borderRadius={10}
+                        color="#DADDE9"
+                    >Miscs</Box>}
+                </Flex>
             </Box>
         </React.Fragment>
     );
