@@ -1,16 +1,15 @@
 import { Box, Flex } from '@chakra-ui/react';
 import React from 'react'
 import { RiLock2Line, RiGlobalLine, RiGroupLine, RiLockLine } from 'react-icons/ri';
-
+import { MdFitnessCenter } from 'react-icons/md'
 interface WorkoutCardProps {
     workoutName: string;
     workoutCategory: string;
     isShared?: boolean;
     workoutDate?: string;
-    detailsShowing?: boolean;
 }
 
-const WorkoutCard: React.FC<WorkoutCardProps> = ({ workoutName, workoutCategory, isShared, workoutDate, detailsShowing }) => {
+const WorkoutCard: React.FC<WorkoutCardProps> = ({ workoutName, workoutCategory, isShared, workoutDate }) => {
     return (
         <React.Fragment>
             <Box
@@ -47,17 +46,6 @@ const WorkoutCard: React.FC<WorkoutCardProps> = ({ workoutName, workoutCategory,
                             <Box fontSize={16} fontWeight={650}>{workoutDate}</Box>
                         </Box>
                     </Box>
-                    {!detailsShowing ? null : <Box
-                        height={125}
-                        w={250}
-                        mt=".55rem"
-                        display="flex"
-                        alignItems="center"
-                        flexDir="column"
-                        backgroundColor="#3C3D66"
-                        borderRadius={10}
-                        color="#DADDE9"
-                    >Miscs</Box>}
                 </Flex>
             </Box>
         </React.Fragment>

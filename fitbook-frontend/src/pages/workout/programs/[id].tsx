@@ -15,7 +15,7 @@ interface ProgramProps {
 }
 
 const Program: React.FC<ProgramProps> = ({ }) => {
-    const [detailsShowing, setDetailsShowing] = useState(false)
+    const [detailsShowing, setDetailsShowing] = useState(true)
     const intId = useGetIntId();
     const { data: meData } = useMeQuery();
     const { data: sharedWithData } = useProgramQuery({
@@ -59,15 +59,26 @@ const Program: React.FC<ProgramProps> = ({ }) => {
 
     return (
         <React.Fragment>
-            <PageHeaders>
-                <Box display="flex" flexDir="column" alignItems="center">
-                    <Box>{sharedWithData?.program.programName}</Box>
-                    <p style={{ fontSize: 15 }}>
-                        {sharedWithData?.program.programCategory === "" ? "Uncategorized" : sharedWithData?.program.programCategory}
-                    </p>
+            <Box width="100%"
+                alignItems="center"
+                justifyContent="center"
+                display="flex"
+                flexDir="column"
+            >
+                <Box
+                    display="flex"
+                    width="100%"
+                    alignItems="center"
+                    justifyContent="center"
+                    color="#3C3D66"
+                    flexWrap="wrap"
+                    mt={5} fontSize={36}>
+                    {sharedWithData?.program.programName}
                 </Box>
-            </PageHeaders>
-            <Switch onChange={detailsShowing === false ? () => setDetailsShowing(true) : () => setDetailsShowing(false)} />
+                <p style={{ fontSize: 24, color: "#3C3D66", flexWrap: "wrap" }}>
+                    {sharedWithData?.program.programCategory === "" ? "Uncategorized" : sharedWithData?.program.programCategory}
+                </p>
+            </Box>
             {body}
             <BottomNavigation />
         </React.Fragment>

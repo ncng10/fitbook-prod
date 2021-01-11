@@ -177,7 +177,6 @@ const EmblaCarousel = (props) => {
                                                 workoutCategory={workout.workoutCategory}
                                                 isShared={workout.isShared}
                                                 workoutDate={workout.workoutDate}
-                                                detailsShowing={detailsShowing}
                                             />
 
                                         </div>
