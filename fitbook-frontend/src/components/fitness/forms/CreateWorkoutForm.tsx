@@ -5,18 +5,24 @@ import { RiMenuAddLine } from 'react-icons/ri';
 import { useCreateWorkoutMutation } from "../../../generated/graphql";
 import { useGetIntId } from '../../../utils/useGetIntId';
 import { InputField } from '../../InputField';
+import * as Yup from 'yup';
 
 interface CreateWorkoutFormProps {
 
 }
 
 const CreateWorkoutForm: React.FC<CreateWorkoutFormProps> = ({ }) => {
+    const CreateWorkoutValidation = Yup.object().shape({
+        workoutName: Yup.string()
+            .max(50, 'Program names can only be 50 characters.')
+            .required('You must enter a name.'),
+        workoutCategory: Yup.string()
+            .max(50, 'Cannot be more than 50 characters.')
+    })
     const { isOpen, onOpen, onClose } = useDisclosure()
     const firstField = React.useRef();
     const intId = useGetIntId();
-
     const [addWorkout] = useCreateWorkoutMutation();
-
     return (
         <React.Fragment>
             <Box>
@@ -54,6 +60,7 @@ const CreateWorkoutForm: React.FC<CreateWorkoutFormProps> = ({ }) => {
                             <DrawerBody>
                                 <Stack spacing="24px">
                                     <Formik
+                                        validationSchema={CreateWorkoutValidation}
                                         initialValues={{ workoutName: "", workoutCategory: "", workoutDate: "" }}
                                         onSubmit={async (values) => {
                                             await addWorkout({

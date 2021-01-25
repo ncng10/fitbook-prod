@@ -3,18 +3,25 @@ import { Form, Formik } from 'formik';
 import React from 'react';
 import { useCreateProgramMutation } from '../../../generated/graphql';
 import { InputField } from '../../InputField';
-
+import * as Yup from 'yup';
 interface CreateProgramFormProps {
 
 }
 
 const CreateProgramForm: React.FC<CreateProgramFormProps> = ({ }) => {
-
+    const CreateProgramValidation = Yup.object().shape({
+        programName: Yup.string()
+            .max(50, 'Program names can only be 50 characters.')
+            .required('You must enter a name.'),
+        programCategory: Yup.string()
+            .max(50, 'Cannot be more than 50 characters.')
+    })
     const [createProgram] = useCreateProgramMutation();
     const toast = useToast()
     return (
         <React.Fragment>
             <Formik
+                validationSchema={CreateProgramValidation}
                 initialValues={{ programName: "", programCategory: "" }}
                 onSubmit={async (values) => {
                     const { errors } = await createProgram({
